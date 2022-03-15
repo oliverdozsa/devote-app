@@ -23,6 +23,8 @@ export class AppComponent {
     }
   ];
 
+  isSideBarCollapsed = true;
+
   constructor(
     private iconLibraries: NbIconLibraries,
     private sidebarService: NbSidebarService
@@ -33,5 +35,6 @@ export class AppComponent {
 
   toggleCompact() {
     this.sidebarService.toggle(true, 'main');
+    this.isSideBarCollapsed = !this.isSideBarCollapsed;
   }
 }

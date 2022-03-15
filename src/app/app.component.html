@@ -1,13 +1,14 @@
 <nb-layout>
   <nb-layout-header fixed>DeVote</nb-layout-header>
 
-  <nb-sidebar tag="main">
+  <nb-sidebar tag="main" state="compacted">
     <nb-menu [items]="menuItems">
     </nb-menu>
   </nb-sidebar>
 
   <nb-layout-column>
-    <button nbButton ghost (click)="toggleCompact()"><nb-icon icon="bars" pack="fas"></nb-icon></button>
+    <button *ngIf="isSideBarCollapsed" nbButton ghost (click)="toggleCompact()"><nb-icon icon="bars" pack="fas"></nb-icon></button>
+    <button *ngIf="!isSideBarCollapsed" nbButton ghost (click)="toggleCompact()"><nb-icon icon="xmark" pack="fas"></nb-icon></button>
     <h3>Page Content</h3>
     <button nbButton status="primary">Hello World</button>
     <nb-icon icon="star" pack="far"></nb-icon>
