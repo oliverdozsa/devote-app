@@ -1,11 +1,19 @@
 <nb-layout>
   <nb-layout-header fixed>DeVote</nb-layout-header>
 
-  <nb-sidebar>
-    menu
+  <nb-sidebar tag="main">
+    <nb-menu [items]="menuItems">
+    </nb-menu>
   </nb-sidebar>
 
   <nb-layout-column>
-    Page Content <button nbButton status="primary">Hello World</button>
+    <button nbButton ghost (click)="toggleCompact()"><nb-icon icon="bars" pack="fas"></nb-icon></button>
+    <h3>Page Content</h3>
+    <button nbButton status="primary">Hello World</button>
+    <nb-icon icon="star" pack="far"></nb-icon>
+    <nb-icon icon="star" pack="fas"></nb-icon>
+    <nb-icon icon="user" pack="fas"></nb-icon>
+    <nb-icon icon="user" pack="far"></nb-icon>
+
   </nb-layout-column>
 </nb-layout>
