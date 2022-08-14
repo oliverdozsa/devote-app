@@ -45,7 +45,7 @@ import {AppRoutes} from "../app-routes";
       strategies: [
         NbOAuth2AuthStrategy.setup({
           name: "auth0",
-          clientId: "",
+          clientId: "DgtatvQrzX90oaZNlhRevIVM3dwWPg2F",
           clientSecret: "",
           authorize: {
             endpoint: 'https://dev-devote.eu.auth0.com/authorize',
