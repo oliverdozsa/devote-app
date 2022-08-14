@@ -33,7 +33,7 @@ export class AppComponent {
     this.iconLibraries.registerFontPack('far', {packClass: 'far', iconClassPrefix: 'fa'});
   }
 
-  toggleCompact() {
+  toggleMainMenu() {
     this.sidebarService.toggle(true, 'main');
     this.isSideBarCollapsed = !this.isSideBarCollapsed;
   }

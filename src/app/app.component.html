@@ -1,20 +1,21 @@
 <nb-layout>
-  <nb-layout-header fixed>DeVote</nb-layout-header>
+  <nb-layout-header fixed>
+    <nb-icon (click)="toggleMainMenu()" style="font-size: 1.75rem; cursor: pointer;" icon="menu-2-outline"></nb-icon>
+    <div>TODO: devote logo</div>
+  </nb-layout-header>
 
-  <nb-sidebar tag="main" state="compacted">
+  <nb-sidebar tag="main" responsive="true">
     <nb-menu [items]="menuItems">
     </nb-menu>
   </nb-sidebar>
 
   <nb-layout-column>
-    <button *ngIf="isSideBarCollapsed" nbButton ghost (click)="toggleCompact()"><nb-icon icon="bars" pack="fas"></nb-icon></button>
-    <button *ngIf="!isSideBarCollapsed" nbButton ghost (click)="toggleCompact()"><nb-icon icon="xmark" pack="fas"></nb-icon></button>
-    <h3>Page Content</h3>
-    <button nbButton status="primary">Hello World</button>
-    <nb-icon icon="star" pack="far"></nb-icon>
-    <nb-icon icon="star" pack="fas"></nb-icon>
-    <nb-icon icon="user" pack="fas"></nb-icon>
-    <nb-icon icon="user" pack="far"></nb-icon>
-
+    <router-outlet></router-outlet>
   </nb-layout-column>
+
+  <nb-layout-footer>
+    <div class="text-center">
+      cookies, whatever is in footer
+    </div>
+  </nb-layout-footer>
 </nb-layout>
