@@ -46,7 +46,7 @@ export class AppComponent {
     this.iconLibraries.registerFontPack('fas', {packClass: 'fas', iconClassPrefix: 'fa'});
     this.iconLibraries.registerFontPack('far', {packClass: 'far', iconClassPrefix: 'fa'});
 
-    this.authService.isAuthenticatedOrRefresh()
+    this.authService.onAuthenticationChange()
       .subscribe({
         next: v => this.onIsAuthenticated(v)
       });
@@ -66,15 +66,6 @@ export class AppComponent {
   }
 
   onIsAuthenticated(isAuthenticated: boolean) {
-    console.log(`isAuthenticated: ${isAuthenticated}`);
-    if(isAuthenticated) {
-      this.authService.getToken()
-        .subscribe({
-          next: t => console.log(`token: ${JSON.stringify(t)}`)
-        });
-    }
-
-
     const logInMenuItem = this.mainMenuItems
       .find(m => m.title == 'login');
 

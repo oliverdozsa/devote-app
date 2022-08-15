@@ -21,7 +21,6 @@ export class LoginCallbackComponent implements OnDestroy {
       .pipe(takeUntil(this.destroy$))
       .subscribe((authResult: NbAuthResult) => {
         if (authResult.isSuccess() && authResult.getRedirect()) {
-          console.log(`redirect: ${authResult.getRedirect()}`);
           this.router.navigateByUrl(authResult.getRedirect());
         }
       });
