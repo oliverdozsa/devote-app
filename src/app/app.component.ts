@@ -1,6 +1,6 @@
 import {Component} from '@angular/core';
 import {NbIconLibraries, NbMenuBag, NbMenuItem, NbMenuService, NbSidebarService} from "@nebular/theme";
-import {NbAuthResult, NbAuthService} from "@nebular/auth";
+import {NbAuthJWTToken, NbAuthResult, NbAuthService} from "@nebular/auth";
 import {filter, takeUntil} from "rxjs";
 
 @Component({
@@ -45,6 +45,14 @@ export class AppComponent {
   ) {
     this.iconLibraries.registerFontPack('fas', {packClass: 'fas', iconClassPrefix: 'fa'});
     this.iconLibraries.registerFontPack('far', {packClass: 'far', iconClassPrefix: 'fa'});
+
+    this.authService.onTokenChange()
+      .subscribe({
+        next: t => {
+          const jwt = t as NbAuthJWTToken;
+          console.log(`jwt: ${JSON.stringify(jwt.getPayload())}`);
+        }
+      });
 
     this.authService.onAuthenticationChange()
       .subscribe({

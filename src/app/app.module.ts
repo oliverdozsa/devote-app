@@ -45,14 +45,17 @@ import {AppRoutes} from "../app-routes";
       strategies: [
         NbOAuth2AuthStrategy.setup({
           name: "auth0",
-          clientId: "DgtatvQrzX90oaZNlhRevIVM3dwWPg2F",
+          clientId: "DgtatvQrzX90oaZNlhRevIVMgi3dwWPg2F",
           clientSecret: "",
           authorize: {
             endpoint: 'https://dev-devote.eu.auth0.com/authorize',
             responseType: NbOAuth2ResponseType.TOKEN,
-            scope: 'openid',
+            scope: 'openid profile email',
             redirectUri: location.origin +
               '/' + AppRoutes.LOGIN + "/auth0",
+            params: {
+              "audience": "https://dev-devote.eu.auth0.com/api/v2/"
+            }
           }
         })
       ]

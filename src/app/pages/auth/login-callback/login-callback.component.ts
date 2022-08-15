@@ -15,8 +15,6 @@ export class LoginCallbackComponent implements OnDestroy {
   constructor(private authService: NbAuthService, private router: Router, private route: ActivatedRoute) {
     const oauthProvider = route.snapshot.paramMap.get("oauthprov")!;
 
-    console.log(`in login callback; provider is: ${oauthProvider}`);
-
     this.authService.authenticate(oauthProvider)
       .pipe(takeUntil(this.destroy$))
       .subscribe((authResult: NbAuthResult) => {
