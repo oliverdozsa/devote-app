@@ -1,7 +1,19 @@
 import {Component} from '@angular/core';
 import {NbIconLibraries, NbMenuBag, NbMenuItem, NbMenuService, NbSidebarService} from "@nebular/theme";
-import {NbAuthJWTToken, NbAuthResult, NbAuthService} from "@nebular/auth";
-import {filter, takeUntil} from "rxjs";
+import {NbAuthResult, NbAuthService} from "@nebular/auth";
+import {filter} from "rxjs";
+
+export class MainMenuItemTitles {
+  static PUBLIC_VOTINGS = 'public votings';
+  static MY_PROFILE = 'my profile';
+  static MY_CREATED_VOTINGS = 'my created votings';
+  static VOTINGS_WHERE_I_PARTICIPATE = 'votings where I participate';
+  static LOGIN = 'login';
+  static LOGOUT = 'logout';
+
+  static PROTECTED_MENU_ITEMS = [MainMenuItemTitles.MY_PROFILE, MainMenuItemTitles.MY_CREATED_VOTINGS,
+    MainMenuItemTitles.VOTINGS_WHERE_I_PARTICIPATE]
+}
 
 @Component({
   selector: 'app-root',
@@ -12,27 +24,31 @@ export class AppComponent {
   title = 'devote-app';
   mainMenuItems: NbMenuItem[] = [
     {
-      title: 'my profile',
+      title: MainMenuItemTitles.MY_PROFILE,
       icon: {icon: 'user', pack: 'fas'},
       hidden: true
     },
     {
-      title: 'my created votings',
+      title: MainMenuItemTitles.PUBLIC_VOTINGS,
+      icon: {icon: 'bullhorn', pack: 'fas'}
+    },
+    {
+      title: MainMenuItemTitles.MY_CREATED_VOTINGS,
       icon: {icon: 'list', pack: 'fas'},
       hidden: true
     },
     {
-      title: 'votings where I participate',
+      title: MainMenuItemTitles.VOTINGS_WHERE_I_PARTICIPATE,
       icon: {icon: 'person-booth', pack: 'fas'},
       hidden: true
     },
     {
-      title: 'login',
+      title: MainMenuItemTitles.LOGIN,
       icon: {icon: 'arrow-right-to-bracket', pack: 'fas'},
       hidden: true
     },
     {
-      title: 'logout',
+      title: MainMenuItemTitles.LOGOUT,
       icon: {icon: 'arrow-right-from-bracket', pack: 'fas'},
       hidden: true
     }
@@ -45,14 +61,6 @@ export class AppComponent {
   ) {
     this.iconLibraries.registerFontPack('fas', {packClass: 'fas', iconClassPrefix: 'fa'});
     this.iconLibraries.registerFontPack('far', {packClass: 'far', iconClassPrefix: 'fa'});
-
-    this.authService.onTokenChange()
-      .subscribe({
-        next: t => {
-          const jwt = t as NbAuthJWTToken;
-          console.log(`jwt: ${JSON.stringify(jwt.getPayload())}`);
-        }
-      });
 
     this.authService.onAuthenticationChange()
       .subscribe({
@@ -74,18 +82,29 @@ export class AppComponent {
   }
 
   onIsAuthenticated(isAuthenticated: boolean) {
-    const logInMenuItem = this.mainMenuItems
-      .find(m => m.title == 'login');
-
-    const logOutMenuItem = this.mainMenuItems
-      .find(m => m.title == 'logout');
-
-    if(isAuthenticated) {
-      logInMenuItem!.hidden = true;
-      logOutMenuItem!.hidden = false;
+    if (isAuthenticated) {
+      this.showMenuItems(MainMenuItemTitles.PROTECTED_MENU_ITEMS);
+      this.showMenuItems([MainMenuItemTitles.LOGOUT]);
+      this.hideMenuItems([MainMenuItemTitles.LOGIN])
     } else {
-      logInMenuItem!.hidden = false;
-      logOutMenuItem!.hidden = true;
+      this.hideMenuItems(MainMenuItemTitles.PROTECTED_MENU_ITEMS);
+      this.hideMenuItems([MainMenuItemTitles.LOGOUT])
+      this.showMenuItems([MainMenuItemTitles.LOGIN])
+    }
+  }
+
+  hideMenuItems(names: string[]) {
+    this.setIsHiddenForMenuItems(names, true);
+  }
+
+  showMenuItems(names: string[]) {
+    this.setIsHiddenForMenuItems(names, false);
+  }
+
+  setIsHiddenForMenuItems(names: string[], shouldHide: boolean) {
+    for (const name of names) {
+      const menuItem = this.mainMenuItems.find(m => m.title == name)!;
+      menuItem.hidden = shouldHide;
     }
   }
 
