@@ -2,6 +2,7 @@ import {Component} from '@angular/core';
 import {NbIconLibraries, NbMenuBag, NbMenuItem, NbMenuService, NbSidebarService} from "@nebular/theme";
 import {NbAuthResult, NbAuthService} from "@nebular/auth";
 import {filter} from "rxjs";
+import {AppRoutes} from "../app-routes";
 
 export class MainMenuItemTitles {
   static PUBLIC_VOTINGS = 'public votings';
@@ -30,7 +31,8 @@ export class AppComponent {
     },
     {
       title: MainMenuItemTitles.PUBLIC_VOTINGS,
-      icon: {icon: 'bullhorn', pack: 'fas'}
+      icon: {icon: 'bullhorn', pack: 'fas'},
+      link: AppRoutes.PUBLIC_VOTINGS
     },
     {
       title: MainMenuItemTitles.MY_CREATED_VOTINGS,

@@ -8,7 +8,6 @@ import {
   NbThemeModule,
   NbLayoutModule,
   NbSidebarModule,
-  NbButton,
   NbButtonModule,
   NbIconModule,
   NbMenuModule, NbCardModule, NbDialogModule, NbGlobalPhysicalPosition, NbToastrModule
@@ -19,12 +18,14 @@ import {HttpClientModule} from "@angular/common/http";
 import {NbAuthModule, NbOAuth2AuthStrategy, NbOAuth2ResponseType} from "@nebular/auth";
 import {LoginCallbackComponent} from './pages/auth/login-callback/login-callback.component';
 import {AppRoutes} from "../app-routes";
+import {PublicVotingsComponent} from './pages/public.votings/public.votings.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     HomeComponent,
-    LoginCallbackComponent
+    LoginCallbackComponent,
+    PublicVotingsComponent
   ],
   imports: [
     BrowserModule,
