@@ -25,7 +25,9 @@ import {NbAuthModule, NbOAuth2AuthStrategy, NbOAuth2ResponseType} from "@nebular
 import {LoginCallbackComponent} from './pages/auth/login-callback/login-callback.component';
 import {AppRoutes} from "../app-routes";
 import {PublicVotingsComponent} from './pages/public.votings/public.votings.component';
-import { PaginationComponent } from './components/pagination/pagination.component';
+import {PaginationComponent} from './components/pagination/pagination.component';
+import {NgxSpinnerModule} from "ngx-spinner";
+import {VotingsPaginationComponent} from './components/votings.pagination/votings.pagination.component';
 
 @NgModule({
   declarations: [
@@ -33,7 +35,8 @@ import { PaginationComponent } from './components/pagination/pagination.componen
     HomeComponent,
     LoginCallbackComponent,
     PublicVotingsComponent,
-    PaginationComponent
+    PaginationComponent,
+    VotingsPaginationComponent
   ],
   imports: [
     BrowserModule,
@@ -51,6 +54,7 @@ import { PaginationComponent } from './components/pagination/pagination.componen
     NbEvaIconsModule,
     NbButtonGroupModule,
     HttpClientModule,
+    NgxSpinnerModule,
     NbAuthModule.forRoot({
       strategies: [
         NbOAuth2AuthStrategy.setup({
