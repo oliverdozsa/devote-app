@@ -1,0 +1,17 @@
+<div class="row mb-2">
+  <div class="col text-center">
+    <nb-button-group>
+      <button *ngIf="hasPrev" nbButton (click)="onPrev()"><<</button>
+      <button *ngIf="!hasPrev" nbButton style="opacity: 0.3; pointer-events: none;"><<</button>
+
+      <button nbButtonToggle *ngFor="let page of pages" [pressed]="page == current"
+              (click)="onPageNumberSelected(page)">
+        {{page}}
+      </button>
+
+      <button *ngIf="hasNext" nbButton (click)="onNext()">>></button>
+      <button *ngIf="!hasNext" nbButton style="opacity: 0.3; pointer-events: none;">>></button>
+
+    </nb-button-group>
+  </div>
+</div>

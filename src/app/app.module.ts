@@ -10,7 +10,13 @@ import {
   NbSidebarModule,
   NbButtonModule,
   NbIconModule,
-  NbMenuModule, NbCardModule, NbDialogModule, NbGlobalPhysicalPosition, NbToastrModule
+  NbMenuModule,
+  NbCardModule,
+  NbDialogModule,
+  NbGlobalPhysicalPosition,
+  NbToastrModule,
+  NbToggleModule,
+  NbButtonGroupModule
 } from '@nebular/theme';
 import {NbEvaIconsModule} from '@nebular/eva-icons';
 import {HomeComponent} from './pages/home/home.component';
@@ -19,13 +25,15 @@ import {NbAuthModule, NbOAuth2AuthStrategy, NbOAuth2ResponseType} from "@nebular
 import {LoginCallbackComponent} from './pages/auth/login-callback/login-callback.component';
 import {AppRoutes} from "../app-routes";
 import {PublicVotingsComponent} from './pages/public.votings/public.votings.component';
+import { PaginationComponent } from './components/pagination/pagination.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     HomeComponent,
     LoginCallbackComponent,
-    PublicVotingsComponent
+    PublicVotingsComponent,
+    PaginationComponent
   ],
   imports: [
     BrowserModule,
@@ -41,6 +49,7 @@ import {PublicVotingsComponent} from './pages/public.votings/public.votings.comp
     NbDialogModule.forRoot(),
     NbToastrModule.forRoot({position: NbGlobalPhysicalPosition.TOP_RIGHT, duration: 4000}),
     NbEvaIconsModule,
+    NbButtonGroupModule,
     HttpClientModule,
     NbAuthModule.forRoot({
       strategies: [
