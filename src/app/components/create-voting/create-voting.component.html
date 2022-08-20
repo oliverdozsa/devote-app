@@ -1,10 +1,10 @@
 <nb-card>
   <nb-card-header>create voting</nb-card-header>
   <nb-card-body>
-    <app-select-network></app-select-network>
+    <app-select-network (selectedNetworkChange)="onSelectedNetworkChanged($event)"></app-select-network>
   </nb-card-body>
   <nb-card-footer>
-    <button nbButton outline status="primary">save</button>
+    <button nbButton [disabled]="!isValid" outline status="primary">save</button>
     <button nbButton outline status="basic" class="ms-3" (click)="onCancelClicked()">cancel</button>
   </nb-card-footer>
 </nb-card>

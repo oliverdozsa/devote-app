@@ -1,5 +1,5 @@
 <nb-form-field>
-  <nb-icon *ngIf="isValid" nbPrefix icon="{{selectedNetwork}}"></nb-icon>
+  <nb-icon *ngIf="isValid" nbPrefix [icon]="selectedNetwork"></nb-icon>
   <nb-icon *ngIf="!isValid" nbPrefix icon="alert-circle-outline"></nb-icon>
   <nb-select placeholder="select network" [(ngModel)]="selectedNetwork" status="{{isValid? 'success' : 'danger'}}">
     <nb-option value="stellar">

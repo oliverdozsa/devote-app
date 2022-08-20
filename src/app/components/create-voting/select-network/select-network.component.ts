@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 
 @Component({
   selector: 'app-select-network',
@@ -6,7 +6,19 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./select-network.component.scss']
 })
 export class SelectNetworkComponent implements OnInit {
-  selectedNetwork = "";
+  @Output()
+  selectedNetworkChange: EventEmitter<string> = new EventEmitter<string>();
+
+  get selectedNetwork() {
+    return this._selectedNetwork;
+  }
+
+  set selectedNetwork(value: string) {
+    this._selectedNetwork = value;
+    this.selectedNetworkChange.next(this._selectedNetwork);
+  }
+
+  private _selectedNetwork = "";
 
   get isValid() {
     return this.selectedNetwork != "";
