@@ -43,7 +43,8 @@ export class AppComponent {
     {
       title: MainMenuItemTitles.MY_CREATED_VOTINGS,
       icon: {icon: 'list', pack: 'fas'},
-      hidden: true
+      hidden: true,
+      link: AppRoutes.MY_CREATED_VOTING
     },
     {
       title: MainMenuItemTitles.VOTINGS_WHERE_I_PARTICIPATE,
@@ -69,6 +70,8 @@ export class AppComponent {
   ) {
     this.iconLibraries.registerFontPack('fas', {packClass: 'fas', iconClassPrefix: 'fa'});
     this.iconLibraries.registerFontPack('far', {packClass: 'far', iconClassPrefix: 'fa'});
+
+    this.registerCustomIcons(iconLibraries);
 
     this.authService.onAuthenticationChange()
       .subscribe({
@@ -136,5 +139,11 @@ export class AppComponent {
       .logout("auth0")
       .subscribe((authResult: NbAuthResult) => {
       });
+  }
+
+  registerCustomIcons(iconLibraries: NbIconLibraries) {
+    iconLibraries.getPack("eva").icons.set(
+      "stellar", "<img src='./assets/icons/stellar.svg' width='25px'/>"
+    );
   }
 }

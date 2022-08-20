@@ -16,7 +16,7 @@ import {
   NbGlobalPhysicalPosition,
   NbToastrModule,
   NbToggleModule,
-  NbButtonGroupModule, NbListModule
+  NbButtonGroupModule, NbListModule, NbSelectModule, NbFormFieldModule
 } from '@nebular/theme';
 import {NbEvaIconsModule} from '@nebular/eva-icons';
 import {HomeComponent} from './pages/home/home.component';
@@ -29,6 +29,10 @@ import {PaginationComponent} from './components/pagination/pagination.component'
 import {NgxSpinnerModule} from "ngx-spinner";
 import {VotingsPaginationComponent} from './components/votings-pagination/votings.pagination.component';
 import { PageNotFoundComponent } from './pages/page-not-found/page-not-found.component';
+import { MyCreatedVotingsComponent } from './pages/my-created-votings/my-created-votings.component';
+import { CreateVotingComponent } from './components/create-voting/create-voting.component';
+import {FormsModule} from "@angular/forms";
+import { SelectNetworkComponent } from './components/create-voting/select-network/select-network.component';
 
 @NgModule({
   declarations: [
@@ -38,7 +42,10 @@ import { PageNotFoundComponent } from './pages/page-not-found/page-not-found.com
     PublicVotingsComponent,
     PaginationComponent,
     VotingsPaginationComponent,
-    PageNotFoundComponent
+    PageNotFoundComponent,
+    MyCreatedVotingsComponent,
+    CreateVotingComponent,
+    SelectNetworkComponent
   ],
   imports: [
     BrowserModule,
@@ -55,8 +62,10 @@ import { PageNotFoundComponent } from './pages/page-not-found/page-not-found.com
     NbToastrModule.forRoot({position: NbGlobalPhysicalPosition.TOP_RIGHT, duration: 4000}),
     NbEvaIconsModule,
     NbButtonGroupModule,
+    NbSelectModule,
     NbListModule,
     HttpClientModule,
+    FormsModule,
     NgxSpinnerModule,
     NbAuthModule.forRoot({
       strategies: [
@@ -76,7 +85,8 @@ import { PageNotFoundComponent } from './pages/page-not-found/page-not-found.com
           }
         })
       ]
-    })
+    }),
+    NbFormFieldModule
   ],
   providers: [],
   bootstrap: [AppComponent]
