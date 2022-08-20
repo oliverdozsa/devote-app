@@ -16,7 +16,7 @@ import {
   NbGlobalPhysicalPosition,
   NbToastrModule,
   NbToggleModule,
-  NbButtonGroupModule
+  NbButtonGroupModule, NbListModule
 } from '@nebular/theme';
 import {NbEvaIconsModule} from '@nebular/eva-icons';
 import {HomeComponent} from './pages/home/home.component';
@@ -24,10 +24,11 @@ import {HttpClientModule} from "@angular/common/http";
 import {NbAuthModule, NbOAuth2AuthStrategy, NbOAuth2ResponseType} from "@nebular/auth";
 import {LoginCallbackComponent} from './pages/auth/login-callback/login-callback.component';
 import {AppRoutes} from "../app-routes";
-import {PublicVotingsComponent} from './pages/public.votings/public.votings.component';
+import {PublicVotingsComponent} from './pages/public-votings/public-votings.component';
 import {PaginationComponent} from './components/pagination/pagination.component';
 import {NgxSpinnerModule} from "ngx-spinner";
-import {VotingsPaginationComponent} from './components/votings.pagination/votings.pagination.component';
+import {VotingsPaginationComponent} from './components/votings-pagination/votings.pagination.component';
+import { PageNotFoundComponent } from './pages/page-not-found/page-not-found.component';
 
 @NgModule({
   declarations: [
@@ -36,7 +37,8 @@ import {VotingsPaginationComponent} from './components/votings.pagination/voting
     LoginCallbackComponent,
     PublicVotingsComponent,
     PaginationComponent,
-    VotingsPaginationComponent
+    VotingsPaginationComponent,
+    PageNotFoundComponent
   ],
   imports: [
     BrowserModule,
@@ -53,6 +55,7 @@ import {VotingsPaginationComponent} from './components/votings.pagination/voting
     NbToastrModule.forRoot({position: NbGlobalPhysicalPosition.TOP_RIGHT, duration: 4000}),
     NbEvaIconsModule,
     NbButtonGroupModule,
+    NbListModule,
     HttpClientModule,
     NgxSpinnerModule,
     NbAuthModule.forRoot({

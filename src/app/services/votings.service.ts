@@ -3,14 +3,13 @@ import {HttpClient, HttpParams} from "@angular/common/http";
 import {environment} from "../../environments/environment";
 import {VotingSummary} from "../data/voting.summary";
 import {Page} from "../data/page";
-import {delay, finalize, Observable} from "rxjs";
-import {NgxSpinnerService} from "ngx-spinner";
+import {Observable} from "rxjs";
 
 @Injectable({
   providedIn: 'root'
 })
 export class VotingsService {
-  constructor(private httpClient: HttpClient, private spinner: NgxSpinnerService) {
+  constructor(private httpClient: HttpClient) {
   }
 
   getPublic(page: number = 1, itemsPerPage: number = 10): Observable<Page<VotingSummary>> {
@@ -19,13 +18,7 @@ export class VotingsService {
       .set('offset', this.toOffset(page, itemsPerPage))
       .set('limit', itemsPerPage);
 
-    this.spinner.show();
-
-    return this.httpClient.get<Page<VotingSummary>>(url, {params: queryParams})
-      .pipe(
-        delay(700),
-        finalize(() => this.spinner.hide())
-      );
+    return this.httpClient.get<Page<VotingSummary>>(url, {params: queryParams});
   }
 
   private toOffset(page: number, itemsPerPage: number): number {

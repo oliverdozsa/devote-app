@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { Public.VotingsComponent } from './public.votings.component';
+import { Public.VotingsComponent } from './public-votings.component';
 
 describe('Public.VotingsComponent', () => {
   let component: Public.VotingsComponent;

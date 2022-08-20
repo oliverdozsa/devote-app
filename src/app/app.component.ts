@@ -5,6 +5,7 @@ import {filter} from "rxjs";
 import {AppRoutes} from "../app-routes";
 
 export class MainMenuItemTitles {
+  static HOME = 'home';
   static PUBLIC_VOTINGS = 'public votings';
   static MY_PROFILE = 'my profile';
   static MY_CREATED_VOTINGS = 'my created votings';
@@ -24,6 +25,11 @@ export class MainMenuItemTitles {
 export class AppComponent {
   title = 'devote-app';
   mainMenuItems: NbMenuItem[] = [
+    {
+      title: MainMenuItemTitles.HOME,
+      icon: {icon: 'house', pack: 'fas'},
+      link: AppRoutes.HOME
+    },
     {
       title: MainMenuItemTitles.MY_PROFILE,
       icon: {icon: 'user', pack: 'fas'},

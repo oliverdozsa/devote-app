@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { Votings.PaginationComponent } from './votings.pagination.component';
+import { Votings.PaginationComponent } from './votings-pagination.component';
 
 describe('Votings.PaginationComponent', () => {
   let component: Votings.PaginationComponent;

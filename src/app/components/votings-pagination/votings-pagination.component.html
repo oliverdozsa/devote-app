@@ -1,0 +1,17 @@
+<nb-card *ngIf="!isLoading && votings.items.length > 0">
+  <nb-card-body>
+    <nb-list>
+      <nb-list-item *ngFor="let voting of votings.items">
+        {{voting.title}}
+      </nb-list-item>
+    </nb-list>
+  </nb-card-body>
+</nb-card>
+
+<div *ngIf="!isLoading && votings.items.length == 0">
+  not found such votings
+</div>
+
+<app-pagination *ngIf="!isLoading" [current]="currentPage">
+
+</app-pagination>
