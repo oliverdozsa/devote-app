@@ -2,6 +2,7 @@
   <nb-card-header>create voting</nb-card-header>
   <nb-card-body>
     <app-select-network (selectedNetworkChange)="onSelectedNetworkChanged($event)"></app-select-network>
+    <app-funding-account-source></app-funding-account-source>
   </nb-card-body>
   <nb-card-footer>
     <button nbButton [disabled]="!isValid" outline status="primary">save</button>

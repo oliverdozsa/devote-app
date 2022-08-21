@@ -16,7 +16,7 @@ import {
   NbGlobalPhysicalPosition,
   NbToastrModule,
   NbToggleModule,
-  NbButtonGroupModule, NbListModule, NbSelectModule, NbFormFieldModule
+  NbButtonGroupModule, NbListModule, NbSelectModule, NbFormFieldModule, NbInputModule
 } from '@nebular/theme';
 import {NbEvaIconsModule} from '@nebular/eva-icons';
 import {HomeComponent} from './pages/home/home.component';
@@ -33,6 +33,8 @@ import { MyCreatedVotingsComponent } from './pages/my-created-votings/my-created
 import { CreateVotingComponent } from './components/create-voting/create-voting.component';
 import {FormsModule} from "@angular/forms";
 import { SelectNetworkComponent } from './components/create-voting/select-network/select-network.component';
+import { FundingAccountSourceComponent } from './components/create-voting/funding-account-source/funding-account-source.component';
+import { CreateVotingMediatorComponent } from './components/create-voting/create-voting-mediator/create-voting-mediator.component';
 
 @NgModule({
   declarations: [
@@ -45,7 +47,9 @@ import { SelectNetworkComponent } from './components/create-voting/select-networ
     PageNotFoundComponent,
     MyCreatedVotingsComponent,
     CreateVotingComponent,
-    SelectNetworkComponent
+    SelectNetworkComponent,
+    FundingAccountSourceComponent,
+    CreateVotingMediatorComponent
   ],
   imports: [
     BrowserModule,
@@ -64,6 +68,8 @@ import { SelectNetworkComponent } from './components/create-voting/select-networ
     NbButtonGroupModule,
     NbSelectModule,
     NbListModule,
+    NbToggleModule,
+    NbInputModule,
     HttpClientModule,
     FormsModule,
     NgxSpinnerModule,

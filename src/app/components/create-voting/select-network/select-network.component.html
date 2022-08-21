@@ -1,10 +1,14 @@
-<nb-form-field>
-  <nb-icon *ngIf="isValid" nbPrefix [icon]="selectedNetwork"></nb-icon>
-  <nb-icon *ngIf="!isValid" nbPrefix icon="alert-circle-outline"></nb-icon>
-  <nb-select placeholder="select network" [(ngModel)]="selectedNetwork" status="{{isValid? 'success' : 'danger'}}">
-    <nb-option value="stellar">
-      <nb-icon icon="stellar" class="me-3"></nb-icon>
-      stellar
-    </nb-option>
-  </nb-select>
-</nb-form-field>
+<div class="row">
+  <div class="col">
+    <nb-form-field>
+      <nb-icon *ngIf="isValid" nbPrefix [icon]="selectedNetwork"></nb-icon>
+      <nb-icon *ngIf="!isValid" nbPrefix icon="alert-circle-outline"></nb-icon>
+      <nb-select fullWidth placeholder="select network" [(ngModel)]="selectedNetwork" status="{{isValid? 'success' : 'danger'}}">
+        <nb-option value="stellar">
+          <nb-icon icon="stellar" class="me-3"></nb-icon>
+          stellar
+        </nb-option>
+      </nb-select>
+    </nb-form-field>
+  </div>
+</div>

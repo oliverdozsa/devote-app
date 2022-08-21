@@ -1,0 +1,20 @@
+<div class="row">
+  <div class="col text-center">
+    <nb-toggle class="mt-2" [(checked)]="shouldUseTestNet">use test network</nb-toggle>
+  </div>
+</div>
+
+<div class="row mt-1">
+  <div class="col">
+      <input nbInput type="text" [status]="isFundingPublicValid ? 'success' : 'danger'" placeholder="funding account public">
+  </div>
+  <div class="col">
+    <input nbInput type="text" [status]="isFundingSecretValid ? 'success' : 'danger'" placeholder="funding account secret">
+  </div>
+</div>
+
+<div *ngIf="shouldUseTestNet" class="row mt-2">
+  <div class="col">
+    <button nbButton fullWidth>generate funding account</button>
+  </div>
+</div>
