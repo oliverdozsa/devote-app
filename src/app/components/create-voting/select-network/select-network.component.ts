@@ -1,4 +1,5 @@
-import {Component, EventEmitter, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {CreateVotingForm} from "../create-voting-form";
 
 @Component({
   selector: 'app-select-network',
@@ -6,19 +7,16 @@ import {Component, EventEmitter, OnInit, Output} from '@angular/core';
   styleUrls: ['./select-network.component.scss']
 })
 export class SelectNetworkComponent implements OnInit {
-  @Output()
-  selectedNetworkChange: EventEmitter<string> = new EventEmitter<string>();
+  @Input()
+  form: CreateVotingForm = new CreateVotingForm();
 
   get selectedNetwork() {
-    return this._selectedNetwork;
+    return this.form.selectedNetwork
   }
 
   set selectedNetwork(value: string) {
-    this._selectedNetwork = value;
-    this.selectedNetworkChange.next(this._selectedNetwork);
+    this.form.selectedNetwork = value;
   }
-
-  private _selectedNetwork = "";
 
   get isValid() {
     return this.selectedNetwork != "";
@@ -28,5 +26,4 @@ export class SelectNetworkComponent implements OnInit {
 
   ngOnInit(): void {
   }
-
 }

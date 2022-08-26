@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
+import {CreateVotingForm} from "../create-voting-form";
 
 @Component({
   selector: 'app-funding-account-source',
@@ -6,9 +7,8 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./funding-account-source.component.scss']
 })
 export class FundingAccountSourceComponent implements OnInit {
-  shouldUseTestNet = true;
-  isFundingPublicValid = false;
-  isFundingSecretValid = false;
+  @Input()
+  form: CreateVotingForm = new CreateVotingForm();
 
   constructor() { }
 

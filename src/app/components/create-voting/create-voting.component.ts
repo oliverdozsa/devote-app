@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {NbDialogRef} from "@nebular/theme";
+import {CreateVotingForm} from "./create-voting-form";
 
 @Component({
   selector: 'app-create-voting',
@@ -7,11 +8,7 @@ import {NbDialogRef} from "@nebular/theme";
   styleUrls: ['./create-voting.component.scss']
 })
 export class CreateVotingComponent implements OnInit {
-  selectedNetwork = "";
-
-  get isValid() {
-    return this.selectedNetwork != "";
-  }
+  mediator = new CreateVotingForm();
 
   constructor(protected dialogRef: NbDialogRef<any>) { }
 
@@ -20,9 +17,5 @@ export class CreateVotingComponent implements OnInit {
 
   onCancelClicked() {
     this.dialogRef.close();
-  }
-
-  onSelectedNetworkChanged(value: string) {
-    this.selectedNetwork = value;
   }
 }

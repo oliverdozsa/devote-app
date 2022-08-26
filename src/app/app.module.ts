@@ -28,13 +28,14 @@ import {PublicVotingsComponent} from './pages/public-votings/public-votings.comp
 import {PaginationComponent} from './components/pagination/pagination.component';
 import {NgxSpinnerModule} from "ngx-spinner";
 import {VotingsPaginationComponent} from './components/votings-pagination/votings.pagination.component';
-import { PageNotFoundComponent } from './pages/page-not-found/page-not-found.component';
-import { MyCreatedVotingsComponent } from './pages/my-created-votings/my-created-votings.component';
-import { CreateVotingComponent } from './components/create-voting/create-voting.component';
+import {PageNotFoundComponent} from './pages/page-not-found/page-not-found.component';
+import {MyCreatedVotingsComponent} from './pages/my-created-votings/my-created-votings.component';
+import {CreateVotingComponent} from './components/create-voting/create-voting.component';
 import {FormsModule} from "@angular/forms";
-import { SelectNetworkComponent } from './components/create-voting/select-network/select-network.component';
-import { FundingAccountSourceComponent } from './components/create-voting/funding-account-source/funding-account-source.component';
-import { CreateVotingMediatorComponent } from './components/create-voting/create-voting-mediator/create-voting-mediator.component';
+import {SelectNetworkComponent} from './components/create-voting/select-network/select-network.component';
+import {
+  FundingAccountSourceComponent
+} from './components/create-voting/funding-account-source/funding-account-source.component';
 
 @NgModule({
   declarations: [
@@ -48,8 +49,7 @@ import { CreateVotingMediatorComponent } from './components/create-voting/create
     MyCreatedVotingsComponent,
     CreateVotingComponent,
     SelectNetworkComponent,
-    FundingAccountSourceComponent,
-    CreateVotingMediatorComponent
+    FundingAccountSourceComponent
   ],
   imports: [
     BrowserModule,
