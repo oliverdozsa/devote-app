@@ -25,7 +25,8 @@
     ],
     "paths": {
       "https": ["./node_modules/https-browserify"],
-      "http": ["./node_modules/stream-http"]
+      "http": ["./node_modules/stream-http"],
+      "buffer": ["./node_modules/buffer"]
     }
   },
   "angularCompilerOptions": {
