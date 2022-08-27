@@ -6,10 +6,13 @@
 
 <div class="row mt-1">
   <div class="col">
-      <input nbInput type="text" [status]="form.isFundingAccountPublicValid ? 'success' : 'danger'" placeholder="funding account public">
+    <input nbInput [disabled]="form.shouldAccountPublicToBeDeterminedAutomatically" type="text"
+           [status]="form.isFundingAccountPublicValid ? 'success' : 'danger'"
+           [(ngModel)]="form.fundingAccountPublic" placeholder="funding account public">
   </div>
   <div class="col">
-    <input nbInput type="text" [status]="form.isFundingAccountSecretValid ? 'success' : 'danger'" placeholder="funding account secret">
+    <input nbInput type="text" [status]="form.isFundingAccountSecretValid ? 'success' : 'danger'"
+           [(ngModel)]="form.fundingAccountSecret" placeholder="funding account secret">
   </div>
 </div>
 

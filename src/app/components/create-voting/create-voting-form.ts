@@ -1,9 +1,15 @@
-import {AccountValidator} from "./account-validation/account-validator";
+import {AccountValidator} from "./account/account-validator";
+import {AccountPublicKeyDerivation} from "./account/account-public-key-derivation";
 
 export class CreateVotingForm {
   shouldUseTestNet = true;
 
   private accountValidator: AccountValidator = new AccountValidator();
+  private accountPublicDerivation: AccountPublicKeyDerivation = new AccountPublicKeyDerivation();
+
+  get shouldAccountPublicToBeDeterminedAutomatically() {
+    return this.selectedNetwork == "stellar";
+  };
 
   get selectedNetwork(): string {
     return this._selectedNetwork;
@@ -11,7 +17,8 @@ export class CreateVotingForm {
 
   set selectedNetwork(value: string) {
     this._selectedNetwork = value;
-    this.reCreateAccountValidator();
+    this.accountValidator.network = value;
+    this.accountPublicDerivation.network = value;
   }
 
   private _selectedNetwork = "";
@@ -22,7 +29,7 @@ export class CreateVotingForm {
 
   set fundingAccountPublic(value: string) {
     this._fundingAccountPublic = value;
-    this.reCreateAccountValidator();
+    this.accountValidator.accountPublic = value;
   }
 
   private _fundingAccountPublic = "";
@@ -33,7 +40,8 @@ export class CreateVotingForm {
 
   set fundingAccountSecret(value: string) {
     this._fundingAccountSecret = value;
-    this.reCreateAccountValidator();
+    this.accountValidator.accountSecret = value;
+    this.derivePublicFromSecretIfPossible();
   }
 
   private _fundingAccountSecret = "";
@@ -50,7 +58,13 @@ export class CreateVotingForm {
     return this.accountValidator.isSecretValid();
   }
 
-  private reCreateAccountValidator() {
-    this.accountValidator = new AccountValidator(this.selectedNetwork, this.fundingAccountPublic, this.fundingAccountSecret);
+  private derivePublicFromSecretIfPossible() {
+    if (this.shouldAccountPublicToBeDeterminedAutomatically) {
+      if (this.isFundingAccountSecretValid) {
+        this.fundingAccountPublic = this.accountPublicDerivation.derivePublicFrom(this.fundingAccountSecret);
+      } else {
+        this.fundingAccountPublic = "";
+      }
+    }
   }
 }

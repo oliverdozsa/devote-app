@@ -8,7 +8,7 @@ import {CreateVotingForm} from "./create-voting-form";
   styleUrls: ['./create-voting.component.scss']
 })
 export class CreateVotingComponent implements OnInit {
-  mediator = new CreateVotingForm();
+  form = new CreateVotingForm();
 
   constructor(protected dialogRef: NbDialogRef<any>) { }
 

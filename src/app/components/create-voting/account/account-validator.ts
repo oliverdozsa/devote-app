@@ -2,12 +2,7 @@ import {Keypair} from "stellar-sdk";
 
 
 export class AccountValidator {
-  private validateAccount: ValidateAccount | undefined;
-
-  constructor(private network: string = "", private accountPublic: string = "", private accountSecret: string = "") {
-    if (network == "stellar") {
-      this.validateAccount = new StellarValidateAccount(accountPublic, accountSecret);
-    }
+  constructor(public network: string = "", public accountPublic: string = "", public accountSecret: string = "") {
   }
 
   isPublicValid(): boolean {
@@ -16,6 +11,14 @@ export class AccountValidator {
 
   isSecretValid(): boolean {
     return this.validateAccount != undefined && this.validateAccount.isSecretValid();
+  }
+
+  private get validateAccount(): ValidateAccount | undefined {
+    if(this.network == "stellar") {
+      return new StellarValidateAccount(this.accountPublic, this.accountSecret);
+    }
+
+    return undefined;
   }
 }
 
@@ -41,7 +44,7 @@ class StellarValidateAccount implements ValidateAccount {
 
   isSecretValid(): boolean {
     try {
-      new Keypair({type: "ed25519", secretKey: this.accountSecret, publicKey: this.accountPublic});
+      Keypair.fromSecret(this.accountSecret);
     } catch (error) {
       return false;
     }
