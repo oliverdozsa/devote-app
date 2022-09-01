@@ -36,6 +36,7 @@ import {SelectNetworkComponent} from './components/create-voting/select-network/
 import {
   FundingAccountSourceComponent
 } from './components/create-voting/funding-account-source/funding-account-source.component';
+import { AccountBalanceComponent } from './components/create-voting/account-balance/account-balance.component';
 
 @NgModule({
   declarations: [
@@ -49,7 +50,8 @@ import {
     MyCreatedVotingsComponent,
     CreateVotingComponent,
     SelectNetworkComponent,
-    FundingAccountSourceComponent
+    FundingAccountSourceComponent,
+    AccountBalanceComponent
   ],
   imports: [
     BrowserModule,

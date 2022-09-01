@@ -3,6 +3,7 @@
   <nb-card-body>
     <app-select-network [form]="form"></app-select-network>
     <app-funding-account-source *ngIf="form.selectedNetwork != ''" [form]="form"></app-funding-account-source>
+    <app-account-balance [form]="form"></app-account-balance>
   </nb-card-body>
   <nb-card-footer>
     <button nbButton [disabled]="!form.isValid" outline status="primary">create</button>

@@ -2,11 +2,11 @@ import {Component, Input, OnInit} from '@angular/core';
 import {CreateVotingForm} from "../create-voting-form";
 
 @Component({
-  selector: 'app-funding-account-source',
-  templateUrl: './funding-account-source.component.html',
-  styleUrls: ['./funding-account-source.component.scss']
+  selector: 'app-account-balance',
+  templateUrl: './account-balance.component.html',
+  styleUrls: ['./account-balance.component.scss']
 })
-export class FundingAccountSourceComponent {
+export class AccountBalanceComponent {
   @Input()
   form: CreateVotingForm = new CreateVotingForm();
 

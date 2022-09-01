@@ -6,29 +6,23 @@ export class AccountValidator {
   }
 
   isPublicValid(): boolean {
-    return this.validateAccount != undefined && this.validateAccount.isPublicValid();
+    if(this.network == "stellar") {
+      return new StellarValidateAccount(this.accountPublic, this.accountSecret).isPublicValid();
+    }
+
+    return false;
   }
 
   isSecretValid(): boolean {
-    return this.validateAccount != undefined && this.validateAccount.isSecretValid();
-  }
-
-  private get validateAccount(): ValidateAccount | undefined {
     if(this.network == "stellar") {
-      return new StellarValidateAccount(this.accountPublic, this.accountSecret);
+      return new StellarValidateAccount(this.accountPublic, this.accountSecret).isSecretValid();
     }
 
-    return undefined;
+    return false;
   }
 }
 
-interface ValidateAccount {
-  isPublicValid(): boolean;
-
-  isSecretValid(): boolean;
-}
-
-class StellarValidateAccount implements ValidateAccount {
+class StellarValidateAccount {
   constructor(private accountPublic: string, private accountSecret: string) {
   }
 

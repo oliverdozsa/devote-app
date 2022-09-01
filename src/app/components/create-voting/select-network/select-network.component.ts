@@ -6,7 +6,7 @@ import {CreateVotingForm} from "../create-voting-form";
   templateUrl: './select-network.component.html',
   styleUrls: ['./select-network.component.scss']
 })
-export class SelectNetworkComponent implements OnInit {
+export class SelectNetworkComponent {
   @Input()
   form: CreateVotingForm = new CreateVotingForm();
 
@@ -23,7 +23,4 @@ export class SelectNetworkComponent implements OnInit {
   }
 
   constructor() { }
-
-  ngOnInit(): void {
-  }
 }

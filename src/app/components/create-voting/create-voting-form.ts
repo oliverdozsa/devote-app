@@ -1,11 +1,11 @@
 import {AccountValidator} from "./account/account-validator";
 import {AccountPublicKeyDerivation} from "./account/account-public-key-derivation";
+import {AccountBalanceQuery} from "./account/account-balance";
 
 export class CreateVotingForm {
-  shouldUseTestNet = true;
-
   private accountValidator: AccountValidator = new AccountValidator();
   private accountPublicDerivation: AccountPublicKeyDerivation = new AccountPublicKeyDerivation();
+  accountBalance: AccountBalanceQuery = new AccountBalanceQuery();
 
   get shouldAccountPublicToBeDeterminedAutomatically() {
     return this.selectedNetwork == "stellar";
@@ -19,6 +19,7 @@ export class CreateVotingForm {
     this._selectedNetwork = value;
     this.accountValidator.network = value;
     this.accountPublicDerivation.network = value;
+    this.accountBalance.network = value;
   }
 
   private _selectedNetwork = "";
@@ -30,6 +31,8 @@ export class CreateVotingForm {
   set fundingAccountPublic(value: string) {
     this._fundingAccountPublic = value;
     this.accountValidator.accountPublic = value;
+    this.accountBalance.accountPublic = value;
+    this.queryBalanceIfNeeded();
   }
 
   private _fundingAccountPublic = "";
@@ -47,7 +50,7 @@ export class CreateVotingForm {
   private _fundingAccountSecret = "";
 
   get isValid() {
-    return this.selectedNetwork != "";
+    return this.selectedNetwork != "" && this.isFundingAccountSecretValid && this.isFundingAccountPublicValid;
   }
 
   get isFundingAccountPublicValid() {
@@ -58,6 +61,18 @@ export class CreateVotingForm {
     return this.accountValidator.isSecretValid();
   }
 
+  get shouldUseTestNet() {
+    return this._shouldUseTestNet;
+  }
+
+  set shouldUseTestNet(value: boolean) {
+    this._shouldUseTestNet = value;
+    this.accountBalance.shouldUseTestNet = value;
+    this.queryBalanceIfNeeded();
+  }
+
+  private _shouldUseTestNet = true;
+
   private derivePublicFromSecretIfPossible() {
     if (this.shouldAccountPublicToBeDeterminedAutomatically) {
       if (this.isFundingAccountSecretValid) {
@@ -65,6 +80,12 @@ export class CreateVotingForm {
       } else {
         this.fundingAccountPublic = "";
       }
+    }
+  }
+
+  private queryBalanceIfNeeded() {
+    if(this.isFundingAccountPublicValid) {
+      this.accountBalance.query();
     }
   }
 }
