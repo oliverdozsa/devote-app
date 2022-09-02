@@ -1,9 +1,10 @@
-<nb-card>
+<nb-card [nbSpinner]="isLoading">
   <nb-card-header>create voting</nb-card-header>
   <nb-card-body>
     <app-select-network [form]="form"></app-select-network>
     <app-funding-account-source *ngIf="form.selectedNetwork != ''" [form]="form"></app-funding-account-source>
     <app-account-balance [form]="form"></app-account-balance>
+    <app-votes-cap *ngIf="form.selectedNetwork != ''" [form]="form"></app-votes-cap>
   </nb-card-body>
   <nb-card-footer>
     <button nbButton [disabled]="!form.isValid" outline status="primary">create</button>

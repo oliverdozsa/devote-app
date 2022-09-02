@@ -1,11 +1,13 @@
 import {AccountValidator} from "./account/account-validator";
 import {AccountPublicKeyDerivation} from "./account/account-public-key-derivation";
 import {AccountBalanceQuery} from "./account/account-balance";
+import {environment} from "../../../environments/environment";
 
 export class CreateVotingForm {
+  accountBalance: AccountBalanceQuery = new AccountBalanceQuery();
+
   private accountValidator: AccountValidator = new AccountValidator();
   private accountPublicDerivation: AccountPublicKeyDerivation = new AccountPublicKeyDerivation();
-  accountBalance: AccountBalanceQuery = new AccountBalanceQuery();
 
   get shouldAccountPublicToBeDeterminedAutomatically() {
     return this.selectedNetwork == "stellar";
@@ -50,7 +52,8 @@ export class CreateVotingForm {
   private _fundingAccountSecret = "";
 
   get isValid() {
-    return this.selectedNetwork != "" && this.isFundingAccountSecretValid && this.isFundingAccountPublicValid;
+    return this.selectedNetwork != "" && this.isFundingAccountSecretValid && this.isFundingAccountPublicValid &&
+      this.isVotesCapValid;
   }
 
   get isFundingAccountPublicValid() {
@@ -73,6 +76,22 @@ export class CreateVotingForm {
 
   private _shouldUseTestNet = true;
 
+  get votesCap(): number | undefined {
+    return this._votesCap;
+  }
+
+  set votesCap(value: number | undefined) {
+    this._votesCap = value;
+  }
+
+  private _votesCap: number | undefined;
+
+  get isVotesCapValid(): boolean {
+    const max = this.shouldUseTestNet ? environment.maxVotesCapTestNet : environment.maxVotesCap;
+    // TODO: Also calculate based on balance
+    return this.votesCap != undefined && this.votesCap <= max;
+  }
+
   private derivePublicFromSecretIfPossible() {
     if (this.shouldAccountPublicToBeDeterminedAutomatically) {
       if (this.isFundingAccountSecretValid) {
@@ -84,7 +103,7 @@ export class CreateVotingForm {
   }
 
   private queryBalanceIfNeeded() {
-    if(this.isFundingAccountPublicValid) {
+    if (this.isFundingAccountPublicValid) {
       this.accountBalance.query();
     }
   }

@@ -1,0 +1,14 @@
+<div class="row mt-2">
+  <div class="col">
+    <input [status]="shouldWarn ? 'danger' : 'basic'" [(ngModel)]="form.votesCap" nbInput fullWidth
+           placeholder="votes cap" type="number" min="2" [nbPopover]="votesCapPopover" nbPopoverTrigger="noop">
+  </div>
+</div>
+
+<ng-template #votesCapPopover>
+  <nb-card accent="danger" class="margin-bottom-0">
+    <nb-card-body>
+      {{toolTipText}}
+    </nb-card-body>
+  </nb-card>
+</ng-template>

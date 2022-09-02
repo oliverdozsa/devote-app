@@ -16,7 +16,13 @@ import {
   NbGlobalPhysicalPosition,
   NbToastrModule,
   NbToggleModule,
-  NbButtonGroupModule, NbListModule, NbSelectModule, NbFormFieldModule, NbInputModule
+  NbButtonGroupModule,
+  NbListModule,
+  NbSelectModule,
+  NbFormFieldModule,
+  NbInputModule,
+  NbSpinnerModule,
+  NbTooltipModule, NbPopoverModule
 } from '@nebular/theme';
 import {NbEvaIconsModule} from '@nebular/eva-icons';
 import {HomeComponent} from './pages/home/home.component';
@@ -37,6 +43,7 @@ import {
   FundingAccountSourceComponent
 } from './components/create-voting/funding-account-source/funding-account-source.component';
 import { AccountBalanceComponent } from './components/create-voting/account-balance/account-balance.component';
+import { VotesCapComponent } from './components/create-voting/votes-cap/votes-cap.component';
 
 @NgModule({
   declarations: [
@@ -51,7 +58,8 @@ import { AccountBalanceComponent } from './components/create-voting/account-bala
     CreateVotingComponent,
     SelectNetworkComponent,
     FundingAccountSourceComponent,
-    AccountBalanceComponent
+    AccountBalanceComponent,
+    VotesCapComponent
   ],
   imports: [
     BrowserModule,
@@ -94,7 +102,10 @@ import { AccountBalanceComponent } from './components/create-voting/account-bala
         })
       ]
     }),
-    NbFormFieldModule
+    NbFormFieldModule,
+    NbSpinnerModule,
+    NbTooltipModule,
+    NbPopoverModule
   ],
   providers: [],
   bootstrap: [AppComponent]

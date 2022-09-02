@@ -10,6 +10,10 @@ import {CreateVotingForm} from "./create-voting-form";
 export class CreateVotingComponent implements OnInit {
   form = new CreateVotingForm();
 
+  get isLoading(): boolean{
+    return this.form.accountBalance.isLoading;
+  }
+
   constructor(protected dialogRef: NbDialogRef<any>) { }
 
   ngOnInit(): void {
