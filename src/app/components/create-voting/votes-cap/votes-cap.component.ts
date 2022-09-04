@@ -1,6 +1,5 @@
 import {Component, Input, ViewChild} from '@angular/core';
 import {CreateVotingForm} from "../create-voting-form";
-import {NbPopoverDirective} from "@nebular/theme";
 import {environment} from "../../../../environments/environment";
 
 @Component({
@@ -12,62 +11,45 @@ export class VotesCapComponent {
   @Input()
   form: CreateVotingForm = new CreateVotingForm();
 
-  @ViewChild(NbPopoverDirective)
-  popover!: NbPopoverDirective;
-
   get shouldWarn(): boolean {
-    let shouldWarn = false;
-
-    if(this.form.votesCap != undefined) {
-      if(this.form.shouldUseTestNet) {
-        shouldWarn = this.form.votesCap > environment.maxVotesCapTestNet;
-      } else {
-        shouldWarn = this.form.votesCap > environment.maxVotesCap;
-      }
-    }
-
-    if(shouldWarn) {
-      this.openPopover();
-    } else {
-      this.closePopover();
-    }
-
-    return shouldWarn;
+    return this.shouldWarnDueToBalance() || this.shouldWarnDueToMax();
   }
 
-  get toolTipText() {
-    if(this.form.shouldUseTestNet) {
-      return `On test network the maximum number of votes is limited to ${environment.maxVotesCapTestNet.toLocaleString()}.`;
+  get popoverText() {
+    if (this.shouldWarnDueToBalance() && !this.shouldWarnDueToMax()) {
+      return `Not enough balance for chosen votes cap! The maximum possible with this balance is ${this.calculateMaxPossibleVotesCap()}.`;
     }
 
     return `The maximum number of votes is limited to ${environment.maxVotesCap.toLocaleString()}.`;
   }
 
   get max() {
-    if(this.form.shouldUseTestNet) {
-      return environment.maxVotesCapTestNet;
-    }
-
     return environment.maxVotesCap;
   }
-
-  isPopoverOpened: boolean = false;
 
   constructor() {
   }
 
-  openPopover() {
-    if(this.popover && !this.isPopoverOpened) {
-      this.isPopoverOpened = true;
-      this.popover.show();
+  private calculateMaxPossibleVotesCap(): number | undefined {
+    if (!this.form.accountBalance.isNotFound && this.form.accountBalance.value != -1) {
+      return this.form.accountVotesCap.calculateMaxPossibleVotesCap();
     }
 
+    return undefined;
   }
 
-  closePopover() {
-    if(this.popover && this.isPopoverOpened) {
-      this.isPopoverOpened = false;
-      this.popover.hide();
+  private shouldWarnDueToBalance() {
+    const maxPossibleVotesCap = this.calculateMaxPossibleVotesCap();
+    return maxPossibleVotesCap != undefined &&
+      this.form.votesCap != undefined &&
+      maxPossibleVotesCap < this.form.votesCap;
+  }
+
+  private shouldWarnDueToMax() {
+    if (this.form.votesCap == undefined) {
+      return false;
     }
+
+    return this.form.votesCap > this.max;
   }
 }

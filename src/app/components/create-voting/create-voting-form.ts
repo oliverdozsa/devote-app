@@ -2,9 +2,11 @@ import {AccountValidator} from "./account/account-validator";
 import {AccountPublicKeyDerivation} from "./account/account-public-key-derivation";
 import {AccountBalanceQuery} from "./account/account-balance";
 import {environment} from "../../../environments/environment";
+import {AccountVotesCap} from "./account/account-votes-cap";
 
 export class CreateVotingForm {
   accountBalance: AccountBalanceQuery = new AccountBalanceQuery();
+  accountVotesCap: AccountVotesCap = new AccountVotesCap();
 
   private accountValidator: AccountValidator = new AccountValidator();
   private accountPublicDerivation: AccountPublicKeyDerivation = new AccountPublicKeyDerivation();
@@ -22,6 +24,7 @@ export class CreateVotingForm {
     this.accountValidator.network = value;
     this.accountPublicDerivation.network = value;
     this.accountBalance.network = value;
+    this.accountVotesCap.network = value;
   }
 
   private _selectedNetwork = "";
@@ -87,9 +90,8 @@ export class CreateVotingForm {
   private _votesCap: number | undefined;
 
   get isVotesCapValid(): boolean {
-    const max = this.shouldUseTestNet ? environment.maxVotesCapTestNet : environment.maxVotesCap;
     // TODO: Also calculate based on balance
-    return this.votesCap != undefined && this.votesCap <= max;
+    return this.votesCap != undefined && this.votesCap <= environment.maxVotesCap;
   }
 
   private derivePublicFromSecretIfPossible() {
@@ -104,7 +106,15 @@ export class CreateVotingForm {
 
   private queryBalanceIfNeeded() {
     if (this.isFundingAccountPublicValid) {
-      this.accountBalance.query();
+      this.accountBalance.query()
+        .then(
+          b => {
+            this.accountVotesCap.balance = b;
+          },
+          () => {
+            this.accountVotesCap.balance = -1;
+          }
+        );
     }
   }
 }

@@ -4,13 +4,13 @@ import {Horizon} from "stellar-sdk";
 export class AccountBalanceQuery {
   isLoading = false;
   isNotFound = false;
-  value: number = -1.0;
+  value: number = -1;
 
   constructor(public network: string = "", public shouldUseTestNet: boolean = true, public accountPublic: string = "") {
   }
 
   query() {
-    let balancePromise = Promise.resolve(-1.0);
+    let balancePromise = Promise.resolve(-1);
     this.isLoading = true;
     this.isNotFound = false;
 
@@ -18,15 +18,18 @@ export class AccountBalanceQuery {
       balancePromise = StellarAccountBalance.queryBalanceOf(this.accountPublic, this.shouldUseTestNet);
     }
 
-    balancePromise.then(
+    return balancePromise.then(
       b => {
         this.isLoading = false;
         this.value = b;
+
+        return b;
       },
       e => {
         this.isLoading = false;
         if(e.message == "Not Found") {
           this.isNotFound = true;
+          return -1.0;
         } else {
           throw e;
         }
