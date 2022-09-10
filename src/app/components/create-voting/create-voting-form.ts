@@ -5,6 +5,7 @@ import {environment} from "../../../environments/environment";
 import {AccountVotesCap} from "./account/account-votes-cap";
 
 export class CreateVotingForm {
+  isGeneratingFundingAccount: boolean = false;
   accountBalance: AccountBalanceQuery = new AccountBalanceQuery();
   accountVotesCap: AccountVotesCap = new AccountVotesCap();
 
@@ -91,7 +92,7 @@ export class CreateVotingForm {
 
   get isVotesCapValid(): boolean {
     // TODO: Also calculate based on balance
-    return this.votesCap != undefined && this.votesCap <= environment.maxVotesCap;
+    return this.votesCap != undefined && this.votesCap <= environment.maxVotesCap && this.votesCap > 1;
   }
 
   private derivePublicFromSecretIfPossible() {

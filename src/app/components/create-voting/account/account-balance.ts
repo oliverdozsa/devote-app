@@ -9,7 +9,7 @@ export class AccountBalanceQuery {
   constructor(public network: string = "", public shouldUseTestNet: boolean = true, public accountPublic: string = "") {
   }
 
-  query() {
+  query(): Promise<number> {
     let balancePromise = Promise.resolve(-1);
     this.isLoading = true;
     this.isNotFound = false;

@@ -1,8 +1,8 @@
-<div class="row mt-1" *ngIf="form.isFundingAccountPublicValid || form.accountBalance.isLoading">
+<div class="row mt-1" *ngIf="form.isFundingAccountPublicValid || form.accountBalance!.isLoading">
   <div class="col text-center">
-    balance: <span *ngIf="form.accountBalance.isLoading"><nb-icon icon="spinner" pack="fas"
-                                                                  class="fa-spin"></nb-icon></span>
+    balance: <span *ngIf="form.accountBalance!.isLoading"><nb-icon icon="spinner" pack="fas"
+                                                                   class="fa-spin"></nb-icon></span>
     <span
-      *ngIf="!form.accountBalance.isLoading"> {{form.accountBalance.isNotFound ? "account not found" : form.accountBalance.value.toLocaleString()}} {{form.accountBalance.currency}} </span>
+      *ngIf="!form.accountBalance!.isLoading"> {{form.accountBalance!.isNotFound ? "account not found" : form.accountBalance.value.toLocaleString()}} {{form.accountBalance!.currency}} </span>
   </div>
 </div>

@@ -11,11 +11,11 @@ export class SelectNetworkComponent {
   form: CreateVotingForm = new CreateVotingForm();
 
   get selectedNetwork() {
-    return this.form.selectedNetwork
+    return this.form!.selectedNetwork
   }
 
   set selectedNetwork(value: string) {
-    this.form.selectedNetwork = value;
+    this.form!.selectedNetwork = value;
   }
 
   get isValid() {

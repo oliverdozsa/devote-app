@@ -12,12 +12,16 @@ export class VotesCapComponent {
   form: CreateVotingForm = new CreateVotingForm();
 
   get shouldWarn(): boolean {
-    return this.shouldWarnDueToBalance() || this.shouldWarnDueToMax();
+    return this.shouldWarnDueToBalance() || this.shouldWarnDueToMax() || this.shouldWarnDueTooSmallValue();
   }
 
-  get popoverText() {
+  get errorText() {
     if (this.shouldWarnDueToBalance() && !this.shouldWarnDueToMax()) {
       return `Not enough balance for chosen votes cap! The maximum possible with this balance is ${this.calculateMaxPossibleVotesCap()}.`;
+    }
+
+    if(this.shouldWarnDueTooSmallValue()) {
+      return "Votes cap must be > 1!";
     }
 
     return `The maximum number of votes is limited to ${environment.maxVotesCap.toLocaleString()}.`;
@@ -42,7 +46,7 @@ export class VotesCapComponent {
     const maxPossibleVotesCap = this.calculateMaxPossibleVotesCap();
     return maxPossibleVotesCap != undefined &&
       this.form.votesCap != undefined &&
-      maxPossibleVotesCap < this.form.votesCap;
+      (maxPossibleVotesCap < this.form.votesCap);
   }
 
   private shouldWarnDueToMax() {
@@ -51,5 +55,10 @@ export class VotesCapComponent {
     }
 
     return this.form.votesCap > this.max;
+  }
+
+  private shouldWarnDueTooSmallValue() {
+    return this.form.votesCap != undefined &&
+    (this.form.votesCap < 2);
   }
 }

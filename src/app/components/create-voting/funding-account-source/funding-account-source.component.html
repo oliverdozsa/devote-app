@@ -18,6 +18,6 @@
 
 <div *ngIf="form.shouldUseTestNet" class="row mt-2">
   <div class="col">
-    <button nbButton fullWidth>generate funding account</button>
+    <button nbButton fullWidth (click)="onGenerateFundingAccountClicked()">generate funding account</button>
   </div>
 </div>
