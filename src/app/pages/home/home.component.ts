@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import {AppRoutes} from "../../../app-routes";
 
 @Component({
   selector: 'app-home',
@@ -7,7 +8,9 @@ import { Component, OnInit } from '@angular/core';
 })
 export class HomeComponent implements OnInit {
 
-  constructor() { }
+  constructor() {
+    localStorage.setItem("lastVisitedPage", `/${AppRoutes.HOME}`)
+  }
 
   ngOnInit(): void {
   }

@@ -1,4 +1,8 @@
-<div class="container">
+<div *ngIf="!isUnlocked" class="container text-center">
+  <h5>please login to view this page</h5>
+</div>
+
+<div *ngIf="isUnlocked" class="container">
   <div class="text-end">
     <button nbButton outline status="primary" (click)="onCreateVotingClicked()">
       create<nb-icon icon="plus-outline"></nb-icon>

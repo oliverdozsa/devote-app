@@ -98,6 +98,9 @@ import { VotesCapComponent } from './components/create-voting/votes-cap/votes-ca
             params: {
               "audience": "https://dev-devote.eu.auth0.com/api/v2/"
             }
+          },
+          redirect: {
+            success: getLastVisitedPage()
           }
         })
       ]
@@ -111,4 +114,8 @@ import { VotesCapComponent } from './components/create-voting/votes-cap/votes-ca
   bootstrap: [AppComponent]
 })
 export class AppModule {
+}
+
+function getLastVisitedPage(): string | undefined {
+  return localStorage.getItem("lastVisitedPage") ? localStorage.getItem("lastVisitedPage")! : undefined;
 }
