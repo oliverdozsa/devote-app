@@ -1,0 +1,21 @@
+
+<div class="row mt-1">
+  <div class="col mt-1">
+    <div>
+      <label>visibility</label>
+    </div>
+    <nb-select fullWidth placeholder="visibility" [(selected)]="form.visibility">
+      <nb-option value="PUBLIC">public</nb-option>
+      <nb-option value="UNLISTED">unlisted</nb-option>
+      <nb-option value="PRIVATE">private</nb-option>
+    </nb-select>
+  </div>
+  <div class="col mt-1">
+    <div>
+      <label>authorization</label>
+    </div>
+    <nb-select fullWidth placeholder="authorization" [disabled]="true" [(selected)]="form.authorization">
+      <nb-option value="EMAILS">emails</nb-option>
+    </nb-select>
+  </div>
+</div>

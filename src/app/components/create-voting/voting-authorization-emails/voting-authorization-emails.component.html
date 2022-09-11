@@ -1,0 +1,20 @@
+<div class="row mt-2">
+  <label>emails</label>
+  <div class="col">
+    <nb-tag-list (tagRemove)="onEmailRemove($event)">
+      <nb-tag *ngFor="let email of form.authorizationEmails" [text]="email" removable></nb-tag>
+      <input fullWidth [status]="(isUserInputValid && form.isAuthorizationInputValid) ? 'success' : 'danger'" type="text" nbTagInput (tagAdd)="onEmailAdd($event)"
+             [(ngModel)]="userInput" placeholder="emails">
+    </nb-tag-list>
+  </div>
+</div>
+
+<div *ngIf="!isUserInputValid || !form.isAuthorizationInputValid" class="row mt-1">
+  <div class="col">
+    <nb-card accent="danger">
+      <nb-card-body>
+        {{dangerText}}
+      </nb-card-body>
+    </nb-card>
+  </div>
+</div>

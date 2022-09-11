@@ -4,7 +4,11 @@
     <app-select-network [form]="form"></app-select-network>
     <app-funding-account-source *ngIf="form!.selectedNetwork != ''" [form]="form"></app-funding-account-source>
     <app-account-balance [form]="form"></app-account-balance>
+    <app-voting-title *ngIf="form!.selectedNetwork != ''" [form]="form"></app-voting-title>
     <app-votes-cap *ngIf="form!.selectedNetwork != ''" [form]="form"></app-votes-cap>
+    <app-voting-visibility-and-authorization *ngIf="form!.selectedNetwork != ''"
+                                             [form]="form"></app-voting-visibility-and-authorization>
+    <app-voting-authorization-input *ngIf="form!.selectedNetwork != ''" [form]="form"></app-voting-authorization-input>
   </nb-card-body>
   <nb-card-footer>
     <button nbButton [disabled]="!form!.isValid" outline status="primary">create</button>

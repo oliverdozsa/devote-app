@@ -1,11 +1,12 @@
 <div class="row mt-2">
   <div class="col">
+    <label>votes cap</label>
     <input [status]="shouldWarn ? 'danger' : 'basic'" [(ngModel)]="form.votesCap" nbInput fullWidth
            placeholder="votes cap" type="number" min="2">
   </div>
 </div>
 
-<div *ngIf="shouldWarn" class="row mt-2">
+<div *ngIf="shouldWarn" class="row mt-1">
   <div class="col">
     <nb-card accent="danger">
       <nb-card-body>

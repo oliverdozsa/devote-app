@@ -4,13 +4,16 @@
   </div>
 </div>
 
-<div class="row mt-1">
-  <div class="col">
+<div class="row">
+  <label>account public and secret</label>
+</div>
+<div class="row">
+  <div class="col mt-1">
     <input nbInput [disabled]="form.shouldAccountPublicToBeDeterminedAutomatically" type="text"
            [status]="form.isFundingAccountPublicValid ? 'success' : 'danger'"
            [(ngModel)]="form.fundingAccountPublic" placeholder="funding account public">
   </div>
-  <div class="col">
+  <div class="col mt-1">
     <input nbInput type="text" [status]="form.isFundingAccountSecretValid ? 'success' : 'danger'"
            [(ngModel)]="form.fundingAccountSecret" placeholder="funding account secret">
   </div>

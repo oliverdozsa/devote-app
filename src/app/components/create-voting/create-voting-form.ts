@@ -4,7 +4,23 @@ import {AccountBalanceQuery} from "./account/account-balance";
 import {environment} from "../../../environments/environment";
 import {AccountVotesCap} from "./account/account-votes-cap";
 
+export enum Authorization {
+  EMAILS = "EMAILS"
+}
+
+export enum Visibility {
+  PUBLIC = "PUBLIC",
+  UNLISTED = "UNLISTED",
+  PRIVATE = "PRIVATE"
+}
+
 export class CreateVotingForm {
+  title: string = "";
+  visibility: Visibility = Visibility.PUBLIC;
+
+  authorization: Authorization = Authorization.EMAILS;
+  authorizationEmails: Set<string> = new Set<string>();
+
   isGeneratingFundingAccount: boolean = false;
   accountBalance: AccountBalanceQuery = new AccountBalanceQuery();
   accountVotesCap: AccountVotesCap = new AccountVotesCap();
@@ -57,7 +73,7 @@ export class CreateVotingForm {
 
   get isValid() {
     return this.selectedNetwork != "" && this.isFundingAccountSecretValid && this.isFundingAccountPublicValid &&
-      this.isVotesCapValid;
+      this.isVotesCapValid && this.isTitleValid && this.isAuthorizationInputValid;
   }
 
   get isFundingAccountPublicValid() {
@@ -93,6 +109,18 @@ export class CreateVotingForm {
   get isVotesCapValid(): boolean {
     // TODO: Also calculate based on balance
     return this.votesCap != undefined && this.votesCap <= environment.maxVotesCap && this.votesCap > 1;
+  }
+
+  get isTitleValid(): boolean {
+    return this.title.length > 1;
+  }
+
+  get isAuthorizationInputValid(): boolean {
+    if(this.authorization == Authorization.EMAILS) {
+      return this.authorizationEmails.size > 0;
+    }
+
+    return false;
   }
 
   private derivePublicFromSecretIfPossible() {
