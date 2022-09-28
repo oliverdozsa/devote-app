@@ -1,0 +1,32 @@
+<div *ngIf="!isUnlocked" class="container text-center">
+  <h5>please login to view this page</h5>
+</div>
+
+<div *ngIf="isUnlocked" class="container">
+  <nb-card>
+    <nb-card-body>
+      <nb-stepper orientation="horizontal" disableStepNavigation [selectedIndex]="0" #stepper>
+        <nb-step label="network">
+          TODO: select network
+        </nb-step>
+
+        <nb-step label="funding account">
+          TODO: set funding account
+        </nb-step>
+
+        <nb-step label="voting basic data">
+          TODO: set voting basic data
+        </nb-step>
+
+        <nb-step label="questions">
+          TODO: set voting basic data
+        </nb-step>
+
+      </nb-stepper>
+      <div class="text-center">
+        <button class="me-2" nbButton (click)="onPrevClicked(stepper)">previous</button>
+        <button nbButton (click)="onNextClicked(stepper)">next</button>
+      </div>
+    </nb-card-body>
+  </nb-card>
+</div>

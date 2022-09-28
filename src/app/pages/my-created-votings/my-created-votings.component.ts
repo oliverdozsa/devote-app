@@ -1,9 +1,8 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {NbDialogService} from "@nebular/theme";
-import {CreateVotingComponent} from "../../components/create-voting/create-voting.component";
 import {NbAuthService} from "@nebular/auth";
 import {Subject, takeUntil} from "rxjs";
 import {AppRoutes} from "../../../app-routes";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-my-created-votings',
@@ -15,7 +14,7 @@ export class MyCreatedVotingsComponent implements OnDestroy {
 
   destroy$ = new Subject<void>();
 
-  constructor(private dialogService: NbDialogService, private authService: NbAuthService) {
+  constructor(private router: Router, private authService: NbAuthService) {
     authService.onAuthenticationChange()
       .pipe(
         takeUntil(this.destroy$)
@@ -33,9 +32,7 @@ export class MyCreatedVotingsComponent implements OnDestroy {
   }
 
   onCreateVotingClicked() {
-    this.dialogService.open(CreateVotingComponent, {
-      closeOnBackdropClick: false
-    });
+    this.router.navigateByUrl(`/${AppRoutes.CREATE_VOTING}`);
   }
 
   private onIsAuthenticated(isAuthenticated: boolean) {
