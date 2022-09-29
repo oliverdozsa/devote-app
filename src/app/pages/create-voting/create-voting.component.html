@@ -7,7 +7,7 @@
     <nb-card-body>
       <nb-stepper orientation="horizontal" disableStepNavigation [selectedIndex]="0" #stepper>
         <nb-step label="network">
-          TODO: select network
+          <app-select-network [form]="form"></app-select-network>
         </nb-step>
 
         <nb-step label="funding account">
@@ -24,8 +24,9 @@
 
       </nb-stepper>
       <div class="text-center">
-        <button class="me-2" nbButton (click)="onPrevClicked(stepper)">previous</button>
-        <button nbButton (click)="onNextClicked(stepper)">next</button>
+        <button *ngIf="shouldGoToPrevStepBeDisplayed" class="me-2" nbButton (click)="onPrevClicked(stepper)">previous</button>
+        <button *ngIf="shouldGoToNextStepBeDisplayed" nbButton (click)="onNextClicked(stepper)" [disabled]="isDisallowedToGoToNextStep">next</button>
+        <button *ngIf="!shouldGoToNextStepBeDisplayed" nbButton >create</button>
       </div>
     </nb-card-body>
   </nb-card>

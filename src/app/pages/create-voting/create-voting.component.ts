@@ -2,6 +2,14 @@ import {Component, OnDestroy} from '@angular/core';
 import {Subject, takeUntil} from "rxjs";
 import {NbAuthService} from "@nebular/auth";
 import {NbStepperComponent} from "@nebular/theme";
+import {CreateVotingForm} from "../../components/create-voting/create-voting-form";
+
+enum Step {
+  SELECT_NETWORK,
+  SET_FUNDING_ACCOUNT,
+  VOTING_BASIC_DATA,
+  QUESTIONS
+}
 
 @Component({
   selector: 'app-create-voting',
@@ -11,7 +19,26 @@ import {NbStepperComponent} from "@nebular/theme";
 export class CreateVotingComponent implements OnDestroy {
   isUnlocked = false;
 
+  form: CreateVotingForm = new CreateVotingForm();
+  currentStep: Step = Step.SELECT_NETWORK;
+
   destroy$ = new Subject<void>();
+
+  get isDisallowedToGoToNextStep(): boolean {
+    if(this.currentStep == Step.SELECT_NETWORK) {
+      return this.form.selectedNetwork == ""
+    }
+
+    return true;
+  }
+
+  get shouldGoToPrevStepBeDisplayed() {
+    return this.currentStep != Step.SELECT_NETWORK;
+  }
+
+  get shouldGoToNextStepBeDisplayed() {
+    return this.currentStep != Step.QUESTIONS;
+  }
 
   constructor(private authService: NbAuthService) {
     authService.onAuthenticationChange()
@@ -27,17 +54,16 @@ export class CreateVotingComponent implements OnDestroy {
   }
 
   onNextClicked(stepper: NbStepperComponent) {
-    // TODO
+    this.currentStep += 1;
     stepper.next();
   }
 
   onPrevClicked(stepper: NbStepperComponent) {
-    // TODO
+    this.currentStep -= 1;
     stepper.previous();
   }
 
   private onIsAuthenticated(isAuthenticated: boolean) {
     this.isUnlocked = isAuthenticated;
   }
-
 }
