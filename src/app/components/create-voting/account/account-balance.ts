@@ -14,7 +14,7 @@ export class AccountBalanceQuery {
     this.isLoading = true;
     this.isNotFound = false;
 
-    if(this.network == "stellar") {
+    if (this.network == "stellar") {
       balancePromise = StellarAccountBalance.queryBalanceOf(this.accountPublic, this.shouldUseTestNet);
     }
 
@@ -27,8 +27,10 @@ export class AccountBalanceQuery {
       },
       e => {
         this.isLoading = false;
-        if(e.message == "Not Found") {
+        if (e.message == "Not Found") {
           this.isNotFound = true;
+          this.value = -1;
+
           return -1.0;
         } else {
           throw e;
@@ -38,11 +40,11 @@ export class AccountBalanceQuery {
   }
 
   get currency(): string {
-    if(this.isNotFound) {
+    if (this.isNotFound) {
       return "";
     }
 
-    if(this.network == "stellar") {
+    if (this.network == "stellar") {
       return "XLM"
     }
 
@@ -50,7 +52,7 @@ export class AccountBalanceQuery {
   }
 }
 
-class StellarAccountBalance{
+class StellarAccountBalance {
   static queryBalanceOf(accountPublic: string, isOnTestNetwork: boolean): Promise<number> {
     const server = StellarServers.getServer(isOnTestNetwork);
     return server.accounts().accountId(accountPublic)

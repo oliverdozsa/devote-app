@@ -9,12 +9,12 @@
 </div>
 <div class="row">
   <div class="col mt-1">
-    <input nbInput [disabled]="form.shouldAccountPublicToBeDeterminedAutomatically" type="text"
+    <input nbInput fullWidth [disabled]="form.shouldAccountPublicToBeDeterminedAutomatically" type="text"
            [status]="form.isFundingAccountPublicValid ? 'success' : 'danger'"
            [(ngModel)]="form.fundingAccountPublic" placeholder="funding account public">
   </div>
   <div class="col mt-1">
-    <input nbInput type="text" [status]="form.isFundingAccountSecretValid ? 'success' : 'danger'"
+    <input nbInput fullWidth type="text" [status]="form.isFundingAccountSecretValid ? 'success' : 'danger'"
            [(ngModel)]="form.fundingAccountSecret" placeholder="funding account secret">
   </div>
 </div>

@@ -3,7 +3,7 @@
 </div>
 
 <div *ngIf="isUnlocked" class="container">
-  <nb-card>
+  <nb-card [nbSpinner]="isLoading">
     <nb-card-body>
       <nb-stepper orientation="horizontal" disableStepNavigation [selectedIndex]="0" #stepper>
         <nb-step label="network">
@@ -11,7 +11,8 @@
         </nb-step>
 
         <nb-step label="funding account">
-          TODO: set funding account
+          <app-funding-account-source [form]="form"></app-funding-account-source>
+          <app-account-balance [form]="form"></app-account-balance>
         </nb-step>
 
         <nb-step label="voting basic data">

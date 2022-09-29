@@ -141,9 +141,13 @@ export class CreateVotingForm {
             this.accountVotesCap.balance = b;
           },
           () => {
+            this.accountBalance.value = -1;
             this.accountVotesCap.balance = -1;
           }
         );
+    } else {
+      this.accountBalance.value = -1;
+      this.accountVotesCap.balance = -1;
     }
   }
 }

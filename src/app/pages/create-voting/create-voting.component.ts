@@ -27,6 +27,8 @@ export class CreateVotingComponent implements OnDestroy {
   get isDisallowedToGoToNextStep(): boolean {
     if(this.currentStep == Step.SELECT_NETWORK) {
       return this.form.selectedNetwork == ""
+    } else if(this.currentStep == Step.SET_FUNDING_ACCOUNT) {
+      return this.form.accountBalance.value < 1;
     }
 
     return true;
@@ -38,6 +40,10 @@ export class CreateVotingComponent implements OnDestroy {
 
   get shouldGoToNextStepBeDisplayed() {
     return this.currentStep != Step.QUESTIONS;
+  }
+
+  get isLoading(): boolean {
+    return this.form.isGeneratingFundingAccount || this.form.accountBalance.isLoading;
   }
 
   constructor(private authService: NbAuthService) {
