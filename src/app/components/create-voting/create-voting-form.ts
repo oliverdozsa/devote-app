@@ -107,8 +107,10 @@ export class CreateVotingForm {
   private _votesCap: number | undefined;
 
   get isVotesCapValid(): boolean {
-    // TODO: Also calculate based on balance
-    return this.votesCap != undefined && this.votesCap <= environment.maxVotesCap && this.votesCap > 1;
+    const maxPossibleVotesCapWithBalance = this.accountVotesCap.calculateMaxPossibleVotesCap()
+
+    return this.votesCap != undefined && this.votesCap <= environment.maxVotesCap && this.votesCap > 1 &&
+      maxPossibleVotesCapWithBalance >= this.votesCap;
   }
 
   get isTitleValid(): boolean {

@@ -25,10 +25,12 @@ export class CreateVotingComponent implements OnDestroy {
   destroy$ = new Subject<void>();
 
   get isDisallowedToGoToNextStep(): boolean {
-    if(this.currentStep == Step.SELECT_NETWORK) {
+    if (this.currentStep == Step.SELECT_NETWORK) {
       return this.form.selectedNetwork == ""
-    } else if(this.currentStep == Step.SET_FUNDING_ACCOUNT) {
+    } else if (this.currentStep == Step.SET_FUNDING_ACCOUNT) {
       return this.form.accountBalance.value < 1;
+    } else if(this.currentStep == Step.VOTING_BASIC_DATA) {
+      return !this.form.isVotesCapValid || !this.form.isAuthorizationInputValid || !this.form.isTitleValid;
     }
 
     return true;
@@ -66,7 +68,10 @@ export class CreateVotingComponent implements OnDestroy {
 
   onPrevClicked(stepper: NbStepperComponent) {
     this.currentStep -= 1;
+    const prevStep = stepper.selected;
+
     stepper.previous();
+    prevStep.reset();
   }
 
   private onIsAuthenticated(isAuthenticated: boolean) {

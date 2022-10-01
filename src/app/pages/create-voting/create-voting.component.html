@@ -16,7 +16,10 @@
         </nb-step>
 
         <nb-step label="voting basic data">
-          TODO: set voting basic data
+          <app-voting-title [form]="form"></app-voting-title>
+          <app-votes-cap [form]="form"></app-votes-cap>
+          <app-voting-visibility-and-authorization [form]="form"></app-voting-visibility-and-authorization>
+          <app-voting-authorization-input [form]="form"></app-voting-authorization-input>
         </nb-step>
 
         <nb-step label="questions">
