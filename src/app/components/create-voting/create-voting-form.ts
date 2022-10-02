@@ -21,6 +21,9 @@ export class CreateVotingForm {
   authorization: Authorization = Authorization.EMAILS;
   authorizationEmails: Set<string> = new Set<string>();
 
+  isEncrypted: boolean = false;
+  encryptedUntil: Date = new Date(Date.now());
+
   isGeneratingFundingAccount: boolean = false;
   accountBalance: AccountBalanceQuery = new AccountBalanceQuery();
   accountVotesCap: AccountVotesCap = new AccountVotesCap();
@@ -123,6 +126,11 @@ export class CreateVotingForm {
     }
 
     return false;
+  }
+
+  get isEncryptedUntilValid(): boolean {
+    const hoursUntilEncrypted = (this.encryptedUntil.valueOf() - Date.now()) / (1000 * 60 * 60);
+    return !this.isEncrypted || (this.isEncrypted && hoursUntilEncrypted >= 24)
   }
 
   private derivePublicFromSecretIfPossible() {

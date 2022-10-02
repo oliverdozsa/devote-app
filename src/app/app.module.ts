@@ -22,7 +22,7 @@ import {
   NbFormFieldModule,
   NbInputModule,
   NbSpinnerModule,
-  NbTooltipModule, NbPopoverModule, NbTagModule, NbStepperModule
+  NbTooltipModule, NbPopoverModule, NbTagModule, NbStepperModule, NbDatepickerModule, NbTimepickerModule
 } from '@nebular/theme';
 import {NbEvaIconsModule} from '@nebular/eva-icons';
 import {HomeComponent} from './pages/home/home.component';
@@ -54,6 +54,7 @@ import {
   VotingAuthorizationInputComponent
 } from './components/create-voting/voting-authorization-input/voting-authorization-input.component';
 import {CreateVotingComponent} from "./pages/create-voting/create-voting.component";
+import { VotingEncryptionComponent } from './components/create-voting/voting-encryption/voting-encryption.component';
 
 @NgModule({
   declarations: [
@@ -73,7 +74,8 @@ import {CreateVotingComponent} from "./pages/create-voting/create-voting.compone
     VotingVisibilityAndAuthorizationComponent,
     VotingAuthorizationEmailsComponent,
     VotingAuthorizationInputComponent,
-    CreateVotingComponent
+    CreateVotingComponent,
+    VotingEncryptionComponent
   ],
   imports: [
     BrowserModule,
@@ -124,7 +126,9 @@ import {CreateVotingComponent} from "./pages/create-voting/create-voting.compone
     NbTooltipModule,
     NbPopoverModule,
     NbTagModule,
-    NbStepperModule
+    NbStepperModule,
+    NbDatepickerModule.forRoot(),
+    NbTimepickerModule.forRoot()
   ],
   providers: [],
   bootstrap: [AppComponent]
