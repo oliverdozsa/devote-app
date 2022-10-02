@@ -22,7 +22,10 @@ export class CreateVotingForm {
   authorizationEmails: Set<string> = new Set<string>();
 
   isEncrypted: boolean = false;
-  encryptedUntil: Date = new Date(Date.now());
+  encryptedUntil: Date = new Date();
+
+  startDate: Date = new Date();
+  endDate: Date = new Date();
 
   isGeneratingFundingAccount: boolean = false;
   accountBalance: AccountBalanceQuery = new AccountBalanceQuery();
@@ -121,7 +124,7 @@ export class CreateVotingForm {
   }
 
   get isAuthorizationInputValid(): boolean {
-    if(this.authorization == Authorization.EMAILS) {
+    if (this.authorization == Authorization.EMAILS) {
       return this.authorizationEmails.size > 0;
     }
 
@@ -130,7 +133,19 @@ export class CreateVotingForm {
 
   get isEncryptedUntilValid(): boolean {
     const hoursUntilEncrypted = (this.encryptedUntil.valueOf() - Date.now()) / (1000 * 60 * 60);
-    return !this.isEncrypted || (this.isEncrypted && hoursUntilEncrypted >= 24)
+    return !this.isEncrypted || (this.isEncrypted && hoursUntilEncrypted >= 2)
+  }
+
+  get isStartDateValid(): boolean {
+    return this.startDate.valueOf() < this.endDate.valueOf()
+  }
+
+  get isEndDateValid(): boolean {
+    const hoursUntilEndDateFromNow = (this.endDate.valueOf() - Date.now()) / (1000 * 60 * 60);
+    const isEndDateAfterStartDate = this.endDate.valueOf() > this.startDate.valueOf();
+    const hoursBetweenStartAndEnd = (this.endDate.valueOf() - this.startDate.valueOf()) / (1000 * 60 * 60);
+
+    return isEndDateAfterStartDate && hoursUntilEndDateFromNow >= 2 && hoursBetweenStartAndEnd >= 2;
   }
 
   private derivePublicFromSecretIfPossible() {

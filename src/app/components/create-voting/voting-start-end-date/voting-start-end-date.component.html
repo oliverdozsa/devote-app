@@ -1,0 +1,40 @@
+<div class="row mt-2">
+  <div class="col">
+    <label>voting start and end date</label>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col">
+    <input nbInput fullWidth [nbDatepicker]="datetimepickerStartDate" placeholder="select start date"
+           [(ngModel)]="form.startDate" [status]="form.isStartDateValid ? 'success' : 'danger'">
+    <nb-date-timepicker #datetimepickerStartDate></nb-date-timepicker>
+  </div>
+
+  <div class="col">
+    <input nbInput fullWidth [nbDatepicker]="datetimepickerEndDate" placeholder="select end date"
+           [(ngModel)]="form.endDate" [status]="form.isEndDateValid ? 'success' : 'danger'">
+    <nb-date-timepicker #datetimepickerEndDate></nb-date-timepicker>
+  </div>
+</div>
+
+<div *ngIf="!form.isStartDateValid" class="row mt-1">
+  <div class="col">
+    <nb-card accent="danger">
+      <nb-card-body>
+        Please choose starting date that is before the ending date.
+      </nb-card-body>
+    </nb-card>
+  </div>
+</div>
+
+<div *ngIf="!form.isEndDateValid" class="row mt-1">
+  <div class="col">
+    <nb-card accent="danger">
+      <nb-card-body>
+        Please choose an ending date that is after the starting date there's at least 2 hours between the two, and it's in
+        the future.
+      </nb-card-body>
+    </nb-card>
+  </div>
+</div>

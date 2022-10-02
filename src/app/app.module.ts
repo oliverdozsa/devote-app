@@ -55,6 +55,7 @@ import {
 } from './components/create-voting/voting-authorization-input/voting-authorization-input.component';
 import {CreateVotingComponent} from "./pages/create-voting/create-voting.component";
 import { VotingEncryptionComponent } from './components/create-voting/voting-encryption/voting-encryption.component';
+import { VotingStartEndDateComponent } from './components/create-voting/voting-start-end-date/voting-start-end-date.component';
 
 @NgModule({
   declarations: [
@@ -75,7 +76,8 @@ import { VotingEncryptionComponent } from './components/create-voting/voting-enc
     VotingAuthorizationEmailsComponent,
     VotingAuthorizationInputComponent,
     CreateVotingComponent,
-    VotingEncryptionComponent
+    VotingEncryptionComponent,
+    VotingStartEndDateComponent
   ],
   imports: [
     BrowserModule,
