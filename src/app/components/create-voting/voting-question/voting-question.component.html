@@ -1,0 +1,30 @@
+<div class="row mb-2">
+  <div class="col">
+    <label>question</label>
+    <input type="text" nbInput fullWidth [(ngModel)]="question" placeholder="question">
+  </div>
+</div>
+
+<div *ngFor="let option of options; let i = index; trackBy: trackByIndex" class="row mb-1">
+  <div class="col">
+    <div class="d-flex justify-content-start align-items-center">
+      <div> {{i + 1}}.</div>
+      <div class="flex-fill px-2"><input type="text" nbInput fullWidth [(ngModel)]="options[i]" placeholder="option"></div>
+      <div>
+        <button nbButton (click)="deleteOptionClicked(i)">
+          <nb-icon icon="trash-outline"></nb-icon>
+        </button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<div class="row mt-2">
+  <div class="col">
+    <button nbButton (click)="addOptionClicked()">
+      add option
+      <nb-icon icon="plus-outline"></nb-icon>
+    </button>
+  </div>
+</div>
