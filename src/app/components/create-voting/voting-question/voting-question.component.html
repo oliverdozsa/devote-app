@@ -1,43 +1,50 @@
-<div class="row mb-2">
-  <div class="col">
-    <label>question</label>
-    <input type="text" nbInput fullWidth [(ngModel)]="question" placeholder="question"
-           [status]="isQuestionValid ? 'success' : 'danger'">
-  </div>
-</div>
-
-<div *ngFor="let option of options; let i = index; trackBy: trackByIndex" class="row mb-1">
-  <div class="col">
-    <div class="d-flex justify-content-start align-items-center">
-      <div> {{i + 1}}.</div>
-      <div class="flex-fill px-2"><input type="text" nbInput fullWidth [(ngModel)]="options[i]" placeholder="option"
-                                         [status]="isOptionValidAt(i) ? 'success' : 'danger'">
+<nb-accordion>
+  <nb-accordion-item>
+    <nb-accordion-item-header>
+      <div class="flex-fill">
+        <div><label>question</label></div>
+        <input style="width: 93%;" type="text" fullWidth nbInput [(ngModel)]="question" placeholder="question"
+               [status]="isQuestionValid ? 'success' : 'danger'" (click)="preventPropagationOf($event)"
+               (keyup)="preventPropagationOf($event)" (keydown)="preventPropagationOf($event)">
       </div>
-      <div>
-        <button nbButton (click)="deleteOptionClicked(i)">
-          <nb-icon icon="trash-outline"></nb-icon>
-        </button>
+    </nb-accordion-item-header>
+    <nb-accordion-item-body>
+      <div *ngFor="let option of options; let i = index; trackBy: trackByIndex" class="row mb-1">
+        <div class="col">
+          <div class="d-flex justify-content-start align-items-center">
+            <div> {{i + 1}}.</div>
+            <div class="flex-fill px-2"><input type="text" nbInput fullWidth [(ngModel)]="options[i]"
+                                               placeholder="option"
+                                               [status]="isOptionValidAt(i) ? 'success' : 'danger'">
+            </div>
+            <div>
+              <button nbButton (click)="deleteOptionClicked(i)">
+                <nb-icon icon="trash-outline"></nb-icon>
+              </button>
+            </div>
+          </div>
+        </div>
       </div>
-    </div>
-  </div>
-</div>
 
-<div *ngIf="!isValid" class="row mt-1">
-  <div class="col">
-    <nb-card accent="danger">
-      <nb-card-body>
-        {{warnMessage}}
-      </nb-card-body>
-    </nb-card>
-  </div>
-</div>
+      <div *ngIf="!isValid" class="row mt-1">
+        <div class="col">
+          <nb-card accent="danger">
+            <nb-card-body>
+              {{warnMessage}}
+            </nb-card-body>
+          </nb-card>
+        </div>
+      </div>
 
 
-<div class="row mt-2">
-  <div class="col">
-    <button nbButton (click)="addOptionClicked()">
-      add option
-      <nb-icon icon="plus-outline"></nb-icon>
-    </button>
-  </div>
-</div>
+      <div class="row mt-2">
+        <div class="col">
+          <button nbButton (click)="addOptionClicked()">
+            add option
+            <nb-icon icon="plus-outline"></nb-icon>
+          </button>
+        </div>
+      </div>
+    </nb-accordion-item-body>
+  </nb-accordion-item>
+</nb-accordion>

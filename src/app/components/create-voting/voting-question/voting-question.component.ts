@@ -60,6 +60,10 @@ export class VotingQuestionComponent {
     this.options.splice(i, 1);
   }
 
+  preventPropagationOf(event: any) {
+    event.stopPropagation();
+  }
+
   private areAllOptionsValid() {
     return this.options
       .map(o => this.isOptionValid(o))

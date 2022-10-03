@@ -22,7 +22,13 @@ import {
   NbFormFieldModule,
   NbInputModule,
   NbSpinnerModule,
-  NbTooltipModule, NbPopoverModule, NbTagModule, NbStepperModule, NbDatepickerModule, NbTimepickerModule
+  NbTooltipModule,
+  NbPopoverModule,
+  NbTagModule,
+  NbStepperModule,
+  NbDatepickerModule,
+  NbTimepickerModule,
+  NbAccordionModule
 } from '@nebular/theme';
 import {NbEvaIconsModule} from '@nebular/eva-icons';
 import {HomeComponent} from './pages/home/home.component';
@@ -132,7 +138,8 @@ import { VotingQuestionComponent } from './components/create-voting/voting-quest
     NbTagModule,
     NbStepperModule,
     NbDatepickerModule.forRoot(),
-    NbTimepickerModule.forRoot()
+    NbTimepickerModule.forRoot(),
+    NbAccordionModule
   ],
   providers: [],
   bootstrap: [AppComponent]
