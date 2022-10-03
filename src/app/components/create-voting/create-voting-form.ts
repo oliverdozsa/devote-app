@@ -120,7 +120,7 @@ export class CreateVotingForm {
   }
 
   get isTitleValid(): boolean {
-    return this.title.length > 1;
+    return this.title.length > 1 && this.title.length < 1000;
   }
 
   get isAuthorizationInputValid(): boolean {
