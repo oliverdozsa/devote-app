@@ -1,4 +1,5 @@
-import {Component} from '@angular/core';
+import {Component, Input} from '@angular/core';
+import {CreateVotingForm, VotingQuestion} from "../create-voting-form";
 
 @Component({
   selector: 'app-voting-question',
@@ -6,67 +7,42 @@ import {Component} from '@angular/core';
   styleUrls: ['./voting-question.component.scss']
 })
 export class VotingQuestionComponent {
-  options: string[] = [];
-  question: string = "";
+  @Input()
+  form: CreateVotingForm = new CreateVotingForm();
 
-  get isQuestionValid(): boolean {
-    return this.question.length > 1 && this.question.length < 1000
-  }
-
-  get isOptionsLengthValid(): boolean {
-    return this.options.length > 1;
-  }
-
-  get isValid(): boolean {
-    return this.areAllOptionsValid() && this.isQuestionValid && this.isOptionsLengthValid;
-  }
-
-  get warnMessage(): string {
-    if (!this.isQuestionValid) {
+  getWarnMessageFor(i: number): string {
+    if (!this.form.questions[i].isQuestionValid) {
       return "Question's length should be > 1 and < 1000.";
     }
 
-    if (!this.isOptionsLengthValid) {
+    if (!this.form.questions[i].isOptionsLengthValid) {
       return "There must be at least 2 options."
     }
 
-    if(!this.areAllOptionsValid()) {
+    if (!this.form.questions[i].areAllOptionsValid()) {
       return "Each option must have length > 1 and < 1000";
     }
 
     return "";
   }
 
-  constructor() {
-  }
-
-  isOptionValidAt(i: number) {
-    return this.isOptionValid(this.options[i]);
-  }
-
-  isOptionValid(option: string): boolean {
-    return option.length > 1 && option.length < 1000;
-  }
-
-  addOptionClicked() {
-    this.options.push("");
+  addOptionClickedAt(i: number) {
+    this.form.questions[i].addNewEmptyOption();
   }
 
   trackByIndex(index: number, item: any) {
     return index;
   }
 
-  deleteOptionClicked(i: number) {
-    this.options.splice(i, 1);
+  deleteOptionClicked(i: number, j: number) {
+    this.form.questions[i].deleteAt(j);
   }
 
   preventPropagationOf(event: any) {
     event.stopPropagation();
   }
 
-  private areAllOptionsValid() {
-    return this.options
-      .map(o => this.isOptionValid(o))
-      .reduce((prev, current) => prev && current, true);
+  addQuestionClicked() {
+    this.form.questions.push(new VotingQuestion());
   }
 }

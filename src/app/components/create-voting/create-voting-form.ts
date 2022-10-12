@@ -31,6 +31,8 @@ export class CreateVotingForm {
   accountBalance: AccountBalanceQuery = new AccountBalanceQuery();
   accountVotesCap: AccountVotesCap = new AccountVotesCap();
 
+  questions: VotingQuestion[] = [];
+
   private accountValidator: AccountValidator = new AccountValidator();
   private accountPublicDerivation: AccountPublicKeyDerivation = new AccountPublicKeyDerivation();
 
@@ -174,5 +176,45 @@ export class CreateVotingForm {
       this.accountBalance.value = -1;
       this.accountVotesCap.balance = -1;
     }
+  }
+}
+
+export class VotingQuestion {
+  options: string[] = [];
+  question: string = "";
+
+  get isQuestionValid(): boolean {
+    return this.question.length > 1 && this.question.length < 1000
+  }
+
+  get isOptionsLengthValid(): boolean {
+    return this.options.length > 1;
+  }
+
+  get isValid(): boolean {
+    return this.areAllOptionsValid() && this.isQuestionValid && this.isOptionsLengthValid;
+  }
+
+
+  isOptionValidAt(i: number) {
+    return this.isOptionValid(this.options[i]);
+  }
+
+  isOptionValid(option: string): boolean {
+    return option.length > 1 && option.length < 1000;
+  }
+
+  areAllOptionsValid() {
+    return this.options
+      .map(o => this.isOptionValid(o))
+      .reduce((prev, current) => prev && current, true);
+  }
+
+  deleteAt(i: number) {
+    this.options.splice(i, 1);
+  }
+
+  addNewEmptyOption(){
+    this.options.push("");
   }
 }
