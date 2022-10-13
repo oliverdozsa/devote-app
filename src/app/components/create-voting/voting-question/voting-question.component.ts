@@ -1,5 +1,6 @@
 import {Component, Input} from '@angular/core';
 import {CreateVotingForm, VotingQuestion} from "../create-voting-form";
+import {MaxVotingQuestions} from "../account/max-voting-questions";
 
 @Component({
   selector: 'app-voting-question',
@@ -9,6 +10,12 @@ import {CreateVotingForm, VotingQuestion} from "../create-voting-form";
 export class VotingQuestionComponent {
   @Input()
   form: CreateVotingForm = new CreateVotingForm();
+
+  maxQuestions = new MaxVotingQuestions();
+
+  get remainingNumberOfPossibleQuestions(): number {
+    return this.maxQuestions.determine(this.form) - this.form.questions.length;
+  }
 
   getWarnMessageFor(i: number): string {
     if (!this.form.questions[i].isQuestionValid) {

@@ -25,14 +25,14 @@
         </nb-step>
 
         <nb-step label="questions">
-          TODO: questions
+          <app-voting-question [form]="form"></app-voting-question>
         </nb-step>
 
       </nb-stepper>
       <div class="text-center">
         <button *ngIf="shouldGoToPrevStepBeDisplayed" class="me-2" nbButton (click)="onPrevClicked(stepper)">previous</button>
         <button *ngIf="shouldGoToNextStepBeDisplayed" nbButton (click)="onNextClicked(stepper)" [disabled]="isDisallowedToGoToNextStep">next</button>
-        <button *ngIf="!shouldGoToNextStepBeDisplayed" nbButton >create</button>
+        <button *ngIf="!shouldGoToNextStepBeDisplayed" nbButton [disabled]="isDisallowedToCreate">create</button>
       </div>
     </nb-card-body>
   </nb-card>

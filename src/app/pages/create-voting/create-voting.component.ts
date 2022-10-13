@@ -49,6 +49,10 @@ export class CreateVotingComponent implements OnDestroy {
     return this.form.isGeneratingFundingAccount || this.form.accountBalance.isLoading;
   }
 
+  get isDisallowedToCreate(): boolean {
+    return !this.form.areQuestionsValid;
+  }
+
   constructor(private authService: NbAuthService) {
     authService.onAuthenticationChange()
       .pipe(

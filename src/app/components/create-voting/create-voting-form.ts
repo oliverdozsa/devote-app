@@ -150,6 +150,11 @@ export class CreateVotingForm {
     return isEndDateAfterStartDate && hoursUntilEndDateFromNow >= 2 && hoursBetweenStartAndEnd >= 2;
   }
 
+  get areQuestionsValid(): boolean {
+    // TODO
+    return false;
+  }
+
   private derivePublicFromSecretIfPossible() {
     if (this.shouldAccountPublicToBeDeterminedAutomatically) {
       if (this.isFundingAccountSecretValid) {
