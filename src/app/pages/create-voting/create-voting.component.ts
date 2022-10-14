@@ -22,6 +22,8 @@ export class CreateVotingComponent implements OnDestroy {
   form: CreateVotingForm = new CreateVotingForm();
   currentStep: Step = Step.SELECT_NETWORK;
 
+  isCreatingInProgress: boolean = false;
+
   destroy$ = new Subject<void>();
 
   get isDisallowedToGoToNextStep(): boolean {
@@ -46,7 +48,7 @@ export class CreateVotingComponent implements OnDestroy {
   }
 
   get isLoading(): boolean {
-    return this.form.isGeneratingFundingAccount || this.form.accountBalance.isLoading;
+    return this.form.isGeneratingFundingAccount || this.form.accountBalance.isLoading || this.isCreatingInProgress;
   }
 
   get isDisallowedToCreate(): boolean {
@@ -69,6 +71,10 @@ export class CreateVotingComponent implements OnDestroy {
   onNextClicked(stepper: NbStepperComponent) {
     this.currentStep += 1;
     stepper.next();
+  }
+
+  onCreateClicked() {
+    // TODO
   }
 
   onPrevClicked(stepper: NbStepperComponent) {

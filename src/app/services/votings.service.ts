@@ -4,12 +4,22 @@ import {environment} from "../../environments/environment";
 import {VotingSummary} from "../data/voting.summary";
 import {Page} from "../data/page";
 import {Observable} from "rxjs";
+import {CreateVotingForm} from "../components/create-voting/create-voting-form";
+import {CreateVotingRequest} from "./create-voting-request";
 
 @Injectable({
   providedIn: 'root'
 })
 export class VotingsService {
   constructor(private httpClient: HttpClient) {
+  }
+
+  create(form: CreateVotingForm): Observable<any> {
+    const url = environment.apiUrl + "/voting";
+
+    const request = CreateVotingRequest.fromCreateVotingForm(form);
+
+    return this.httpClient.post(url, request);
   }
 
   getPublic(page: number = 1, itemsPerPage: number = 10): Observable<Page<VotingSummary>> {

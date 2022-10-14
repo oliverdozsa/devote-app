@@ -52,4 +52,8 @@ export class VotingQuestionComponent {
   addQuestionClicked() {
     this.form.questions.push(new VotingQuestion());
   }
+
+  deleteQuestionClicked(i: number) {
+    this.form.questions.splice(i, 1);
+  }
 }

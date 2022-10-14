@@ -79,11 +79,6 @@ export class CreateVotingForm {
 
   private _fundingAccountSecret = "";
 
-  get isValid() {
-    return this.selectedNetwork != "" && this.isFundingAccountSecretValid && this.isFundingAccountPublicValid &&
-      this.isVotesCapValid && this.isTitleValid && this.isAuthorizationInputValid;
-  }
-
   get isFundingAccountPublicValid() {
     return this.accountValidator.isPublicValid();
   }
@@ -151,8 +146,7 @@ export class CreateVotingForm {
   }
 
   get areQuestionsValid(): boolean {
-    // TODO
-    return false;
+    return this.questions.length > 0 && this.questions.every(q => q.isValid);
   }
 
   private derivePublicFromSecretIfPossible() {

@@ -58,7 +58,7 @@ export class VotesCapComponent {
   }
 
   private shouldWarnDueTooSmallValue() {
-    return this.form.votesCap != undefined &&
+    return this.form.votesCap == undefined ||
     (this.form.votesCap < 2);
   }
 }

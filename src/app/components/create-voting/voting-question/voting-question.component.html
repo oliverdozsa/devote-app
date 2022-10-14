@@ -1,13 +1,19 @@
 <nb-accordion>
   <nb-accordion-item *ngFor="let question of form.questions; let i = index; trackBy: trackByIndex" expanded>
     <nb-accordion-item-header>
+
       <div class="flex-fill">
         <div><label>question</label></div>
-        <input style="width: 93%;" type="text" fullWidth nbInput [(ngModel)]="question.question"
+        <input style="width: 90%;" class="me-2 mt-1" type="text" fullWidth nbInput [(ngModel)]="question.question"
                placeholder="e.g.: What is your favorite color?"
                [status]="question.isValid ? 'success' : 'danger'" (click)="preventPropagationOf($event)"
                (keyup)="preventPropagationOf($event)" (keydown)="preventPropagationOf($event)">
+
+        <button class="mt-1" nbButton (click)="deleteQuestionClicked(i)">
+          <nb-icon icon="trash-outline"></nb-icon>
+        </button>
       </div>
+
     </nb-accordion-item-header>
     <nb-accordion-item-body>
       <div *ngFor="let option of question.options; let j = index; trackBy: trackByIndex" class="row mb-1">
@@ -50,21 +56,21 @@
   </nb-accordion-item>
   <nb-accordion-item disabled="true">
     <nb-accordion-item-header>
-        <div class="flex-column">
-
-          <div>
-            <button nbButton (click)="addQuestionClicked()" [disabled]="remainingNumberOfPossibleQuestions < 1">
-              add question
-              <nb-icon icon="plus-outline"></nb-icon>
-            </button>
-          </div>
-
-          <div class="mt-1" *ngIf="remainingNumberOfPossibleQuestions > 0">
-            you can
-            add {{remainingNumberOfPossibleQuestions}} more questions
-          </div>
-          <div class="mt-1" *ngIf="remainingNumberOfPossibleQuestions == 0">you can't add more questions</div>
+      <div class="flex-column">
+        <div>
+          <button nbButton (click)="addQuestionClicked()" [disabled]="remainingNumberOfPossibleQuestions < 1">
+            add question
+            <nb-icon icon="plus-outline"></nb-icon>
+          </button>
         </div>
+
+        <div class="mt-1" *ngIf="remainingNumberOfPossibleQuestions > 0">
+          you can
+          add {{remainingNumberOfPossibleQuestions}} more questions
+        </div>
+
+        <div class="mt-1" *ngIf="remainingNumberOfPossibleQuestions == 0">you can't add more questions</div>
+      </div>
     </nb-accordion-item-header>
   </nb-accordion-item>
 </nb-accordion>
