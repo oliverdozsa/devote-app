@@ -1,4 +1,4 @@
-import {CreateVotingForm} from "../components/create-voting/create-voting-form";
+import {CreateVotingForm, Visibility, VotingQuestion} from "../components/create-voting/create-voting-form";
 
 export class CreateVotingRequest {
   public network: string = "";
@@ -27,9 +27,11 @@ export class CreateVotingRequest {
     request.authorization = form.authorization;
     request.authorizationEmailOptions =
       form.authorizationEmails.size > 0 ? Array.from(form.authorizationEmails) : undefined;
-
-
-    // TODO
+    request.polls = form.questions.map(q => CreatePollRequest.fromVotingQuestion(q));
+    request.visibility = Visibility[form.visibility];
+    request.fundingAccountPublic = form.fundingAccountPublic;
+    request.fundingAccountSecret = form.fundingAccountSecret;
+    request.useTestnet = form.shouldUseTestNet;
 
     return request;
   }
@@ -39,9 +41,24 @@ export class CreateVotingRequest {
 export class CreatePollRequest {
   public question: string = "";
   public options: CreatePollOptionRequest[] = [];
+
+  static fromVotingQuestion(question: VotingQuestion): CreatePollRequest {
+    const request = new CreatePollRequest();
+
+    request.question = question.question;
+    request.options = question.options.map((o, i) => new CreatePollOptionRequest(o, i + 1));
+
+    return request;
+  }
 }
 
 export class CreatePollOptionRequest {
   public name: string = "";
   public code: number = 0;
+
+
+  constructor(name: string, code: number) {
+    this.name = name;
+    this.code = code;
+  }
 }

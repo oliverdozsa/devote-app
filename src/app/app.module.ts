@@ -32,7 +32,7 @@ import {
 } from '@nebular/theme';
 import {NbEvaIconsModule} from '@nebular/eva-icons';
 import {HomeComponent} from './pages/home/home.component';
-import {HttpClientModule} from "@angular/common/http";
+import {HTTP_INTERCEPTORS, HttpClientModule} from "@angular/common/http";
 import {NbAuthModule, NbOAuth2AuthStrategy, NbOAuth2ResponseType} from "@nebular/auth";
 import {LoginCallbackComponent} from './pages/auth/login-callback/login-callback.component';
 import {AppRoutes} from "../app-routes";
@@ -60,9 +60,12 @@ import {
   VotingAuthorizationInputComponent
 } from './components/create-voting/voting-authorization-input/voting-authorization-input.component';
 import {CreateVotingComponent} from "./pages/create-voting/create-voting.component";
-import { VotingEncryptionComponent } from './components/create-voting/voting-encryption/voting-encryption.component';
-import { VotingStartEndDateComponent } from './components/create-voting/voting-start-end-date/voting-start-end-date.component';
-import { VotingQuestionComponent } from './components/create-voting/voting-question/voting-question.component';
+import {VotingEncryptionComponent} from './components/create-voting/voting-encryption/voting-encryption.component';
+import {
+  VotingStartEndDateComponent
+} from './components/create-voting/voting-start-end-date/voting-start-end-date.component';
+import {VotingQuestionComponent} from './components/create-voting/voting-question/voting-question.component';
+import {JwtBearerInterceptor} from "./interceptors/jwt-bearer-interceptor";
 
 @NgModule({
   declarations: [
@@ -141,7 +144,9 @@ import { VotingQuestionComponent } from './components/create-voting/voting-quest
     NbTimepickerModule.forRoot(),
     NbAccordionModule
   ],
-  providers: [],
+  providers: [
+    {provide: HTTP_INTERCEPTORS, useClass: JwtBearerInterceptor, multi: true}
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule {

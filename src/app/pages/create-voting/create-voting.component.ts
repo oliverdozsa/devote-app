@@ -1,8 +1,9 @@
 import {Component, OnDestroy} from '@angular/core';
 import {Subject, takeUntil} from "rxjs";
 import {NbAuthService} from "@nebular/auth";
-import {NbStepperComponent} from "@nebular/theme";
+import {NbStepperComponent, NbToastrService} from "@nebular/theme";
 import {CreateVotingForm} from "../../components/create-voting/create-voting-form";
+import {VotingsService} from "../../services/votings.service";
 
 enum Step {
   SELECT_NETWORK,
@@ -55,7 +56,7 @@ export class CreateVotingComponent implements OnDestroy {
     return !this.form.areQuestionsValid;
   }
 
-  constructor(private authService: NbAuthService) {
+  constructor(private authService: NbAuthService, private votingsService: VotingsService, private toastr: NbToastrService) {
     authService.onAuthenticationChange()
       .pipe(
         takeUntil(this.destroy$)
@@ -74,7 +75,11 @@ export class CreateVotingComponent implements OnDestroy {
   }
 
   onCreateClicked() {
-    // TODO
+    this.votingsService.create(this.form)
+      .subscribe({
+        next: () => this.toastr.success("Voting created 👍!"),
+        error: () => this.toastr.danger("Failed to create voting 😟")
+      });
   }
 
   onPrevClicked(stepper: NbStepperComponent) {
