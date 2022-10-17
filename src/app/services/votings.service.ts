@@ -7,6 +7,12 @@ import {Observable} from "rxjs";
 import {CreateVotingForm} from "../components/create-voting/create-voting-form";
 import {CreateVotingRequest} from "./create-voting-request";
 
+export enum PagingSource {
+  PUBLIC,
+  VOTE_CALLER,
+  VOTER
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -22,13 +28,23 @@ export class VotingsService {
     return this.httpClient.post(url, request);
   }
 
-  getPublic(page: number = 1, itemsPerPage: number = 10): Observable<Page<VotingSummary>> {
-    const url = environment.apiUrl + "/votings/public";
+  getVotingsOf(source: PagingSource = PagingSource.PUBLIC, page: number = 1, itemsPerPage: number = 10): Observable<Page<VotingSummary>> {
+    let url = environment.apiUrl;
+
+    if (source == PagingSource.PUBLIC) {
+      url += "/votings/public";
+    } else if (source == PagingSource.VOTE_CALLER) {
+      url += "/votings/votecaller";
+    } else if (source == PagingSource.VOTER) {
+      url += "/votings/voter";
+    }
+
     const queryParams = new HttpParams()
       .set('offset', this.toOffset(page, itemsPerPage))
       .set('limit', itemsPerPage);
 
     return this.httpClient.get<Page<VotingSummary>>(url, {params: queryParams});
+
   }
 
   private toOffset(page: number, itemsPerPage: number): number {

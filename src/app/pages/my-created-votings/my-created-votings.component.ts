@@ -3,6 +3,7 @@ import {NbAuthService} from "@nebular/auth";
 import {Subject, takeUntil} from "rxjs";
 import {AppRoutes} from "../../../app-routes";
 import {Router} from "@angular/router";
+import {PagingSource} from "../../services/votings.service";
 
 @Component({
   selector: 'app-my-created-votings',
@@ -10,6 +11,7 @@ import {Router} from "@angular/router";
   styleUrls: ['./my-created-votings.component.scss']
 })
 export class MyCreatedVotingsComponent implements OnDestroy {
+  source = PagingSource.VOTE_CALLER;
   isUnlocked = false;
 
   destroy$ = new Subject<void>();
