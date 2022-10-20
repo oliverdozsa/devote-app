@@ -66,6 +66,7 @@ import {
 } from './components/create-voting/voting-start-end-date/voting-start-end-date.component';
 import {VotingQuestionComponent} from './components/create-voting/voting-question/voting-question.component';
 import {JwtBearerInterceptor} from "./interceptors/jwt-bearer-interceptor";
+import { ViewVotingComponent } from './pages/view-voting/view-voting.component';
 
 @NgModule({
   declarations: [
@@ -88,7 +89,8 @@ import {JwtBearerInterceptor} from "./interceptors/jwt-bearer-interceptor";
     CreateVotingComponent,
     VotingEncryptionComponent,
     VotingStartEndDateComponent,
-    VotingQuestionComponent
+    VotingQuestionComponent,
+    ViewVotingComponent
   ],
   imports: [
     BrowserModule,

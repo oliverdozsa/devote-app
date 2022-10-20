@@ -4,4 +4,5 @@ export class AppRoutes {
   static PUBLIC_VOTINGS = 'public-votings';
   static MY_CREATED_VOTING = 'my-created-votings';
   static CREATE_VOTING = 'create-voting';
+  static VIEW_VOTING = 'view-voting';
 }

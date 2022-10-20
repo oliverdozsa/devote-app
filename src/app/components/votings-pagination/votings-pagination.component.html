@@ -2,7 +2,7 @@
   <nb-card-body>
     <nb-list>
       <nb-list-item *ngFor="let voting of votings.items">
-        {{voting.title}}
+        <a routerLink="/{{AppRoutes.VIEW_VOTING}}/{{voting.id}}">{{voting.title}}</a>
       </nb-list-item>
     </nb-list>
   </nb-card-body>
@@ -12,6 +12,6 @@
   not found such votings
 </div>
 
-<app-pagination *ngIf="!isLoading" [current]="currentPage">
+<app-pagination *ngIf="!isLoading" [current]="currentPage" [totalPages]="votings.totalCount" (selectedPage)="onSelectedPageChange($event)">
 
 </app-pagination>

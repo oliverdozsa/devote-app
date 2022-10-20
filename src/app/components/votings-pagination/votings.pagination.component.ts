@@ -5,6 +5,7 @@ import {Page} from "../../data/page";
 import {NgxSpinnerService} from "ngx-spinner";
 import {delay, finalize} from "rxjs";
 import {NbToastrService} from "@nebular/theme";
+import { AppRoutes } from 'src/app-routes';
 
 @Component({
   selector: 'app-votings-pagination',
@@ -12,6 +13,8 @@ import {NbToastrService} from "@nebular/theme";
   styleUrls: ['./votings.pagination.component.scss']
 })
 export class VotingsPaginationComponent {
+  AppRoutes = AppRoutes;
+
   @Input()
   source: PagingSource = PagingSource.PUBLIC;
 
@@ -48,5 +51,10 @@ export class VotingsPaginationComponent {
   onGetVotingsFinished() {
     this.spinner.hide();
     this.isLoading = false;
+  }
+
+  onSelectedPageChange(page: number) {
+    this.currentPage = page;
+    this.getVotings();
   }
 }
