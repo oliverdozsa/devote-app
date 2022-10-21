@@ -1,1 +1,54 @@
-<p>view-voting works!</p>
+<div *ngIf="voting != undefined" class="container">
+  <h4 class="text-center">{{voting.title}}</h4>
+  <nb-card>
+    <nb-card-header>Technical data</nb-card-header>
+    <nb-card-body>
+
+      <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 justify-content-center">
+        <div class="col">
+          <nb-card>
+            <nb-card-header>network</nb-card-header>
+            <nb-card-body>
+              <div>
+                <nb-icon icon="{{voting.network}}" class="mb-1 me-2 align-middle"></nb-icon>({{voting.network}})
+              </div>
+              <div class="mt-2">
+                asset code: {{voting.assetCode}}
+              </div>
+              <div class="mt-2">
+                issuer account: {{voting.issuerAccountId}}
+              </div>
+              <div class="mt-2">
+                ballot account: {{voting.ballotAccountId}}
+              </div>
+              <div class="mt-2">
+                distribution account: {{voting.distributionAccountId}}
+              </div>
+
+            </nb-card-body>
+          </nb-card>
+        </div>
+
+        <div class="col">
+          <nb-card>
+            <nb-card-header>dates</nb-card-header>
+            <nb-card-body>
+              creation time, start, end date. encryption date if encrypted
+            </nb-card-body>
+          </nb-card>
+        </div>
+
+        <div class="col">
+          <nb-card>
+            <nb-card-header>dates</nb-card-header>
+            <nb-card-body>
+              rest: visibility, authorization, votescap
+            </nb-card-body>
+          </nb-card>
+        </div>
+      </div>
+
+    </nb-card-body>
+  </nb-card>
+  <h5>Polls</h5>
+</div>

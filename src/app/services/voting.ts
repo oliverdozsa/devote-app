@@ -1,9 +1,9 @@
-export class VotingResponse {
+export class Voting {
   public id: string = "";
   public network: string = "";
   public title: string = "";
   public votesCap: number = -1;
-  public polls: PollResponse[] = [];
+  public polls: Poll[] = [];
   public createdAt: string = "";
   public encryptedUntil: string = "";
   public decryptionKey: string = "";
@@ -18,7 +18,7 @@ export class VotingResponse {
 
 }
 
-export class PollResponse {
+export class Poll {
   public index: number = -1;
   public question: string = "";
   public pollOptions: PollOption[] = [];

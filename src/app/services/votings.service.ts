@@ -6,6 +6,7 @@ import {Page} from "../data/page";
 import {Observable} from "rxjs";
 import {CreateVotingForm} from "../components/create-voting/create-voting-form";
 import {CreateVotingRequest} from "./create-voting-request";
+import {Voting} from "./voting";
 
 export enum PagingSource {
   PUBLIC,
@@ -45,6 +46,11 @@ export class VotingsService {
 
     return this.httpClient.get<Page<VotingSummary>>(url, {params: queryParams});
 
+  }
+
+  single(id: number): Observable<Voting> {
+    let url = environment.apiUrl + `/voting/${id}`;
+    return this.httpClient.get<Voting>(url);
   }
 
   private toOffset(page: number, itemsPerPage: number): number {
