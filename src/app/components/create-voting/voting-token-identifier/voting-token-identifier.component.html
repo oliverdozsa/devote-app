@@ -1,0 +1,19 @@
+<div class="row mt-2">
+  <div class="col">
+    <label>token identifier</label>
+    <input nbInput type="text" fullWidth
+           [status]="form.isTokenIdentifierValid ? 'success' : 'danger'"
+           [(ngModel)]="form.tokenIdentifier" placeholder="token identifier (leave empty to auto-generate it)">
+  </div>
+</div>
+
+<div *ngIf="!form.isTokenIdentifierValid" class="row mt-1">
+  <div class="col">
+    <nb-card accent="danger">
+      <nb-card-body>
+        If token identifier is given, it must have at least length 2 but no more than 8, and must consists of numbers,
+        and / or lowercase alphabetic characters.
+      </nb-card-body>
+    </nb-card>
+  </div>
+</div>

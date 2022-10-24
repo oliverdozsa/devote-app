@@ -4,6 +4,7 @@ export class CreateVotingRequest {
   public network: string = "";
   public votesCap: number = 0;
   public title: string = "";
+  public tokenIdentifier: string |undefined = undefined;
   public encryptedUntil: string | undefined = undefined;
   public startDate: string = "";
   public endDate: string = "";
@@ -21,6 +22,7 @@ export class CreateVotingRequest {
     request.network = form.selectedNetwork;
     request.votesCap = form.votesCap!;
     request.title = form.title;
+    request.tokenIdentifier = form.tokenIdentifier ? form.tokenIdentifier : undefined;
     request.encryptedUntil = form.isEncrypted ? form.encryptedUntil.toISOString() : undefined;
     request.startDate = form.startDate.toISOString();
     request.endDate = form.endDate.toISOString();

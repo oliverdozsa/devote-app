@@ -16,6 +16,7 @@ export enum Visibility {
 
 export class CreateVotingForm {
   title: string = "";
+  tokenIdentifier: string | undefined = undefined;
   visibility: Visibility = Visibility.PUBLIC;
 
   authorization: Authorization = Authorization.EMAILS;
@@ -35,6 +36,8 @@ export class CreateVotingForm {
 
   private accountValidator: AccountValidator = new AccountValidator();
   private accountPublicDerivation: AccountPublicKeyDerivation = new AccountPublicKeyDerivation();
+
+  private tokenIdentifierRegExp = new RegExp("^[0-9a-z]+$");
 
   get shouldAccountPublicToBeDeterminedAutomatically() {
     return this.selectedNetwork == "stellar";
@@ -118,6 +121,12 @@ export class CreateVotingForm {
 
   get isTitleValid(): boolean {
     return this.title.length > 1 && this.title.length < 1000;
+  }
+
+  get isTokenIdentifierValid(): boolean {
+    return this.tokenIdentifier == undefined || this.tokenIdentifier.length == 0 ||
+      (this.tokenIdentifierRegExp.test(this.tokenIdentifier) && this.tokenIdentifier.length >= 2 &&
+        this.tokenIdentifier.length <= 8);
   }
 
   get isAuthorizationInputValid(): boolean {
@@ -213,7 +222,7 @@ export class VotingQuestion {
     this.options.splice(i, 1);
   }
 
-  addNewEmptyOption(){
+  addNewEmptyOption() {
     this.options.push("");
   }
 }

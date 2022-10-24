@@ -10,19 +10,31 @@
             <nb-card-header>network</nb-card-header>
             <nb-card-body>
               <div>
-                <nb-icon icon="{{voting.network}}" class="mb-1 me-2 align-middle"></nb-icon>({{voting.network}})
+                <nb-icon icon="{{voting.network}}" class="mb-1 me-2 align-middle"></nb-icon>
+                ({{voting.network}})
               </div>
               <div class="mt-2">
-                asset code: {{voting.assetCode}}
+                asset code:
+                <code>{{voting.assetCode}}</code>
+              </div>
+              <div class="mt-2 d-flex flex-row">
+                <div>issuer account:</div>
+                <div class="px-1">
+                  <code class="text-break">{{voting.issuerAccountId.slice(0, 10)}}...</code>
+                </div>
+                <div>
+                  <button size="tiny" nbButton outline status="primary">
+                    <nb-icon icon="clipboard-outline"></nb-icon>
+                  </button>
+                </div>
               </div>
               <div class="mt-2">
-                issuer account: {{voting.issuerAccountId}}
+                ballot account:
+                <code class="d-block text-truncate">{{voting.ballotAccountId}}</code>
               </div>
               <div class="mt-2">
-                ballot account: {{voting.ballotAccountId}}
-              </div>
-              <div class="mt-2">
-                distribution account: {{voting.distributionAccountId}}
+                distribution account:
+                <code class="d-block text-truncate">{{voting.distributionAccountId}}</code>
               </div>
 
             </nb-card-body>
@@ -33,14 +45,27 @@
           <nb-card>
             <nb-card-header>dates</nb-card-header>
             <nb-card-body>
-              creation time, start, end date. encryption date if encrypted
+              creation time, start, end date.
             </nb-card-body>
           </nb-card>
         </div>
 
         <div class="col">
           <nb-card>
-            <nb-card-header>dates</nb-card-header>
+            <nb-card-header>other</nb-card-header>
+            <nb-card-body>
+              rest: visibility, authorization, votescap
+            </nb-card-body>
+          </nb-card>
+        </div>
+
+
+      </div>
+
+      <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 justify-content-center">
+        <div class="col">
+          <nb-card>
+            <nb-card-header>encryption</nb-card-header>
             <nb-card-body>
               rest: visibility, authorization, votescap
             </nb-card-body>

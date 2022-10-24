@@ -1,9 +1,12 @@
 import {Component, OnDestroy} from '@angular/core';
-import {Subject, takeUntil} from "rxjs";
+import {finalize, Subject, takeUntil} from "rxjs";
 import {NbAuthService} from "@nebular/auth";
 import {NbStepperComponent, NbToastrService} from "@nebular/theme";
 import {CreateVotingForm} from "../../components/create-voting/create-voting-form";
 import {VotingsService} from "../../services/votings.service";
+import {NgxSpinnerService} from "ngx-spinner";
+import {Router} from "@angular/router";
+import {AppRoutes} from "../../../app-routes";
 
 enum Step {
   SELECT_NETWORK,
@@ -34,7 +37,7 @@ export class CreateVotingComponent implements OnDestroy {
       return this.form.accountBalance.value < 1;
     } else if (this.currentStep == Step.VOTING_BASIC_DATA) {
       return !this.form.isVotesCapValid || !this.form.isAuthorizationInputValid || !this.form.isTitleValid ||
-        !this.form.isEncryptedUntilValid || !this.form.isStartDateValid || !this.form.isEndDateValid;
+        !this.form.isEncryptedUntilValid || !this.form.isStartDateValid || !this.form.isEndDateValid || !this.form.isTokenIdentifierValid;
     }
 
     return true;
@@ -56,7 +59,8 @@ export class CreateVotingComponent implements OnDestroy {
     return !this.form.areQuestionsValid;
   }
 
-  constructor(private authService: NbAuthService, private votingsService: VotingsService, private toastr: NbToastrService) {
+  constructor(private authService: NbAuthService, private votingsService: VotingsService, private toastr: NbToastrService,
+              private spinner: NgxSpinnerService, private router: Router) {
     authService.onAuthenticationChange()
       .pipe(
         takeUntil(this.destroy$)
@@ -75,9 +79,14 @@ export class CreateVotingComponent implements OnDestroy {
   }
 
   onCreateClicked() {
+    this.spinner.show();
+
     this.votingsService.create(this.form)
+      .pipe(
+        finalize(() => this.spinner.hide())
+      )
       .subscribe({
-        next: () => this.toastr.success("Voting created 👍!"),
+        next: () => this.onVotingSuccessfullyCreated(),
         error: () => this.toastr.danger("Failed to create voting 😟")
       });
   }
@@ -92,5 +101,10 @@ export class CreateVotingComponent implements OnDestroy {
 
   private onIsAuthenticated(isAuthenticated: boolean) {
     this.isUnlocked = isAuthenticated;
+  }
+
+  private onVotingSuccessfullyCreated() {
+    this.toastr.success("Voting created 👍!");
+    this.router.navigate(["/" + AppRoutes.MY_CREATED_VOTING]);
   }
 }
