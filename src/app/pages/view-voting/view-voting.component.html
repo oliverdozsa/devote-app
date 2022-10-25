@@ -17,26 +17,12 @@
                 asset code:
                 <code>{{voting.assetCode}}</code>
               </div>
-              <div class="mt-2 d-flex flex-row">
-                <div>issuer account:</div>
-                <div class="px-1">
-                  <code class="text-break">{{voting.issuerAccountId.slice(0, 10)}}...</code>
-                </div>
-                <div>
-                  <button size="tiny" nbButton outline status="primary">
-                    <nb-icon icon="clipboard-outline"></nb-icon>
-                  </button>
-                </div>
-              </div>
-              <div class="mt-2">
-                ballot account:
-                <code class="d-block text-truncate">{{voting.ballotAccountId}}</code>
-              </div>
-              <div class="mt-2">
-                distribution account:
-                <code class="d-block text-truncate">{{voting.distributionAccountId}}</code>
-              </div>
-
+              <app-truncated-account-id title="issuer account"
+                                        [accountId]="voting.issuerAccountId"></app-truncated-account-id>
+              <app-truncated-account-id title="ballot account"
+                                        [accountId]="voting.ballotAccountId"></app-truncated-account-id>
+              <app-truncated-account-id title="distribution account"
+                                        [accountId]="voting.distributionAccountId"></app-truncated-account-id>
             </nb-card-body>
           </nb-card>
         </div>

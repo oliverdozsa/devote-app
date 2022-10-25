@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component} from '@angular/core';
 import {ActivatedRoute} from "@angular/router";
 import {VotingsService} from "../../services/votings.service";
 import {NgxSpinnerService} from "ngx-spinner";
@@ -11,7 +11,7 @@ import {finalize} from "rxjs";
   templateUrl: './view-voting.component.html',
   styleUrls: ['./view-voting.component.scss']
 })
-export class ViewVotingComponent implements OnInit {
+export class ViewVotingComponent {
   voting: Voting | undefined = undefined;
 
   constructor(private route: ActivatedRoute, private votingsService: VotingsService,
@@ -32,7 +32,12 @@ export class ViewVotingComponent implements OnInit {
       });
   }
 
-  ngOnInit(): void {
+  getAccountIdText(account: string | undefined): string {
+    if(account) {
+      return account.slice(0, 10);
+    }
+
+    return "<NOT YET AVAILABLE>";
   }
 
   private onVotingReceived(voting: Voting) {

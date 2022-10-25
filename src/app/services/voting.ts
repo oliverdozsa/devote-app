@@ -9,9 +9,9 @@ export class Voting {
   public decryptionKey: string = "";
   public startDate: string = "";
   public endDate: string = "";
-  public distributionAccountId: string = "";
-  public ballotAccountId: string = "";
-  public issuerAccountId: string = "";
+  public distributionAccountId: string | undefined = undefined;
+  public ballotAccountId: string | undefined = undefined;
+  public issuerAccountId: string | undefined = undefined;
   public assetCode: string = "";
   public authorization: string = "";
   public visibility: string = "";

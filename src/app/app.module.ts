@@ -68,6 +68,8 @@ import {VotingQuestionComponent} from './components/create-voting/voting-questio
 import {JwtBearerInterceptor} from "./interceptors/jwt-bearer-interceptor";
 import { ViewVotingComponent } from './pages/view-voting/view-voting.component';
 import { VotingTokenIdentifierComponent } from './components/create-voting/voting-token-identifier/voting-token-identifier.component';
+import { TruncatedAccountIdComponent } from './pages/view-voting/truncated-account-id/truncated-account-id.component';
+import {ClipboardModule} from "ngx-clipboard";
 
 @NgModule({
   declarations: [
@@ -92,7 +94,8 @@ import { VotingTokenIdentifierComponent } from './components/create-voting/votin
     VotingStartEndDateComponent,
     VotingQuestionComponent,
     ViewVotingComponent,
-    VotingTokenIdentifierComponent
+    VotingTokenIdentifierComponent,
+    TruncatedAccountIdComponent
   ],
   imports: [
     BrowserModule,
@@ -146,7 +149,8 @@ import { VotingTokenIdentifierComponent } from './components/create-voting/votin
     NbStepperModule,
     NbDatepickerModule.forRoot(),
     NbTimepickerModule.forRoot(),
-    NbAccordionModule
+    NbAccordionModule,
+    ClipboardModule
   ],
   providers: [
     {provide: HTTP_INTERCEPTORS, useClass: JwtBearerInterceptor, multi: true}

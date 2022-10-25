@@ -1,0 +1,11 @@
+<div class="mt-2 d-flex flex-row">
+  <div>{{title}}:</div>
+  <div class="px-1">
+    <code class="text-break">{{truncatedOrUnavailable}}</code>
+  </div>
+  <div *ngIf="accountId">
+    <button size="tiny" nbButton outline status="primary" title="copy to clipboard" ngxClipboard [cbContent]="accountId">
+      <nb-icon icon="clipboard-outline"></nb-icon>
+    </button>
+  </div>
+</div>
