@@ -19,7 +19,7 @@ export class TruncatedAccountIdComponent {
       return this.accountId.length > 10 ? this.accountId.slice(0, 10) + "..." : this.accountId;
     }
 
-    return "<NOT AVAILABLE>";
+    return "<NOT AVAILABLE YET>";
   }
 
 }

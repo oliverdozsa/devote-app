@@ -18,6 +18,8 @@ export class VotingsPaginationComponent {
   @Input()
   source: PagingSource = PagingSource.PUBLIC;
 
+  itemsPerPage = 10;
+
   votings: Page<VotingSummary> = {
     items: [],
     totalCount: 0
@@ -30,10 +32,14 @@ export class VotingsPaginationComponent {
     this.getVotings();
   }
 
+  get totalPages(): number {
+    return Math.ceil(this.votings.totalCount / this.itemsPerPage);
+  }
+
   getVotings() {
     this.spinner.show();
 
-    this.votingsService.getVotingsOf(this.source, this.currentPage)
+    this.votingsService.getVotingsOf(this.source, this.currentPage, this.itemsPerPage)
       .pipe(
         delay(700),
         finalize(() => this.onGetVotingsFinished())

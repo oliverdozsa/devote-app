@@ -70,6 +70,7 @@ import { ViewVotingComponent } from './pages/view-voting/view-voting.component';
 import { VotingTokenIdentifierComponent } from './components/create-voting/voting-token-identifier/voting-token-identifier.component';
 import { TruncatedAccountIdComponent } from './pages/view-voting/truncated-account-id/truncated-account-id.component';
 import {ClipboardModule} from "ngx-clipboard";
+import {CountdownModule} from "ngx-countdown";
 
 @NgModule({
   declarations: [
@@ -97,61 +98,62 @@ import {ClipboardModule} from "ngx-clipboard";
     VotingTokenIdentifierComponent,
     TruncatedAccountIdComponent
   ],
-  imports: [
-    BrowserModule,
-    AppRoutingModule,
-    BrowserAnimationsModule,
-    NbThemeModule.forRoot({name: 'default'}),
-    NbLayoutModule,
-    NbSidebarModule.forRoot(),
-    NbButtonModule,
-    NbIconModule,
-    NbMenuModule.forRoot(),
-    NbCardModule,
-    NbDialogModule.forRoot(),
-    NbToastrModule.forRoot({position: NbGlobalPhysicalPosition.TOP_RIGHT, duration: 4000}),
-    NbEvaIconsModule,
-    NbButtonGroupModule,
-    NbSelectModule,
-    NbListModule,
-    NbToggleModule,
-    NbInputModule,
-    HttpClientModule,
-    FormsModule,
-    NgxSpinnerModule,
-    NbAuthModule.forRoot({
-      strategies: [
-        NbOAuth2AuthStrategy.setup({
-          name: "auth0",
-          clientId: "DgtatvQrzX90oaZNlhRevIVM3dwWPg2F",
-          clientSecret: "",
-          authorize: {
-            endpoint: 'https://dev-devote.eu.auth0.com/authorize',
-            responseType: NbOAuth2ResponseType.TOKEN,
-            scope: 'openid profile email',
-            redirectUri: location.origin +
-              '/' + AppRoutes.LOGIN + "/auth0",
-            params: {
-              "audience": "https://dev-devote.eu.auth0.com/api/v2/"
-            }
-          },
-          redirect: {
-            success: getLastVisitedPage()
-          }
-        })
-      ]
-    }),
-    NbFormFieldModule,
-    NbSpinnerModule,
-    NbTooltipModule,
-    NbPopoverModule,
-    NbTagModule,
-    NbStepperModule,
-    NbDatepickerModule.forRoot(),
-    NbTimepickerModule.forRoot(),
-    NbAccordionModule,
-    ClipboardModule
-  ],
+    imports: [
+        BrowserModule,
+        AppRoutingModule,
+        BrowserAnimationsModule,
+        NbThemeModule.forRoot({name: 'default'}),
+        NbLayoutModule,
+        NbSidebarModule.forRoot(),
+        NbButtonModule,
+        NbIconModule,
+        NbMenuModule.forRoot(),
+        NbCardModule,
+        NbDialogModule.forRoot(),
+        NbToastrModule.forRoot({position: NbGlobalPhysicalPosition.TOP_RIGHT, duration: 4000}),
+        NbEvaIconsModule,
+        NbButtonGroupModule,
+        NbSelectModule,
+        NbListModule,
+        NbToggleModule,
+        NbInputModule,
+        HttpClientModule,
+        FormsModule,
+        NgxSpinnerModule,
+        NbAuthModule.forRoot({
+            strategies: [
+                NbOAuth2AuthStrategy.setup({
+                    name: "auth0",
+                    clientId: "DgtatvQrzX90oaZNlhRevIVM3dwWPg2F",
+                    clientSecret: "",
+                    authorize: {
+                        endpoint: 'https://dev-devote.eu.auth0.com/authorize',
+                        responseType: NbOAuth2ResponseType.TOKEN,
+                        scope: 'openid profile email',
+                        redirectUri: location.origin +
+                            '/' + AppRoutes.LOGIN + "/auth0",
+                        params: {
+                            "audience": "https://dev-devote.eu.auth0.com/api/v2/"
+                        }
+                    },
+                    redirect: {
+                        success: getLastVisitedPage()
+                    }
+                })
+            ]
+        }),
+        NbFormFieldModule,
+        NbSpinnerModule,
+        NbTooltipModule,
+        NbPopoverModule,
+        NbTagModule,
+        NbStepperModule,
+        NbDatepickerModule.forRoot(),
+        NbTimepickerModule.forRoot(),
+        NbAccordionModule,
+        ClipboardModule,
+        CountdownModule
+    ],
   providers: [
     {provide: HTTP_INTERCEPTORS, useClass: JwtBearerInterceptor, multi: true}
   ],

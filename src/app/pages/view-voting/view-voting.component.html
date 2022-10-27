@@ -31,7 +31,27 @@
           <nb-card>
             <nb-card-header>dates</nb-card-header>
             <nb-card-body>
-              creation time, start, end date.
+              <div class="mt-2 d-flex flex-row">
+                <div>start date:</div>
+                <div class="px-1">
+                  {{voting.startDate}}
+                </div>
+              </div>
+
+              <div class="mt-2 d-flex flex-row">
+                <div>end date:</div>
+                <div class="px-1">
+                  {{voting.endDate}}
+                </div>
+              </div>
+
+              <div class="mt-2 d-flex flex-row">
+                <div>time left until voting ends:</div>
+                <div class="px-1">
+                  <span *ngIf="isExpired">expired</span>
+                  <countdown *ngIf="!isExpired" [config]="countDownConfig"></countdown>
+                </div>
+              </div>
             </nb-card-body>
           </nb-card>
         </div>
@@ -44,7 +64,6 @@
             </nb-card-body>
           </nb-card>
         </div>
-
 
       </div>
 
