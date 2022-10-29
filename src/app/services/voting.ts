@@ -5,8 +5,8 @@ export class Voting {
   public votesCap: number = -1;
   public polls: Poll[] = [];
   public createdAt: string = "";
-  public encryptedUntil: string = "";
-  public decryptionKey: string = "";
+  public encryptedUntil: string | undefined = undefined;
+  public decryptionKey: string | undefined = undefined;
   public startDate: string = "";
   public endDate: string = "";
   public distributionAccountId: string | undefined = undefined;

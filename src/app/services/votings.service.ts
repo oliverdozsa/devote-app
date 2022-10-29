@@ -48,7 +48,7 @@ export class VotingsService {
 
   }
 
-  single(id: number): Observable<Voting> {
+  single(id: string): Observable<Voting> {
     let url = environment.apiUrl + `/voting/${id}`;
     return this.httpClient.get<Voting>(url);
   }

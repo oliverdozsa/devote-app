@@ -1,84 +1,147 @@
 <div *ngIf="voting != undefined" class="container">
   <h4 class="text-center">{{voting.title}}</h4>
-  <nb-card>
-    <nb-card-header>Technical data</nb-card-header>
-    <nb-card-body>
+  <h5>Technical data</h5>
 
-      <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 justify-content-center">
-        <div class="col">
-          <nb-card>
-            <nb-card-header>network</nb-card-header>
-            <nb-card-body>
-              <div>
-                <nb-icon icon="{{voting.network}}" class="mb-1 me-2 align-middle"></nb-icon>
-                ({{voting.network}})
+  <div class="row row-cols-1 row-cols-sm-2 justify-content-center">
+    <div class="col">
+      <nb-card>
+        <nb-card-header>network</nb-card-header>
+        <nb-card-body>
+          <div>
+            <nb-icon icon="{{voting.network}}" class="mb-1 me-2 align-middle"></nb-icon>
+            ({{voting.network}})
+          </div>
+          <div class="mt-2">
+            asset code:
+            <code>{{voting.assetCode}}</code>
+          </div>
+          <app-truncated-account-id title="issuer account"
+                                    [accountId]="voting.issuerAccountId"></app-truncated-account-id>
+          <app-truncated-account-id title="ballot account"
+                                    [accountId]="voting.ballotAccountId"></app-truncated-account-id>
+          <app-truncated-account-id title="distribution account"
+                                    [accountId]="voting.distributionAccountId"></app-truncated-account-id>
+        </nb-card-body>
+      </nb-card>
+    </div>
+
+    <div class="col">
+      <nb-card>
+        <nb-card-header>dates</nb-card-header>
+        <nb-card-body>
+          <div class="mt-2 d-flex flex-row">
+            <div>start date:</div>
+            <div class="px-1">
+              {{voting.startDate}}
+            </div>
+          </div>
+
+          <div class="mt-2 d-flex flex-row">
+            <div>end date:</div>
+            <div class="px-1">
+              {{voting.endDate}}
+            </div>
+          </div>
+
+          <div class="mt-2 d-flex flex-row">
+            <div>time left until voting ends:</div>
+            <div class="px-1">
+              <span *ngIf="isVotingExpired">expired</span>
+              <countdown *ngIf="!isVotingExpired" [config]="countDownConfigForVotingExpire"></countdown>
+            </div>
+          </div>
+        </nb-card-body>
+      </nb-card>
+    </div>
+
+  </div>
+
+  <div class="row row-cols-1 row-cols-sm-2 justify-content-center">
+    <div class="col">
+      <nb-card>
+        <nb-card-header>other</nb-card-header>
+        <nb-card-body>
+          <div class="mt-2 d-flex flex-row">
+            <div>visibility:</div>
+            <div class="px-1">
+              {{voting.visibility}}
+            </div>
+          </div>
+
+          <div class="mt-2 d-flex flex-row">
+            <div>authorization:</div>
+            <div class="px-1">
+              {{voting.authorization}}
+            </div>
+          </div>
+
+          <div class="mt-2 d-flex flex-row">
+            <div>votes cap:</div>
+            <div class="px-1">
+              {{voting.votesCap}}
+            </div>
+          </div>
+        </nb-card-body>
+      </nb-card>
+    </div>
+
+    <div class="col">
+      <nb-card>
+        <nb-card-header>encryption</nb-card-header>
+        <nb-card-body>
+          <div class="row">
+            <div class="col">
+
+              <div *ngIf="!isEncrypted" class="text-center">
+                voting is not encrypted
               </div>
-              <div class="mt-2">
-                asset code:
-                <code>{{voting.assetCode}}</code>
-              </div>
-              <app-truncated-account-id title="issuer account"
-                                        [accountId]="voting.issuerAccountId"></app-truncated-account-id>
-              <app-truncated-account-id title="ballot account"
-                                        [accountId]="voting.ballotAccountId"></app-truncated-account-id>
-              <app-truncated-account-id title="distribution account"
-                                        [accountId]="voting.distributionAccountId"></app-truncated-account-id>
-            </nb-card-body>
-          </nb-card>
-        </div>
-
-        <div class="col">
-          <nb-card>
-            <nb-card-header>dates</nb-card-header>
-            <nb-card-body>
-              <div class="mt-2 d-flex flex-row">
-                <div>start date:</div>
-                <div class="px-1">
-                  {{voting.startDate}}
-                </div>
+              <div *ngIf="!isEncrypted" class="text-center">
+                <nb-icon icon="unlock" pack="fas" class="mt-2 fa-3x"></nb-icon>
               </div>
 
-              <div class="mt-2 d-flex flex-row">
-                <div>end date:</div>
-                <div class="px-1">
-                  {{voting.endDate}}
-                </div>
+              <div *ngIf="isEncrypted" class="text-center">
+                voting is encrypted
+                <span *ngIf="isEncryptionExpired">and unlocked</span>
+                <span *ngIf="!isEncryptionExpired">and locked</span>
+              </div>
+              <div *ngIf="isEncrypted && !isEncryptionExpired" class="text-center">
+                <nb-icon icon="lock" pack="fas" class="mt-2 fa-3x"></nb-icon>
               </div>
 
-              <div class="mt-2 d-flex flex-row">
-                <div>time left until voting ends:</div>
-                <div class="px-1">
-                  <span *ngIf="isExpired">expired</span>
-                  <countdown *ngIf="!isExpired" [config]="countDownConfig"></countdown>
-                </div>
+              <div *ngIf="isEncrypted && isEncryptionExpired" class="text-center">
+                <nb-icon icon="lock-open" pack="fas" class="mt-2 fa-3x"></nb-icon>
               </div>
-            </nb-card-body>
-          </nb-card>
-        </div>
 
-        <div class="col">
-          <nb-card>
-            <nb-card-header>other</nb-card-header>
-            <nb-card-body>
-              rest: visibility, authorization, votescap
-            </nb-card-body>
-          </nb-card>
-        </div>
+              <div *ngIf="isEncrypted && !isEncryptionExpired" class="text-center">
+                encryption expires in:
+                <countdown [config]="countDownConfigForEncryptionExpire"></countdown>
+              </div>
 
-      </div>
+              <div *ngIf="isEncrypted && isEncryptionExpired" class="text-center">
+                decryption key: {{voting.decryptionKey}}
+              </div>
 
-      <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 justify-content-center">
-        <div class="col">
-          <nb-card>
-            <nb-card-header>encryption</nb-card-header>
-            <nb-card-body>
-              rest: visibility, authorization, votescap
-            </nb-card-body>
-          </nb-card>
-        </div>
-      </div>
+            </div>
+          </div>
+        </nb-card-body>
+      </nb-card>
+    </div>
+  </div>
 
-    </nb-card-body>
-  </nb-card>
   <h5>Polls</h5>
+  <nb-accordion>
+    <nb-accordion-item *ngFor="let poll of voting.polls">
+      <nb-accordion-item-header>
+        {{poll.question}}
+      </nb-accordion-item-header>
+      <nb-accordion-item-body>
+        <nb-list>
+          <nb-list-item *ngFor="let option of poll.pollOptions">
+            {{option.code}}. {{option.name}}
+          </nb-list-item>
+        </nb-list>
+      </nb-accordion-item-body>
+    </nb-accordion-item>
+  </nb-accordion>
+
 </div>

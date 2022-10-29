@@ -15,29 +15,21 @@ import {CountdownConfig} from "ngx-countdown";
 export class ViewVotingComponent {
   voting: Voting | undefined = undefined;
 
-  public countDownConfig: CountdownConfig = {
-    formatDate: ({date}) => {
-      const daysLeft = Math.floor(date / 1000 / 60 / 60 / 24);
-      const hoursLeft = Math.floor((date / 1000 / 60 / 60) % 24);
-      const minutesLeft = Math.floor((date / 1000 / 60) % 60);
-      const secondsLeft = Math.floor((date / 1000) % 60);
+  public countDownConfigForVotingExpire: CountdownConfig = {
+    formatDate: ({date}) => this.formatDate(date)
+  }
 
-      const daysLeftText = daysLeft > 0 ? `${daysLeft} days ` : '';
-      const hoursLeftText = hoursLeft > 0 || daysLeft > 0 ? `${hoursLeft} hours ` : '';
-      const minutesLeftText = minutesLeft > 0 || daysLeft > 0 || hoursLeft > 0 ? `${minutesLeft} minutes ` : '';
-      const secondsLeftText = `${secondsLeft} seconds `;
-
-      return daysLeftText + hoursLeftText + minutesLeftText + secondsLeftText;
-    }
+  public countDownConfigForEncryptionExpire: CountdownConfig = {
+    formatDate: ({date}) => this.formatDate(date)
   }
 
   constructor(private route: ActivatedRoute, private votingsService: VotingsService,
               private spinner: NgxSpinnerService, private toastr: NbToastrService) {
-    const votingId = Number(route.snapshot.paramMap.get("id"))!;
+    const votingId = route.snapshot.paramMap.get("id")!;
     this.getVoting(votingId);
   }
 
-  getVoting(id: number) {
+  getVoting(id: string) {
     this.spinner.show();
     this.votingsService.single(id)
       .pipe(
@@ -45,29 +37,63 @@ export class ViewVotingComponent {
       )
       .subscribe({
         next: v => this.onVotingReceived(v),
-        error: err => this.toastr.danger("Failed to get voting 😞.")
+        error: err => this.toastr.danger("Failed to get voting 😞. TODO: check for unauth")
       });
   }
 
-  get isExpired(): boolean {
-    return this.remainingSecondsLeft() == 0;
+  get isVotingExpired(): boolean {
+    return this.remainingTotalSecondsLeftUntilVotingEnds() == 0;
+  }
+
+  get isEncrypted(): boolean {
+    return this.voting?.encryptedUntil != undefined;
+  }
+
+  get isEncryptionExpired(): boolean {
+    return this.remainingTotalSecondsLeftUntilEncryptionEnds() == 0;
   }
 
   private onVotingReceived(voting: Voting) {
     this.voting = voting;
-    this.countDownConfig.leftTime = this.remainingSecondsLeft();
+    this.countDownConfigForVotingExpire.leftTime = this.remainingTotalSecondsLeftUntilVotingEnds();
+    this.countDownConfigForEncryptionExpire.leftTime = this.remainingTotalSecondsLeftUntilEncryptionEnds();
   }
 
-  private remainingSecondsLeft(): number {
+  private remainingTotalSecondsLeftUntilVotingEnds(): number {
     if (this.voting) {
-      const now = Date.now();
-      const end = Date.parse(this.voting.endDate);
-
-      const diffSeconds = Math.floor((end - now) / 1000);
-      return diffSeconds > 0 ? diffSeconds : 0;
+      return this.calcRemainingTotalSeconds(this.voting.endDate);
     }
 
     return 0;
   }
 
+  private remainingTotalSecondsLeftUntilEncryptionEnds(): number {
+    if (this.voting && this.isEncrypted) {
+      return this.calcRemainingTotalSeconds(this.voting.encryptedUntil!);
+    }
+
+    return 0;
+  }
+
+  private calcRemainingTotalSeconds(dateUntil: string) {
+    const now = Date.now();
+    const end = Date.parse(dateUntil);
+
+    const diffSeconds = Math.floor((end - now) / 1000);
+    return diffSeconds > 0 ? diffSeconds : 0;
+  }
+
+  private formatDate(date: number) {
+  const daysLeft = Math.floor(date / 1000 / 60 / 60 / 24);
+  const hoursLeft = Math.floor((date / 1000 / 60 / 60) % 24);
+  const minutesLeft = Math.floor((date / 1000 / 60) % 60);
+  const secondsLeft = Math.floor((date / 1000) % 60);
+
+  const daysLeftText = daysLeft > 0 ? `${daysLeft} days ` : '';
+  const hoursLeftText = hoursLeft > 0 || daysLeft > 0 ? `${hoursLeft} hours ` : '';
+  const minutesLeftText = minutesLeft > 0 || daysLeft > 0 || hoursLeft > 0 ? `${minutesLeft} minutes ` : '';
+  const secondsLeftText = `${secondsLeft} seconds `;
+
+  return daysLeftText + hoursLeftText + minutesLeftText + secondsLeftText;
+}
 }
