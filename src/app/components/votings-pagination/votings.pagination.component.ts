@@ -1,18 +1,18 @@
-import {Component, Input} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {PagingSource, VotingsService} from "../../services/votings.service";
 import {VotingSummary} from "../../data/voting.summary";
 import {Page} from "../../data/page";
 import {NgxSpinnerService} from "ngx-spinner";
 import {delay, finalize} from "rxjs";
 import {NbToastrService} from "@nebular/theme";
-import { AppRoutes } from 'src/app-routes';
+import {AppRoutes} from 'src/app-routes';
 
 @Component({
   selector: 'app-votings-pagination',
   templateUrl: './votings-pagination.component.html',
   styleUrls: ['./votings.pagination.component.scss']
 })
-export class VotingsPaginationComponent {
+export class VotingsPaginationComponent implements OnInit {
   AppRoutes = AppRoutes;
 
   @Input()
@@ -29,6 +29,9 @@ export class VotingsPaginationComponent {
   currentPage: number = 1;
 
   constructor(private votingsService: VotingsService, private spinner: NgxSpinnerService, private toastr: NbToastrService) {
+  }
+
+  ngOnInit(): void {
     this.getVotings();
   }
 
@@ -51,7 +54,7 @@ export class VotingsPaginationComponent {
   }
 
   onVotingsPageReceived(page: Page<VotingSummary>) {
-      this.votings = page;
+    this.votings = page;
   }
 
   onGetVotingsFinished() {

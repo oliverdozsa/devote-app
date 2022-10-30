@@ -96,7 +96,7 @@
                 voting is not encrypted
               </div>
               <div *ngIf="!isEncrypted" class="text-center">
-                <nb-icon icon="unlock" pack="fas" class="mt-2 fa-3x"></nb-icon>
+                <nb-icon icon="globe" pack="fas" class="mt-2 fa-3x"></nb-icon>
               </div>
 
               <div *ngIf="isEncrypted" class="text-center">
@@ -118,7 +118,11 @@
               </div>
 
               <div *ngIf="isEncrypted && isEncryptionExpired" class="text-center">
-                decryption key: {{voting.decryptionKey}}
+                decryption key: <code>{{voting.decryptionKey}}</code>
+                <button size="tiny" nbButton outline status="primary" title="copy to clipboard" ngxClipboard
+                        [cbContent]="voting.decryptionKey">
+                  <nb-icon icon="clipboard-outline"></nb-icon>
+                </button>
               </div>
 
             </div>
@@ -129,7 +133,7 @@
   </div>
 
   <h5>Polls</h5>
-  <nb-accordion>
+  <nb-accordion multi>
     <nb-accordion-item *ngFor="let poll of voting.polls">
       <nb-accordion-item-header>
         {{poll.question}}
