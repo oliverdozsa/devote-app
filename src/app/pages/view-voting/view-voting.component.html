@@ -1,6 +1,14 @@
 <div *ngIf="voting != undefined" class="container">
   <h4 class="text-center">{{voting.title}}</h4>
+
   <h5>Technical data</h5>
+
+  <div>
+    <button nbButton (click)="onReloadClicked()">
+      reload
+      <nb-icon icon="refresh-outline"></nb-icon>
+    </button>
+  </div>
 
   <div class="row row-cols-1 row-cols-sm-2 justify-content-center">
     <div class="col">

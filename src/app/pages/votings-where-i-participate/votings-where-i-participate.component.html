@@ -1,0 +1,9 @@
+<div *ngIf="!isUnlocked" class="container text-center">
+  <h5>please login to view this page</h5>
+</div>
+
+<div *ngIf="isUnlocked" class="container">
+  <div class="mt-2">
+    <app-votings-pagination [source]="source" [allowCastVote]="true"></app-votings-pagination>
+  </div>
+</div>

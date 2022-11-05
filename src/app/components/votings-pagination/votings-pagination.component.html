@@ -2,7 +2,18 @@
   <nb-card-body>
     <nb-list>
       <nb-list-item *ngFor="let voting of votings.items">
-        <a routerLink="/{{AppRoutes.VIEW_VOTING}}/{{voting.id}}">{{voting.title}}</a>
+        <div class="flex-grow-1">
+          <a routerLink="/{{AppRoutes.VIEW_VOTING}}/{{voting.id}}">{{voting.title}}</a>
+        </div>
+
+        <div *ngIf="allowCastVote && !this.isExpired(voting)">
+          <button nbButton status="primary">
+            cast vote
+          </button>
+        </div>
+        <div *ngIf="this.isExpired(voting)">
+          <div class="text-disabled">EXPIRED</div>
+        </div>
       </nb-list-item>
     </nb-list>
   </nb-card-body>
@@ -12,6 +23,7 @@
   not found such votings
 </div>
 
-<app-pagination *ngIf="!isLoading" [current]="currentPage" [totalPages]="totalPages" (selectedPage)="onSelectedPageChange($event)">
+<app-pagination *ngIf="!isLoading && votings.items.length > 0" [current]="currentPage" [totalPages]="totalPages"
+                (selectedPage)="onSelectedPageChange($event)">
 
 </app-pagination>

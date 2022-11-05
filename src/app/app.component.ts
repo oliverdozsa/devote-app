@@ -49,7 +49,8 @@ export class AppComponent {
     {
       title: MainMenuItemTitles.VOTINGS_WHERE_I_PARTICIPATE,
       icon: {icon: 'person-booth', pack: 'fas'},
-      hidden: true
+      hidden: true,
+      link: AppRoutes.VOTINGS_WHERE_I_PARTICIPATE
     },
     {
       title: MainMenuItemTitles.LOGIN,

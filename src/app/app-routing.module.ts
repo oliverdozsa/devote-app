@@ -8,6 +8,9 @@ import {PageNotFoundComponent} from "./pages/page-not-found/page-not-found.compo
 import {MyCreatedVotingsComponent} from "./pages/my-created-votings/my-created-votings.component";
 import {CreateVotingComponent} from "./pages/create-voting/create-voting.component";
 import {ViewVotingComponent} from "./pages/view-voting/view-voting.component";
+import {
+  VotingsWhereIParticipateComponent
+} from "./pages/votings-where-i-participate/votings-where-i-participate.component";
 
 const routes: Routes = [
   {path: AppRoutes.HOME, component: HomeComponent},
@@ -16,6 +19,7 @@ const routes: Routes = [
   {path: AppRoutes.MY_CREATED_VOTING, component: MyCreatedVotingsComponent},
   {path: AppRoutes.CREATE_VOTING, component: CreateVotingComponent},
   {path: AppRoutes.VIEW_VOTING + "/:id", component: ViewVotingComponent},
+  {path: AppRoutes.VOTINGS_WHERE_I_PARTICIPATE, component: VotingsWhereIParticipateComponent},
   {path: '', redirectTo: '/' + AppRoutes.HOME, pathMatch: 'full'},
   {path: '**', component: PageNotFoundComponent}
 ];

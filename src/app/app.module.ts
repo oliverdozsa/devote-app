@@ -5,30 +5,30 @@ import {AppRoutingModule} from './app-routing.module';
 import {AppComponent} from './app.component';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {
-  NbThemeModule,
-  NbLayoutModule,
-  NbSidebarModule,
-  NbButtonModule,
-  NbIconModule,
-  NbMenuModule,
-  NbCardModule,
-  NbDialogModule,
-  NbGlobalPhysicalPosition,
-  NbToastrModule,
-  NbToggleModule,
-  NbButtonGroupModule,
-  NbListModule,
-  NbSelectModule,
-  NbFormFieldModule,
-  NbInputModule,
-  NbSpinnerModule,
-  NbTooltipModule,
-  NbPopoverModule,
-  NbTagModule,
-  NbStepperModule,
-  NbDatepickerModule,
-  NbTimepickerModule,
-  NbAccordionModule
+    NbThemeModule,
+    NbLayoutModule,
+    NbSidebarModule,
+    NbButtonModule,
+    NbIconModule,
+    NbMenuModule,
+    NbCardModule,
+    NbDialogModule,
+    NbGlobalPhysicalPosition,
+    NbToastrModule,
+    NbToggleModule,
+    NbButtonGroupModule,
+    NbListModule,
+    NbSelectModule,
+    NbFormFieldModule,
+    NbInputModule,
+    NbSpinnerModule,
+    NbTooltipModule,
+    NbPopoverModule,
+    NbTagModule,
+    NbStepperModule,
+    NbDatepickerModule,
+    NbTimepickerModule,
+    NbAccordionModule, NbAlertModule
 } from '@nebular/theme';
 import {NbEvaIconsModule} from '@nebular/eva-icons';
 import {HomeComponent} from './pages/home/home.component';
@@ -71,6 +71,7 @@ import { VotingTokenIdentifierComponent } from './components/create-voting/votin
 import { TruncatedAccountIdComponent } from './pages/view-voting/truncated-account-id/truncated-account-id.component';
 import {ClipboardModule} from "ngx-clipboard";
 import {CountdownModule} from "ngx-countdown";
+import { VotingsWhereIParticipateComponent } from './pages/votings-where-i-participate/votings-where-i-participate.component';
 
 @NgModule({
   declarations: [
@@ -96,7 +97,8 @@ import {CountdownModule} from "ngx-countdown";
     VotingQuestionComponent,
     ViewVotingComponent,
     VotingTokenIdentifierComponent,
-    TruncatedAccountIdComponent
+    TruncatedAccountIdComponent,
+    VotingsWhereIParticipateComponent
   ],
     imports: [
         BrowserModule,
@@ -152,7 +154,8 @@ import {CountdownModule} from "ngx-countdown";
         NbTimepickerModule.forRoot(),
         NbAccordionModule,
         ClipboardModule,
-        CountdownModule
+        CountdownModule,
+        NbAlertModule
     ],
   providers: [
     {provide: HTTP_INTERCEPTORS, useClass: JwtBearerInterceptor, multi: true}

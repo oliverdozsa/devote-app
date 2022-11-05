@@ -18,6 +18,9 @@ export class VotingsPaginationComponent implements OnInit {
   @Input()
   source: PagingSource = PagingSource.PUBLIC;
 
+  @Input()
+  allowCastVote: boolean = false;
+
   itemsPerPage = 10;
 
   votings: Page<VotingSummary> = {
@@ -65,5 +68,12 @@ export class VotingsPaginationComponent implements OnInit {
   onSelectedPageChange(page: number) {
     this.currentPage = page;
     this.getVotings();
+  }
+
+  isExpired(voting: VotingSummary): boolean {
+    const nowMillis = Date.now();
+    const endMillis = Date.parse(voting.endDate)
+
+    return endMillis <= nowMillis;
   }
 }

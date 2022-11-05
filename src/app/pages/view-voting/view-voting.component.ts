@@ -53,6 +53,10 @@ export class ViewVotingComponent {
     return this.remainingTotalSecondsLeftUntilEncryptionEnds() == 0;
   }
 
+  onReloadClicked() {
+    this.getVoting(this.voting?.id!);
+  }
+
   private onVotingReceived(voting: Voting) {
     this.voting = voting;
     this.countDownConfigForVotingExpire.leftTime = this.remainingTotalSecondsLeftUntilVotingEnds();
