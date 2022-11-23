@@ -11,6 +11,7 @@ import {ViewVotingComponent} from "./pages/view-voting/view-voting.component";
 import {
   VotingsWhereIParticipateComponent
 } from "./pages/votings-where-i-participate/votings-where-i-participate.component";
+import {CastVoteComponent} from "./pages/cast-vote/cast-vote.component";
 
 const routes: Routes = [
   {path: AppRoutes.HOME, component: HomeComponent},
@@ -20,6 +21,7 @@ const routes: Routes = [
   {path: AppRoutes.CREATE_VOTING, component: CreateVotingComponent},
   {path: AppRoutes.VIEW_VOTING + "/:id", component: ViewVotingComponent},
   {path: AppRoutes.VOTINGS_WHERE_I_PARTICIPATE, component: VotingsWhereIParticipateComponent},
+  {path: AppRoutes.CAST_VOTE + "/:id", component: CastVoteComponent},
   {path: '', redirectTo: '/' + AppRoutes.HOME, pathMatch: 'full'},
   {path: '**', component: PageNotFoundComponent}
 ];

@@ -5,30 +5,30 @@ import {AppRoutingModule} from './app-routing.module';
 import {AppComponent} from './app.component';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {
-    NbThemeModule,
-    NbLayoutModule,
-    NbSidebarModule,
-    NbButtonModule,
-    NbIconModule,
-    NbMenuModule,
-    NbCardModule,
-    NbDialogModule,
-    NbGlobalPhysicalPosition,
-    NbToastrModule,
-    NbToggleModule,
-    NbButtonGroupModule,
-    NbListModule,
-    NbSelectModule,
-    NbFormFieldModule,
-    NbInputModule,
-    NbSpinnerModule,
-    NbTooltipModule,
-    NbPopoverModule,
-    NbTagModule,
-    NbStepperModule,
-    NbDatepickerModule,
-    NbTimepickerModule,
-    NbAccordionModule, NbAlertModule
+  NbThemeModule,
+  NbLayoutModule,
+  NbSidebarModule,
+  NbButtonModule,
+  NbIconModule,
+  NbMenuModule,
+  NbCardModule,
+  NbDialogModule,
+  NbGlobalPhysicalPosition,
+  NbToastrModule,
+  NbToggleModule,
+  NbButtonGroupModule,
+  NbListModule,
+  NbSelectModule,
+  NbFormFieldModule,
+  NbInputModule,
+  NbSpinnerModule,
+  NbTooltipModule,
+  NbPopoverModule,
+  NbTagModule,
+  NbStepperModule,
+  NbDatepickerModule,
+  NbTimepickerModule,
+  NbAccordionModule, NbAlertModule, NbRadioModule
 } from '@nebular/theme';
 import {NbEvaIconsModule} from '@nebular/eva-icons';
 import {HomeComponent} from './pages/home/home.component';
@@ -72,6 +72,7 @@ import { TruncatedAccountIdComponent } from './pages/view-voting/truncated-accou
 import {ClipboardModule} from "ngx-clipboard";
 import {CountdownModule} from "ngx-countdown";
 import { VotingsWhereIParticipateComponent } from './pages/votings-where-i-participate/votings-where-i-participate.component';
+import { CastVoteComponent } from './pages/cast-vote/cast-vote.component';
 
 @NgModule({
   declarations: [
@@ -98,65 +99,67 @@ import { VotingsWhereIParticipateComponent } from './pages/votings-where-i-parti
     ViewVotingComponent,
     VotingTokenIdentifierComponent,
     TruncatedAccountIdComponent,
-    VotingsWhereIParticipateComponent
+    VotingsWhereIParticipateComponent,
+    CastVoteComponent
   ],
-    imports: [
-        BrowserModule,
-        AppRoutingModule,
-        BrowserAnimationsModule,
-        NbThemeModule.forRoot({name: 'default'}),
-        NbLayoutModule,
-        NbSidebarModule.forRoot(),
-        NbButtonModule,
-        NbIconModule,
-        NbMenuModule.forRoot(),
-        NbCardModule,
-        NbDialogModule.forRoot(),
-        NbToastrModule.forRoot({position: NbGlobalPhysicalPosition.TOP_RIGHT, duration: 4000}),
-        NbEvaIconsModule,
-        NbButtonGroupModule,
-        NbSelectModule,
-        NbListModule,
-        NbToggleModule,
-        NbInputModule,
-        HttpClientModule,
-        FormsModule,
-        NgxSpinnerModule,
-        NbAuthModule.forRoot({
-            strategies: [
-                NbOAuth2AuthStrategy.setup({
-                    name: "auth0",
-                    clientId: "DgtatvQrzX90oaZNlhRevIVM3dwWPg2F",
-                    clientSecret: "",
-                    authorize: {
-                        endpoint: 'https://dev-devote.eu.auth0.com/authorize',
-                        responseType: NbOAuth2ResponseType.TOKEN,
-                        scope: 'openid profile email',
-                        redirectUri: location.origin +
-                            '/' + AppRoutes.LOGIN + "/auth0",
-                        params: {
-                            "audience": "https://dev-devote.eu.auth0.com/api/v2/"
-                        }
-                    },
-                    redirect: {
-                        success: getLastVisitedPage()
-                    }
-                })
-            ]
-        }),
-        NbFormFieldModule,
-        NbSpinnerModule,
-        NbTooltipModule,
-        NbPopoverModule,
-        NbTagModule,
-        NbStepperModule,
-        NbDatepickerModule.forRoot(),
-        NbTimepickerModule.forRoot(),
-        NbAccordionModule,
-        ClipboardModule,
-        CountdownModule,
-        NbAlertModule
-    ],
+  imports: [
+    BrowserModule,
+    AppRoutingModule,
+    BrowserAnimationsModule,
+    NbThemeModule.forRoot({name: 'default'}),
+    NbLayoutModule,
+    NbSidebarModule.forRoot(),
+    NbButtonModule,
+    NbIconModule,
+    NbMenuModule.forRoot(),
+    NbCardModule,
+    NbDialogModule.forRoot(),
+    NbToastrModule.forRoot({position: NbGlobalPhysicalPosition.TOP_RIGHT, duration: 4000}),
+    NbEvaIconsModule,
+    NbButtonGroupModule,
+    NbSelectModule,
+    NbListModule,
+    NbToggleModule,
+    NbInputModule,
+    HttpClientModule,
+    FormsModule,
+    NgxSpinnerModule,
+    NbAuthModule.forRoot({
+      strategies: [
+        NbOAuth2AuthStrategy.setup({
+          name: "auth0",
+          clientId: "DgtatvQrzX90oaZNlhRevIVM3dwWPg2F",
+          clientSecret: "",
+          authorize: {
+            endpoint: 'https://dev-devote.eu.auth0.com/authorize',
+            responseType: NbOAuth2ResponseType.TOKEN,
+            scope: 'openid profile email',
+            redirectUri: location.origin +
+              '/' + AppRoutes.LOGIN + "/auth0",
+            params: {
+              "audience": "https://dev-devote.eu.auth0.com/api/v2/"
+            }
+          },
+          redirect: {
+            success: getLastVisitedPage()
+          }
+        })
+      ]
+    }),
+    NbFormFieldModule,
+    NbSpinnerModule,
+    NbTooltipModule,
+    NbPopoverModule,
+    NbTagModule,
+    NbStepperModule,
+    NbDatepickerModule.forRoot(),
+    NbTimepickerModule.forRoot(),
+    NbAccordionModule,
+    ClipboardModule,
+    CountdownModule,
+    NbAlertModule,
+    NbRadioModule
+  ],
   providers: [
     {provide: HTTP_INTERCEPTORS, useClass: JwtBearerInterceptor, multi: true}
   ],

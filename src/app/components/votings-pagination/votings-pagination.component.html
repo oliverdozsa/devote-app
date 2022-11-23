@@ -7,9 +7,12 @@
         </div>
 
         <div *ngIf="allowCastVote && !this.isExpired(voting)">
-          <button nbButton status="primary">
-            cast vote
-          </button>
+          <a routerLink="/{{AppRoutes.CAST_VOTE}}/{{voting.id}}">
+            <button nbButton status="primary">
+              cast vote
+            </button>
+          </a>
+
         </div>
         <div *ngIf="this.isExpired(voting)">
           <div class="text-disabled">EXPIRED</div>
