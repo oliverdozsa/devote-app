@@ -1,0 +1,7 @@
+<nb-card>
+  <nb-card-header *ngIf="orchestration">{{orchestration.describeProgressState()}}</nb-card-header>
+  <nb-card-body></nb-card-body>
+  <nb-card-footer>
+    <button nbButton (click)="onCloseClick()">done</button>
+  </nb-card-footer>
+</nb-card>

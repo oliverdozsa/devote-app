@@ -15,6 +15,7 @@ export class Voting {
   public assetCode: string = "";
   public authorization: string = "";
   public visibility: string = "";
+  public isOnTestNetwork: boolean = false;
 
 }
 

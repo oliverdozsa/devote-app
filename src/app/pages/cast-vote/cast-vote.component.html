@@ -12,20 +12,22 @@
       </nb-radio>
     </nb-radio-group>
   </div>
+
+  <div class="row">
+    <div class="col-3"></div>
+    <div class="col-6">
+      <button [disabled]="isNotAllowedToCastVote" fullWidth status="primary" nbButton (click)="onCastVoteClicked()">cast vote</button>
+    </div>
+    <div class="col-3"></div>
+  </div>
+
+  <div *ngIf="isNotAllowedToCastVote" class="row mt-2">
+    <div class="col-3"></div>
+    <div class="col-6">
+      <nb-alert accent="danger">you must choose one for every option!</nb-alert>
+    </div>
+    <div class="col-3"></div>
+  </div>
+
 </div>
 
-<div class="row">
-  <div class="col-3"></div>
-  <div class="col-6">
-    <button [disabled]="isNotAllowedToCastVote" fullWidth status="primary" nbButton>cast vote</button>
-  </div>
-  <div class="col-3"></div>
-</div>
-
-<div *ngIf="isNotAllowedToCastVote" class="row mt-2">
-  <div class="col-3"></div>
-  <div class="col-6">
-    <nb-alert accent="danger">you must choose one for every option!</nb-alert>
-  </div>
-  <div class="col-3"></div>
-</div>

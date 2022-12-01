@@ -66,13 +66,18 @@ import {
 } from './components/create-voting/voting-start-end-date/voting-start-end-date.component';
 import {VotingQuestionComponent} from './components/create-voting/voting-question/voting-question.component';
 import {JwtBearerInterceptor} from "./interceptors/jwt-bearer-interceptor";
-import { ViewVotingComponent } from './pages/view-voting/view-voting.component';
-import { VotingTokenIdentifierComponent } from './components/create-voting/voting-token-identifier/voting-token-identifier.component';
-import { TruncatedAccountIdComponent } from './pages/view-voting/truncated-account-id/truncated-account-id.component';
+import {ViewVotingComponent} from './pages/view-voting/view-voting.component';
+import {
+  VotingTokenIdentifierComponent
+} from './components/create-voting/voting-token-identifier/voting-token-identifier.component';
+import {TruncatedAccountIdComponent} from './pages/view-voting/truncated-account-id/truncated-account-id.component';
 import {ClipboardModule} from "ngx-clipboard";
 import {CountdownModule} from "ngx-countdown";
-import { VotingsWhereIParticipateComponent } from './pages/votings-where-i-participate/votings-where-i-participate.component';
-import { CastVoteComponent } from './pages/cast-vote/cast-vote.component';
+import {
+  VotingsWhereIParticipateComponent
+} from './pages/votings-where-i-participate/votings-where-i-participate.component';
+import {CastVoteComponent} from './pages/cast-vote/cast-vote.component';
+import {CastVoteProgressComponent} from './pages/cast-vote/cast-vote-progress/cast-vote-progress.component';
 
 @NgModule({
   declarations: [
@@ -100,7 +105,8 @@ import { CastVoteComponent } from './pages/cast-vote/cast-vote.component';
     VotingTokenIdentifierComponent,
     TruncatedAccountIdComponent,
     VotingsWhereIParticipateComponent,
-    CastVoteComponent
+    CastVoteComponent,
+    CastVoteProgressComponent
   ],
   imports: [
     BrowserModule,

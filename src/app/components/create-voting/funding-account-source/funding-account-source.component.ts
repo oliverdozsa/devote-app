@@ -2,8 +2,9 @@ import {Component, Input, OnInit} from '@angular/core';
 import {CreateVotingForm} from "../create-voting-form";
 import {NbToastrService} from "@nebular/theme";
 import {HttpClient} from "@angular/common/http";
-import {KeyPair, TestAccountGenerator} from "../account/test-account-generator";
+import {TestAccountGenerator} from "../account/test-account-generator";
 import {finalize} from "rxjs";
+import {KeyPair} from "../account/key-pair";
 
 @Component({
   selector: 'app-funding-account-source',

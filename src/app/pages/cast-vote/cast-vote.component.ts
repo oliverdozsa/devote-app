@@ -4,8 +4,9 @@ import {NbAuthService} from "@nebular/auth";
 import {ActivatedRoute} from "@angular/router";
 import {VotingsService} from "../../services/votings.service";
 import {NgxSpinnerService} from "ngx-spinner";
-import {NbToastrService} from "@nebular/theme";
+import {NbDialogService, NbToastrService} from "@nebular/theme";
 import {Voting} from "../../services/voting";
+import {CastVoteProgressComponent} from "./cast-vote-progress/cast-vote-progress.component";
 
 @Component({
   selector: 'app-cast-vote',
@@ -25,12 +26,11 @@ export class CastVoteComponent implements OnDestroy {
   private votingId: string = "";
 
   get isNotAllowedToCastVote() {
-    console.log(`selected options = ${this.selectedOptions}`);
     return this.selectedOptions.length == 0 || !this.selectedOptions.every(i => i != null);
   }
 
   constructor(private authService: NbAuthService, private route: ActivatedRoute, private votingsService: VotingsService,
-              private spinner: NgxSpinnerService, private toastr: NbToastrService) {
+              private spinner: NgxSpinnerService, private toastr: NbToastrService, private dialogService: NbDialogService) {
     this.votingId = route.snapshot.paramMap.get("id")!;
     authService.onAuthenticationChange()
       .pipe(
@@ -44,6 +44,18 @@ export class CastVoteComponent implements OnDestroy {
   ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();
+  }
+
+  onCastVoteClicked() {
+    this.dialogService.open(CastVoteProgressComponent, {
+      closeOnBackdropClick: false,
+      closeOnEsc: false,
+      autoFocus: true,
+      context: {
+        voting: this.voting,
+        selectedOptions: this.selectedOptions
+      }
+    });
   }
 
   private onIsAuthenticated(isAuthenticated: boolean) {

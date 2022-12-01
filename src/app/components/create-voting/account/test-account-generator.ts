@@ -1,11 +1,7 @@
 import {Keypair} from "stellar-sdk";
 import {finalize, map, Observable, of} from "rxjs";
 import {HttpClient} from "@angular/common/http";
-
-export interface KeyPair {
-  publicKey: string;
-  secretKey: string;
-}
+import {KeyPair} from "./key-pair";
 
 export class TestAccountGenerator {
   isLoading = false;
