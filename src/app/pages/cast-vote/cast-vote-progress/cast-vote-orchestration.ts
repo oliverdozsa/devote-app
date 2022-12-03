@@ -20,6 +20,10 @@ export class CastVoteOrchestration {
 
   private progresses: Map<string, Progress>;
 
+  get isCompleted(): boolean {
+    return this.currentStepIndex == this.steps.length;
+  }
+
   /*
   * Steps:
   * 1. Generate an account, store data about it in localstorage

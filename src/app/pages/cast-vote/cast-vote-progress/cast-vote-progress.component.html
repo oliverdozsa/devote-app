@@ -1,7 +1,10 @@
-<nb-card>
-  <nb-card-header *ngIf="orchestration">{{orchestration.describeProgressState()}}</nb-card-header>
-  <nb-card-body></nb-card-body>
-  <nb-card-footer>
+<nb-card [nbSpinner]="!isCompleted" style="width: 220px;">
+  <nb-card-body *ngIf="orchestration">
+    <h6 class="text-center text-uppercase">
+      {{orchestration.describeProgressState()}}
+    </h6>
+  </nb-card-body>
+  <nb-card-footer *ngIf="isCompleted">
     <button nbButton (click)="onCloseClick()">done</button>
   </nb-card-footer>
 </nb-card>

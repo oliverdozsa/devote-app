@@ -18,6 +18,11 @@ export class CastVoteProgressComponent implements OnInit{
 
   orchestration: CastVoteOrchestration | undefined;
 
+  get isCompleted(): boolean {
+    return this.orchestration != undefined &&
+      this.orchestration.isCompleted;
+  }
+
   constructor(private dialogRef: NbDialogRef<any>, private castVoteService: CastVoteService, private toastr: NbToastrService) {
   }
 
