@@ -23,6 +23,10 @@ export class CastVoteProgressComponent implements OnInit{
       this.orchestration.isCompleted;
   }
 
+  get progressPercent(): number {
+    return this.orchestration == undefined ? 0 : this.orchestration.progressPercent;
+  }
+
   constructor(private dialogRef: NbDialogRef<any>, private castVoteService: CastVoteService, private toastr: NbToastrService) {
   }
 

@@ -18,13 +18,6 @@ export class CastVoteOperations {
       secretKey: "<NOT SET>"
     }
   }
-
-  init(): Observable<CastVoteInitResponse> {
-    return this.castVoteService.init(this.voting.id);
-  }
-
-  // TODO
-
 }
 
 class StellarCastVoteOperations {

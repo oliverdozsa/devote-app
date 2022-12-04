@@ -43,13 +43,13 @@ export class InitStep extends OrchestrationStep {
     this.complete();
   }
 
-  private onInitError(error: HttpErrorResponse): Observable<string> {
+  private onInitError(error: HttpErrorResponse){
     if (error.status == 403) {
       const errorText = String(error.error);
-      return this.handleInitError(errorText)
+      this.handleInitError(errorText)
     }
 
-    return throwError(() => "Unknown status error during init!");
+    this.toastr.danger("Unknown status error during init!");
   }
 
   private handleInitError(errorText: string) {
@@ -57,9 +57,10 @@ export class InitStep extends OrchestrationStep {
       this.toastr.warning("Session already started for user.")
       // TODO: When server is extended to return the public key in this case, handle it.
     } else if (errorText.includes("not initialized properly")) {
-      return throwError(() => new Error("Please try again later!"))
+      this.toastr.warning("Please try again later!");
+      // TODO: Complete but do not continue to next step.
     }
 
-    return throwError(() => new Error("Unknown error during init!"))
+    this.toastr.danger("Unknown error during init!");
   }
 }

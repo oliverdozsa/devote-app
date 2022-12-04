@@ -5,10 +5,13 @@ import {NbToastrService} from "@nebular/theme";
 import {Progress} from "./progress";
 import {OrchestrationStep} from "./steps/orchestration-step";
 import {InitStep} from "./steps/init-step";
+import {SignEnvelopeStep} from "./steps/sign-envelope-step";
 
 export enum ProgressState {
   PreInit,
-  Initialized
+  Initialized,
+  SigningEnvelope,
+  SignedEnvelope
 }
 
 export class CastVoteOrchestration {
@@ -22,6 +25,10 @@ export class CastVoteOrchestration {
 
   get isCompleted(): boolean {
     return this.currentStepIndex == this.steps.length;
+  }
+
+  get progressPercent(): number {
+    return this.currentStepIndex / this.steps.length * 100;
   }
 
   /*
@@ -44,7 +51,8 @@ export class CastVoteOrchestration {
     this.progress = this.getAndCreateIfNeededProgress();
 
     this.steps = [
-      new InitStep(this)
+      new InitStep(this),
+      new SignEnvelopeStep(this)
     ];
 
     this.currentStepIndex = this.determineStepToStartFrom();
@@ -52,9 +60,13 @@ export class CastVoteOrchestration {
 
   describeProgressState(): string {
     if (this.progress.state == ProgressState.PreInit) {
-      return "Starting initialization";
+      return "initializing";
     } else if (this.progress.state == ProgressState.Initialized) {
-      return "Initialized"
+      return "initialized"
+    } else if(this.progress.state === ProgressState.SigningEnvelope) {
+      return "signing envelope"
+    } else if(this.progress.state === ProgressState.SignedEnvelope) {
+      return "signed envelope"
     }
 
     return "<Unknown state>";

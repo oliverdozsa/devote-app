@@ -6,5 +6,6 @@ export class Progress {
   account: KeyPair | undefined;
   publicKeyForEnvelope: string | undefined;
   envelope: string | undefined;
+  concealingFactor: string | undefined;
   selectedOptions: any[] = [];
 }

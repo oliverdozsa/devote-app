@@ -28,7 +28,7 @@ import {
   NbStepperModule,
   NbDatepickerModule,
   NbTimepickerModule,
-  NbAccordionModule, NbAlertModule, NbRadioModule
+  NbAccordionModule, NbAlertModule, NbRadioModule, NbProgressBarModule
 } from '@nebular/theme';
 import {NbEvaIconsModule} from '@nebular/eva-icons';
 import {HomeComponent} from './pages/home/home.component';
@@ -164,7 +164,8 @@ import {CastVoteProgressComponent} from './pages/cast-vote/cast-vote-progress/ca
     ClipboardModule,
     CountdownModule,
     NbAlertModule,
-    NbRadioModule
+    NbRadioModule,
+    NbProgressBarModule
   ],
   providers: [
     {provide: HTTP_INTERCEPTORS, useClass: JwtBearerInterceptor, multi: true}

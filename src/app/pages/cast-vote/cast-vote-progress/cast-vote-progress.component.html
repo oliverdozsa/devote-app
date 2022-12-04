@@ -1,8 +1,8 @@
 <nb-card [nbSpinner]="!isCompleted" style="width: 220px;">
   <nb-card-body *ngIf="orchestration">
-    <h6 class="text-center text-uppercase">
+    <nb-progress-bar [value]="progressPercent" status="primary">
       {{orchestration.describeProgressState()}}
-    </h6>
+    </nb-progress-bar>
   </nb-card-body>
   <nb-card-footer *ngIf="isCompleted">
     <button nbButton (click)="onCloseClick()">done</button>

@@ -7,6 +7,10 @@ export interface CastVoteInitResponse {
   publicKey: string
 }
 
+export interface CastVoteSignEnvelopeResponse {
+  envelopeSignatureBase64: string
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -19,5 +23,10 @@ export class CastVoteService {
   init(votingId: string): Observable<CastVoteInitResponse> {
     const url = CastVoteService.BASE_URL + "/init";
     return this.httpClient.post<CastVoteInitResponse>(url, {votingId: votingId});
+  }
+
+  signEnvelope(votingId: string, envelopeBase64: string): Observable<CastVoteSignEnvelopeResponse> {
+    const url = CastVoteService.BASE_URL + `${votingId}/signEnvelope`;
+    return this.httpClient.post<CastVoteSignEnvelopeResponse>(url, {envelopeBase64: envelopeBase64});
   }
 }
