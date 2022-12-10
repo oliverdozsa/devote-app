@@ -26,7 +26,12 @@ export class CastVoteService {
   }
 
   signEnvelope(votingId: string, envelopeBase64: string): Observable<CastVoteSignEnvelopeResponse> {
-    const url = CastVoteService.BASE_URL + `${votingId}/signEnvelope`;
+    const url = CastVoteService.BASE_URL + `/${votingId}/signEnvelope`;
     return this.httpClient.post<CastVoteSignEnvelopeResponse>(url, {envelopeBase64: envelopeBase64});
+  }
+
+  getEnvelopeSignature(votingId: string) {
+    const url = CastVoteService.BASE_URL + `/envlSignature/${votingId}`;
+    return this.httpClient.get<CastVoteSignEnvelopeResponse>(url);
   }
 }

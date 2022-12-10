@@ -7,5 +7,6 @@ export class Progress {
   publicKeyForEnvelope: string | undefined;
   envelope: string | undefined;
   concealingFactor: string | undefined;
+  revealedSignature: string | undefined;
   selectedOptions: any[] = [];
 }

@@ -1,7 +1,9 @@
 <nb-card [nbSpinner]="!isCompleted" style="width: 220px;">
   <nb-card-body *ngIf="orchestration">
-    <nb-progress-bar [value]="progressPercent" status="primary">
+    <h5 class="text-center">
       {{orchestration.describeProgressState()}}
+    </h5>
+    <nb-progress-bar [value]="progressPercent" status="primary">
     </nb-progress-bar>
   </nb-card-body>
   <nb-card-footer *ngIf="isCompleted">

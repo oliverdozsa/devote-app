@@ -111,6 +111,8 @@ export class CastVoteOrchestration {
       return 0;
     } else if (this.progress.state == ProgressState.Initialized) {
       return 1;
+    } else if(this.progress.state == ProgressState.SignedEnvelope) {
+      return 2;
     }
 
     return 0;
