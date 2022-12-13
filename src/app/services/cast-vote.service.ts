@@ -11,6 +11,10 @@ export interface CastVoteSignEnvelopeResponse {
   envelopeSignatureBase64: string
 }
 
+export interface CastVoteCreateTransactionResponse {
+  transaction: string;
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -33,5 +37,21 @@ export class CastVoteService {
   getEnvelopeSignature(votingId: string) {
     const url = CastVoteService.BASE_URL + `/envlSignature/${votingId}`;
     return this.httpClient.get<CastVoteSignEnvelopeResponse>(url);
+  }
+
+  createTransaction(message: string, revealedSignature: string): Observable<CastVoteCreateTransactionResponse> {
+    const url = CastVoteService.BASE_URL + `/createTransaction`;
+    return this.httpClient.post<CastVoteCreateTransactionResponse>(
+      url,
+      {
+        message: message,
+        revealedSignatureBase64: revealedSignature
+      }
+    );
+  }
+
+  getTransactionString(revealedSignature: string): Observable<CastVoteCreateTransactionResponse> {
+    const url = CastVoteService.BASE_URL + `/txOfSignature/${revealedSignature}`;
+    return this.httpClient.get<CastVoteCreateTransactionResponse>(url);
   }
 }

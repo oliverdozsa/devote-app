@@ -20,11 +20,15 @@ export class JwtBearerInterceptor implements HttpInterceptor {
 
     return this.authService.isAuthenticated()
       .pipe(switchMap(isAuth => {
-        if (isAuth) {
+        if (isAuth && this.shouldRequestBeAuthenticatedBasedOnUrl(req)) {
           return addJwt;
         }
 
         return next.handle(req);
       }));
+  }
+
+  private shouldRequestBeAuthenticatedBasedOnUrl(request: HttpRequest<any>) {
+    return !request.url.includes("castvote/createTransaction");
   }
 }

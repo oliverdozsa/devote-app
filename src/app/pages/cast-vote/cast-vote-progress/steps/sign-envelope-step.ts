@@ -1,7 +1,6 @@
 import {OrchestrationStep} from "./orchestration-step";
 import {CastVoteOrchestration, ProgressState} from "../cast-vote-orchestration";
 import {Progress} from "../progress";
-import NodeRSA from "node-rsa";
 import {CastVoteOperations} from "../cast-vote-operations";
 import {Buffer} from "buffer";
 import {BigInteger} from "jsbn";
@@ -12,6 +11,7 @@ import {NbToastrService} from "@nebular/theme";
 import {delay} from "rxjs";
 
 const BlindSignature = require("blind-signatures");
+const NodeRSA = require("node-rsa");
 
 export class SignEnvelopeStep extends OrchestrationStep {
   private progress: Progress;
@@ -34,10 +34,11 @@ export class SignEnvelopeStep extends OrchestrationStep {
     this.progress.state = ProgressState.SigningEnvelope;
     this.progress.account = this.operations.createAccount();
 
-    const concealingResult = this.produceConcealedResult();
-    this.progress.concealingFactor = SignEnvelopeStep.bigIntToBase64Str(concealingResult.r);
+    const result = this.produceResult();
+    this.progress.concealingFactor = SignEnvelopeStep.bigIntToBase64Str(result.concealed.r);
+    this.progress.message = result.message;
 
-    const concealedMessageBase64Str = SignEnvelopeStep.bigIntToBase64Str(concealingResult.blinded);
+    const concealedMessageBase64Str = SignEnvelopeStep.bigIntToBase64Str(result.concealed.blinded);
     this.service.signEnvelope(this.voting.id, concealedMessageBase64Str)
       .pipe(delay(1500))
       .subscribe({
@@ -51,29 +52,31 @@ export class SignEnvelopeStep extends OrchestrationStep {
     super.complete();
   }
 
-  private produceConcealedResult() {
+  private produceResult() {
     const publicKey = new NodeRSA(this.progress.publicKeyForEnvelope!)
-    const publicKeyComponents = publicKey.exportKey('components-public');
-    return BlindSignature.blind(
+
+    const message = `${this.voting.id}|${this.progress.account!.publicKey}`;
+    const concealed = BlindSignature.blind(
       {
-        message: `${this.voting.id}|${this.progress.account!.publicKey}`,
-        N: publicKeyComponents.n.toString(),
-        E: publicKeyComponents.e.toString()
+        message: message,
+        N: publicKey.keyPair.n.toString(),
+        E: publicKey.keyPair.e.toString()
       }
     );
+
+    return {message: message, concealed: concealed};
   }
 
   private onSignEnvelopeSuccess(response: CastVoteSignEnvelopeResponse) {
     const signatureOnConcealedMessage = SignEnvelopeStep.bigIntFromBase64Str(response.envelopeSignatureBase64);
 
     const publicKey = new NodeRSA(this.progress.publicKeyForEnvelope!)
-    const publicKeyComponents = publicKey.exportKey('components-public');
 
     const concealingFactor = SignEnvelopeStep.bigIntFromBase64Str(this.progress.concealingFactor!);
 
     const signatureOnRevealedMessage = BlindSignature.unblind({
       signed: signatureOnConcealedMessage,
-      N: publicKeyComponents.n,
+      N: publicKey.keyPair.n,
       r: concealingFactor
     });
 
@@ -102,7 +105,7 @@ export class SignEnvelopeStep extends OrchestrationStep {
 
   private static bigIntFromBase64Str(base64Str: string) {
     const buffer = Buffer.from(base64Str, "base64");
-    const bufferHexStr = buffer.toString('hex');
-    return new BigInteger(bufferHexStr, 16)
+    const bufferHexStr = buffer.toString("hex");
+    return new BigInteger(bufferHexStr, 16);
   }
 }

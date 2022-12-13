@@ -5,8 +5,9 @@ export class Progress {
   state: ProgressState = ProgressState.PreInit
   account: KeyPair | undefined;
   publicKeyForEnvelope: string | undefined;
-  envelope: string | undefined;
+  message: string | undefined;
   concealingFactor: string | undefined;
   revealedSignature: string | undefined;
+  blockchainTransaction: string | undefined;
   selectedOptions: any[] = [];
 }

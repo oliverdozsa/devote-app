@@ -6,29 +6,37 @@ import {Progress} from "./progress";
 import {OrchestrationStep} from "./steps/orchestration-step";
 import {InitStep} from "./steps/init-step";
 import {SignEnvelopeStep} from "./steps/sign-envelope-step";
+import {CreateTransactionStep} from "./steps/create-transaction-step";
 
 export enum ProgressState {
   PreInit,
   Initialized,
   SigningEnvelope,
-  SignedEnvelope
+  SignedEnvelope,
+  CreatingTransaction,
+  CreatedTransaction,
+  Completed
 }
 
 export class CastVoteOrchestration {
-  steps: OrchestrationStep[];
-  currentStepIndex;
+  current: StepNode | undefined;
 
   progress: Progress;
   operations: CastVoteOperations;
 
   private progresses: Map<string, Progress>;
+  private start: StepNode;
 
   get isCompleted(): boolean {
-    return this.currentStepIndex == this.steps.length;
+    return this.current == undefined;
   }
 
   get progressPercent(): number {
-    return this.currentStepIndex / this.steps.length * 100;
+    const totalSteps = CastVoteOrchestration.countStepsLeftFrom(this.start);
+    const stepsLeft = CastVoteOrchestration.countStepsLeftFrom(this.current);
+    const stepsCompleted = totalSteps - stepsLeft;
+
+    return stepsCompleted / totalSteps * 100;
   }
 
   /*
@@ -50,26 +58,27 @@ export class CastVoteOrchestration {
     this.progresses = this.getAndCreateIfNeededProgresses();
     this.progress = this.getAndCreateIfNeededProgress();
 
-    this.steps = [
-      new InitStep(this),
-      new SignEnvelopeStep(this)
-    ];
-
-    this.currentStepIndex = this.determineStepToStartFrom();
+    this.start = this.buildSteps();
+    this.current = this.determineStepToStartFrom();
   }
 
   describeProgressState(): string {
-    if (this.progress.state == ProgressState.PreInit) {
-      return "initializing";
-    } else if (this.progress.state == ProgressState.Initialized) {
-      return "initialized"
-    } else if(this.progress.state === ProgressState.SigningEnvelope) {
-      return "signing envelope"
-    } else if(this.progress.state === ProgressState.SignedEnvelope) {
-      return "signed envelope"
+    switch (this.progress.state) {
+      case ProgressState.PreInit:
+        return "initializing"
+      case ProgressState.Initialized:
+        return "initialized";
+      case ProgressState.SigningEnvelope:
+        return "signing envelope";
+      case ProgressState.SignedEnvelope:
+        return "signed envelope";
+      case ProgressState.CreatingTransaction:
+        return "creating transaction";
+      case ProgressState.CreatedTransaction:
+        return "created transaction";
+      default:
+        return "<unknown>";
     }
-
-    return "<Unknown state>";
   }
 
   castVote() {
@@ -79,7 +88,10 @@ export class CastVoteOrchestration {
   stepCompleted() {
     this.saveProgress();
 
-    this.currentStepIndex += 1;
+    if(this.current != undefined) {
+      this.current = this.current.next;
+    }
+
     this.executeCurrentStepIfExists();
   }
 
@@ -106,22 +118,67 @@ export class CastVoteOrchestration {
     localStorage.setItem("progresses", progressesJsonStr);
   }
 
-  private determineStepToStartFrom(): number {
-    if (this.progress.state == ProgressState.PreInit) {
-      return 0;
-    } else if (this.progress.state == ProgressState.Initialized) {
-      return 1;
-    } else if(this.progress.state == ProgressState.SignedEnvelope) {
-      return 2;
+  private determineStepToStartFrom(): StepNode | undefined {
+    const currentState = this.progress.state;
+
+    if(currentState == ProgressState.PreInit) {
+      return this.start;
     }
 
-    return 0;
+    let startFrom = this.start;
+    while(startFrom.progressStateWhenFinished != currentState) {
+      startFrom = startFrom.next!;
+    }
+
+    return startFrom.next;
   }
 
   private executeCurrentStepIfExists() {
-    if(this.currentStepIndex < this.steps.length) {
-      this.steps[this.currentStepIndex].execute();
+    if(this.current != undefined) {
+      this.current.step.execute();
     }
+  }
+
+  private static countStepsLeftFrom(step: StepNode | undefined): number {
+    let s = step;
+    let left = 0;
+
+    while(s != undefined) {
+      left++;
+      s = s.next;
+    }
+
+    return left;
+  }
+
+  private buildSteps(): StepNode {
+    const init: StepNode = {
+      step: new InitStep(this),
+      next: undefined,
+      progressStateWhenFinished: ProgressState.Initialized
+    };
+
+    const signEnvelope: StepNode = {
+      step: new SignEnvelopeStep(this),
+      next: undefined,
+      progressStateWhenFinished: ProgressState.SignedEnvelope
+    };
+
+    const createTransaction: StepNode = {
+      step: new CreateTransactionStep(this),
+      next: undefined,
+      progressStateWhenFinished: ProgressState.CreatedTransaction
+    }
+
+    init.next = signEnvelope;
+    signEnvelope.next = createTransaction;
+
+    return init;
   }
 }
 
+interface StepNode {
+  step: OrchestrationStep,
+  next: StepNode | undefined,
+  progressStateWhenFinished: ProgressState
+}
