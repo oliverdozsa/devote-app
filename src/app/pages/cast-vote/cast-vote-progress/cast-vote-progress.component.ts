@@ -3,6 +3,7 @@ import {NbDialogRef, NbDialogService, NbToastrService} from "@nebular/theme";
 import {Voting} from "../../../services/voting";
 import {CastVoteService} from "../../../services/cast-vote.service";
 import {CastVoteOrchestration} from "./cast-vote-orchestration";
+import {describeState} from "./progress";
 
 @Component({
   selector: 'app-cast-vote-progress',
@@ -10,6 +11,8 @@ import {CastVoteOrchestration} from "./cast-vote-orchestration";
   styleUrls: ['./cast-vote-progress.component.scss']
 })
 export class CastVoteProgressComponent implements OnInit{
+  describeState = describeState;
+
   @Input()
   voting: Voting = new Voting();
 

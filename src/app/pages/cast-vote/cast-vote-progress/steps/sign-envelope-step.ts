@@ -1,6 +1,6 @@
 import {OrchestrationStep} from "./orchestration-step";
-import {CastVoteOrchestration, ProgressState} from "../cast-vote-orchestration";
-import {Progress} from "../progress";
+import {CastVoteOrchestration} from "../cast-vote-orchestration";
+import {Progress, ProgressState} from "../progress";
 import {CastVoteOperations} from "../cast-vote-operations";
 import {Buffer} from "buffer";
 import {BigInteger} from "jsbn";
@@ -32,7 +32,7 @@ export class SignEnvelopeStep extends OrchestrationStep {
 
   execute(): void {
     this.progress.state = ProgressState.SigningEnvelope;
-    this.progress.account = this.operations.createAccount();
+    this.progress.voterAccount = this.operations.createAccount();
 
     const result = this.produceResult();
     this.progress.concealingFactor = SignEnvelopeStep.bigIntToBase64Str(result.concealed.r);
@@ -53,9 +53,9 @@ export class SignEnvelopeStep extends OrchestrationStep {
   }
 
   private produceResult() {
-    const publicKey = new NodeRSA(this.progress.publicKeyForEnvelope!)
+    const publicKey = new NodeRSA(this.progress.publicKeyForEnvelope!);
 
-    const message = `${this.voting.id}|${this.progress.account!.publicKey}`;
+    const message = `${this.voting.id}|${this.progress.voterAccount!.publicKey}`;
     const concealed = BlindSignature.blind(
       {
         message: message,
@@ -99,7 +99,12 @@ export class SignEnvelopeStep extends OrchestrationStep {
   }
 
   private static bigIntToBase64Str(bigint: BigInteger) {
-    const bigIntAsBytes = bigint.toByteArray();
+    let bigIntAsBytes = bigint.toByteArray();
+
+    if(bigIntAsBytes[0] == 0) {
+      bigIntAsBytes = bigIntAsBytes.slice(1);
+    }
+
     return Buffer.from(bigIntAsBytes).toString("base64");
   }
 

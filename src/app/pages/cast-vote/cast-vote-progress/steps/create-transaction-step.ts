@@ -1,6 +1,6 @@
 import {OrchestrationStep} from "./orchestration-step";
-import {CastVoteOrchestration, ProgressState} from "../cast-vote-orchestration";
-import {Progress} from "../progress";
+import {CastVoteOrchestration} from "../cast-vote-orchestration";
+import {Progress, ProgressState} from "../progress";
 import {CastVoteCreateTransactionResponse, CastVoteService} from "../../../../services/cast-vote.service";
 import {HttpErrorResponse} from "@angular/common/http";
 import {NbToastrService} from "@nebular/theme";
@@ -34,7 +34,7 @@ export class CreateTransactionStep extends OrchestrationStep {
   }
 
   private onCreateTransactionSuccess(response: CastVoteCreateTransactionResponse) {
-    this.progress.blockchainTransaction = response.transaction;
+    this.progress.createAccountBlockchainTransaction = response.transaction;
     this.complete();
   }
 

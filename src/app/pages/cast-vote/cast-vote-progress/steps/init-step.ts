@@ -1,8 +1,8 @@
 import {OrchestrationStep} from "./orchestration-step";
 import {HttpErrorResponse} from "@angular/common/http";
 import {delay, Observable, throwError} from "rxjs";
-import {CastVoteOrchestration, ProgressState} from "../cast-vote-orchestration";
-import {Progress} from "../progress";
+import {CastVoteOrchestration} from "../cast-vote-orchestration";
+import {Progress, ProgressState} from "../progress";
 import {CastVoteInitResponse, CastVoteService} from "../../../../services/cast-vote.service";
 import {CastVoteOperations} from "../cast-vote-operations";
 import {Voting} from "../../../../services/voting";
@@ -26,6 +26,8 @@ export class InitStep extends OrchestrationStep {
   }
 
   execute(): void {
+    this.progress.network = this.voting.network;
+
     this.service.init(this.orchestration.voting.id)
       .pipe(
         delay(1500)
@@ -43,7 +45,7 @@ export class InitStep extends OrchestrationStep {
     this.complete();
   }
 
-  private onInitError(error: HttpErrorResponse){
+  private onInitError(error: HttpErrorResponse) {
     if (error.status == 403) {
       const errorText = String(error.error);
       this.handleInitError(errorText)

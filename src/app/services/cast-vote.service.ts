@@ -15,6 +15,10 @@ export interface CastVoteCreateTransactionResponse {
   transaction: string;
 }
 
+export interface EncryptedChoiceResponse {
+  result: string;
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -53,5 +57,10 @@ export class CastVoteService {
   getTransactionString(revealedSignature: string): Observable<CastVoteCreateTransactionResponse> {
     const url = CastVoteService.BASE_URL + `/txOfSignature/${revealedSignature}`;
     return this.httpClient.get<CastVoteCreateTransactionResponse>(url);
+  }
+
+  getEncryptedChoice(votingId: string, choice: string): Observable<EncryptedChoiceResponse> {
+    const url = environment.apiUrl + `/encryptchoice/${votingId}/${choice}`;
+    return this.httpClient.get<EncryptedChoiceResponse>(url);
   }
 }

@@ -2,21 +2,12 @@ import {Voting} from "../../../services/voting";
 import {CastVoteService} from "../../../services/cast-vote.service";
 import {CastVoteOperations} from "./cast-vote-operations";
 import {NbToastrService} from "@nebular/theme";
-import {Progress} from "./progress";
+import {Progress, ProgressState} from "./progress";
 import {OrchestrationStep} from "./steps/orchestration-step";
 import {InitStep} from "./steps/init-step";
 import {SignEnvelopeStep} from "./steps/sign-envelope-step";
 import {CreateTransactionStep} from "./steps/create-transaction-step";
-
-export enum ProgressState {
-  PreInit,
-  Initialized,
-  SigningEnvelope,
-  SignedEnvelope,
-  CreatingTransaction,
-  CreatedTransaction,
-  Completed
-}
+import {CastVoteOnBlockchainStep} from "./steps/cast-vote-on-blockchain-step";
 
 export class CastVoteOrchestration {
   current: StepNode | undefined;
@@ -39,19 +30,6 @@ export class CastVoteOrchestration {
     return stepsCompleted / totalSteps * 100;
   }
 
-  /*
-  * Steps:
-  * 1. Generate an account, store data about it in localstorage
-  * 2. Init the session. Store the resulting public key in local storage
-  * 3. Generate envelope for chosen option. Store it in local storage.
-  * 4. Make the commission sign the envelope. The returned signature doesn't need to be stored as it can be queried later.
-  * 5. Create the revealed signature from signature on the envelope.
-  * 6. Become anonymous. Get the transaction from the commission by presenting the revealed signature and message.
-  *    The resulting transaction doesn't need to be stored as it can be queried later.
-  * 7. Use the transaction to obtain the vote token.
-  * 8. Cast the vote. Encrypt the options if needed by using the commission.
-  * */
-
   constructor(public voting: Voting, public selectedOptions: any[],
               public castVoteService: CastVoteService, public toastr: NbToastrService) {
     this.operations = new CastVoteOperations(voting, castVoteService);
@@ -60,25 +38,6 @@ export class CastVoteOrchestration {
 
     this.start = this.buildSteps();
     this.current = this.determineStepToStartFrom();
-  }
-
-  describeProgressState(): string {
-    switch (this.progress.state) {
-      case ProgressState.PreInit:
-        return "initializing"
-      case ProgressState.Initialized:
-        return "initialized";
-      case ProgressState.SigningEnvelope:
-        return "signing envelope";
-      case ProgressState.SignedEnvelope:
-        return "signed envelope";
-      case ProgressState.CreatingTransaction:
-        return "creating transaction";
-      case ProgressState.CreatedTransaction:
-        return "created transaction";
-      default:
-        return "<unknown>";
-    }
   }
 
   castVote() {
@@ -152,28 +111,35 @@ export class CastVoteOrchestration {
   }
 
   private buildSteps(): StepNode {
-    const init: StepNode = {
+    const initStep: StepNode = {
       step: new InitStep(this),
       next: undefined,
       progressStateWhenFinished: ProgressState.Initialized
     };
 
-    const signEnvelope: StepNode = {
+    const signEnvelopeStep: StepNode = {
       step: new SignEnvelopeStep(this),
       next: undefined,
       progressStateWhenFinished: ProgressState.SignedEnvelope
     };
 
-    const createTransaction: StepNode = {
+    const createTransactionStep: StepNode = {
       step: new CreateTransactionStep(this),
       next: undefined,
       progressStateWhenFinished: ProgressState.CreatedTransaction
     }
 
-    init.next = signEnvelope;
-    signEnvelope.next = createTransaction;
+    const castVoteOnBlockchainStep: StepNode = {
+      step: new CastVoteOnBlockchainStep(this),
+      next: undefined,
+      progressStateWhenFinished: ProgressState.Completed
+    };
 
-    return init;
+    initStep.next = signEnvelopeStep;
+    signEnvelopeStep.next = createTransactionStep;
+    createTransactionStep.next = castVoteOnBlockchainStep;
+
+    return initStep;
   }
 }
 

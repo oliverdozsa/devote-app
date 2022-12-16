@@ -29,6 +29,6 @@ export class JwtBearerInterceptor implements HttpInterceptor {
   }
 
   private shouldRequestBeAuthenticatedBasedOnUrl(request: HttpRequest<any>) {
-    return !request.url.includes("castvote/createTransaction");
+    return !request.url.includes("castvote/createTransaction") && !request.url.includes("encryptchoice");
   }
 }
