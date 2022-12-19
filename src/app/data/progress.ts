@@ -1,4 +1,4 @@
-import {KeyPair} from "../../../components/create-voting/account/key-pair";
+import {KeyPair} from "../components/create-voting/account/key-pair";
 
 export enum ProgressState {
   PreInit,
@@ -45,4 +45,14 @@ export function describeState(state: ProgressState): string {
     default:
       return "<unknown>";
   }
+}
+
+export function loadOrDefaultProgresses(): Map<string, Progress> {
+  let progressesStr = localStorage.getItem("progresses");
+
+  if (progressesStr == null) {
+    return new Map<string, Progress>()
+  }
+
+  return new Map<string, Progress>(JSON.parse(progressesStr));
 }

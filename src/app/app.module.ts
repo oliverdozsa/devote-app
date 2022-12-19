@@ -78,6 +78,7 @@ import {
 } from './pages/votings-where-i-participate/votings-where-i-participate.component';
 import {CastVoteComponent} from './pages/cast-vote/cast-vote.component';
 import {CastVoteProgressComponent} from './pages/cast-vote/cast-vote-progress/cast-vote-progress.component';
+import { ShowResultsComponent } from './pages/show-results/show-results.component';
 
 @NgModule({
   declarations: [
@@ -106,7 +107,8 @@ import {CastVoteProgressComponent} from './pages/cast-vote/cast-vote-progress/ca
     TruncatedAccountIdComponent,
     VotingsWhereIParticipateComponent,
     CastVoteComponent,
-    CastVoteProgressComponent
+    CastVoteProgressComponent,
+    ShowResultsComponent
   ],
   imports: [
     BrowserModule,

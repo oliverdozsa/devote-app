@@ -2,14 +2,16 @@
   <nb-card-body *ngIf="orchestration">
     <h5 class="text-center">
       {{describeState(orchestration.progress.state)}}
-      <div *ngIf="!isCompleted" class="text-center mt-2">
-        <i class="fa-solid fa-gear fa-2x fa-spin"></i>
+      <div class="text-center mt-2">
+        <i *ngIf="!isCompleted" class="fa-solid fa-gear fa-2x fa-spin"></i>
+        <i *ngIf="isCompleted" class="fa-solid fa-check fa-2x"></i>
       </div>
+
     </h5>
     <nb-progress-bar [value]="progressPercent" status="primary">
     </nb-progress-bar>
   </nb-card-body>
   <nb-card-footer *ngIf="isCompleted">
-    <button nbButton (click)="onCloseClick()">done</button>
+    <button nbButton (click)="onCloseClick()">close</button>
   </nb-card-footer>
 </nb-card>

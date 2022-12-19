@@ -6,6 +6,8 @@ import {NgxSpinnerService} from "ngx-spinner";
 import {delay, finalize} from "rxjs";
 import {NbToastrService} from "@nebular/theme";
 import {AppRoutes} from 'src/app-routes';
+import {loadOrDefaultProgresses, Progress, ProgressState} from "../../data/progress";
+import {Voting} from "../../services/voting";
 
 @Component({
   selector: 'app-votings-pagination',
@@ -31,7 +33,10 @@ export class VotingsPaginationComponent implements OnInit {
   isLoading = true;
   currentPage: number = 1;
 
+  private progresses: Map<string, Progress>;
+
   constructor(private votingsService: VotingsService, private spinner: NgxSpinnerService, private toastr: NbToastrService) {
+    this.progresses = loadOrDefaultProgresses();
   }
 
   ngOnInit(): void {
@@ -75,5 +80,28 @@ export class VotingsPaginationComponent implements OnInit {
     const endMillis = Date.parse(voting.endDate)
 
     return endMillis <= nowMillis;
+  }
+
+  areResultsAvailable(voting: VotingSummary): boolean {
+    return !this.isEncrypted(voting) || this.isEncryptionExpired(voting);
+  }
+
+  isAlreadyVoted(voting: VotingSummary) {
+    return this.progresses.has(voting.id) && this.progresses.get(voting.id)!.state == ProgressState.Completed;
+  }
+
+  getEncryptedUntilString(voting: VotingSummary): string {
+    return new Date(Date.parse(voting.encryptedUntil)).toLocaleString();
+  }
+
+  private isEncryptionExpired(voting: VotingSummary) {
+    const nowMillis = Date.now();
+    const encryptedUntilMillis = (Date.parse(voting.encryptedUntil));
+
+    return encryptedUntilMillis <= nowMillis;
+  }
+
+  private isEncrypted(voting: VotingSummary): boolean {
+    return voting.encryptedUntil != null;
   }
 }

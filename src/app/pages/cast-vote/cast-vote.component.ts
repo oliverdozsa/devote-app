@@ -7,6 +7,8 @@ import {NgxSpinnerService} from "ngx-spinner";
 import {NbDialogService, NbToastrService} from "@nebular/theme";
 import {Voting} from "../../services/voting";
 import {CastVoteProgressComponent} from "./cast-vote-progress/cast-vote-progress.component";
+import {loadOrDefaultProgresses, Progress, ProgressState} from "../../data/progress";
+import {AppRoutes} from "../../../app-routes";
 
 @Component({
   selector: 'app-cast-vote',
@@ -24,14 +26,23 @@ export class CastVoteComponent implements OnDestroy {
   selectedOptions: any[] = [];
 
   private votingId: string = "";
+  private progresses: Map<string, Progress>;
 
   get isNotAllowedToCastVote() {
     return this.selectedOptions.length == 0 || !this.selectedOptions.every(i => i != null);
   }
 
+  get isAlreadyVoted(): boolean {
+    return this.progresses.has(this.votingId) && this.progresses.get(this.votingId)!.state == ProgressState.Completed;
+  }
+
   constructor(private authService: NbAuthService, private route: ActivatedRoute, private votingsService: VotingsService,
               private spinner: NgxSpinnerService, private toastr: NbToastrService, private dialogService: NbDialogService) {
     this.votingId = route.snapshot.paramMap.get("id")!;
+    this.progresses = loadOrDefaultProgresses();
+
+    localStorage.setItem("lastVisitedPage", `/${AppRoutes.CAST_VOTE}/${this.votingId}`);
+
     authService.onAuthenticationChange()
       .pipe(
         takeUntil(this.destroy$)

@@ -2,11 +2,25 @@
   <nb-card-body>
     <nb-list>
       <nb-list-item *ngFor="let voting of votings.items">
-        <div class="flex-grow-1">
+        <div class="flex-grow-1 me-3">
           <a routerLink="/{{AppRoutes.VIEW_VOTING}}/{{voting.id}}">{{voting.title}}</a>
+          <div>
+            <a routerLink="/{{AppRoutes.SHOW_RESULTS}}/{{voting.id}}">
+              <button *ngIf="areResultsAvailable(voting)" nbButton status="primary" size="small" class="mt-1">
+                show results
+              </button>
+            </a>
+            <button *ngIf="!areResultsAvailable(voting)" nbButton disabled status="primary" size="small" class="mt-1">
+              show results
+              <nb-icon icon="lock-outline"></nb-icon>
+            </button>
+          </div>
+          <small *ngIf="!areResultsAvailable(voting)" class="text-disabled">
+            encrypted until {{getEncryptedUntilString(voting)}}
+          </small>
         </div>
 
-        <div *ngIf="allowCastVote && !this.isExpired(voting)">
+        <div *ngIf="allowCastVote && !this.isExpired(voting) && !this.isAlreadyVoted(voting)" class="me-3">
           <a routerLink="/{{AppRoutes.CAST_VOTE}}/{{voting.id}}">
             <button nbButton status="primary">
               cast vote
@@ -14,8 +28,11 @@
           </a>
 
         </div>
-        <div *ngIf="this.isExpired(voting)">
+        <div *ngIf="this.isExpired(voting)" class="me-3">
           <div class="text-disabled">EXPIRED</div>
+        </div>
+        <div *ngIf="this.isAlreadyVoted(voting)" class="me-3">
+          <div class="text-disabled">ALREADY VOTED</div>
         </div>
       </nb-list-item>
     </nb-list>

@@ -2,7 +2,7 @@ import {Voting} from "../../../services/voting";
 import {CastVoteService} from "../../../services/cast-vote.service";
 import {CastVoteOperations} from "./cast-vote-operations";
 import {NbToastrService} from "@nebular/theme";
-import {Progress, ProgressState} from "./progress";
+import {loadOrDefaultProgresses, Progress, ProgressState} from "../../../data/progress";
 import {OrchestrationStep} from "./steps/orchestration-step";
 import {InitStep} from "./steps/init-step";
 import {SignEnvelopeStep} from "./steps/sign-envelope-step";
@@ -33,7 +33,7 @@ export class CastVoteOrchestration {
   constructor(public voting: Voting, public selectedOptions: any[],
               public castVoteService: CastVoteService, public toastr: NbToastrService) {
     this.operations = new CastVoteOperations(voting, castVoteService);
-    this.progresses = this.getAndCreateIfNeededProgresses();
+    this.progresses = loadOrDefaultProgresses();
     this.progress = this.getAndCreateIfNeededProgress();
 
     this.start = this.buildSteps();
@@ -52,16 +52,6 @@ export class CastVoteOrchestration {
     }
 
     this.executeCurrentStepIfExists();
-  }
-
-  private getAndCreateIfNeededProgresses(): Map<string, Progress> {
-    let progressesStr = localStorage.getItem("progresses");
-
-    if (progressesStr == null) {
-      return new Map<string, Progress>()
-    }
-
-    return new Map<string, Progress>(JSON.parse(progressesStr));
   }
 
   private getAndCreateIfNeededProgress(): Progress {
@@ -100,14 +90,14 @@ export class CastVoteOrchestration {
 
   private static countStepsLeftFrom(step: StepNode | undefined): number {
     let s = step;
-    let left = 0;
+    let stepsLeft = 0;
 
     while(s != undefined) {
-      left++;
+      stepsLeft++;
       s = s.next;
     }
 
-    return left;
+    return stepsLeft;
   }
 
   private buildSteps(): StepNode {

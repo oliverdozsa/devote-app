@@ -7,4 +7,5 @@ export class AppRoutes {
   static VIEW_VOTING = 'view-voting';
   static VOTINGS_WHERE_I_PARTICIPATE = 'votings-where-i-participate';
   static CAST_VOTE = 'cast-vote';
+  static SHOW_RESULTS = 'show-results';
 }

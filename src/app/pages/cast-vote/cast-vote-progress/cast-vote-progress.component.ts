@@ -3,7 +3,7 @@ import {NbDialogRef, NbDialogService, NbToastrService} from "@nebular/theme";
 import {Voting} from "../../../services/voting";
 import {CastVoteService} from "../../../services/cast-vote.service";
 import {CastVoteOrchestration} from "./cast-vote-orchestration";
-import {describeState} from "./progress";
+import {describeState} from "../../../data/progress";
 
 @Component({
   selector: 'app-cast-vote-progress',

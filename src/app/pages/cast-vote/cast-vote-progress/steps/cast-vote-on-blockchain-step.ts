@@ -1,6 +1,6 @@
 import {OrchestrationStep} from "./orchestration-step";
 import {CastVoteOrchestration} from "../cast-vote-orchestration";
-import {Progress, ProgressState} from "../progress";
+import {Progress, ProgressState} from "../../../../data/progress";
 import {CastVoteOperations} from "../cast-vote-operations";
 import {Voting} from "../../../../services/voting";
 import {NbToastrService} from "@nebular/theme";

@@ -1,6 +1,6 @@
 import {OrchestrationStep} from "./orchestration-step";
 import {CastVoteOrchestration} from "../cast-vote-orchestration";
-import {Progress, ProgressState} from "../progress";
+import {Progress, ProgressState} from "../../../../data/progress";
 import {CastVoteOperations} from "../cast-vote-operations";
 import {Buffer} from "buffer";
 import {BigInteger} from "jsbn";
@@ -101,6 +101,7 @@ export class SignEnvelopeStep extends OrchestrationStep {
   private static bigIntToBase64Str(bigint: BigInteger) {
     let bigIntAsBytes = bigint.toByteArray();
 
+    // Cut off leading zero if needed (is added by jsbn if bigint would be negative)
     if(bigIntAsBytes[0] == 0) {
       bigIntAsBytes = bigIntAsBytes.slice(1);
     }

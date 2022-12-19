@@ -1,0 +1,19 @@
+<div *ngIf="!isWorking && reason != RejectReason.None" class="container text-center">
+  <h5 *ngIf="reason == RejectReason.VotingIsPrivateButUserIsUnauthenticated" class="text-center">
+    you're not allowed to view results of this voting; try logging in
+  </h5>
+  <h5 *ngIf="reason == RejectReason.VotingIsPrivateAndUserIsNotAllowed" class="text-center">
+    voting is private; you can't view its results
+  </h5>
+  <h5 *ngIf="reason == RejectReason.VotingIsStillEncrypted" class="text-center">
+    voting is still encrypted; you can't view its results yet. try again when encryption expires
+  </h5>
+</div>
+
+<div *ngIf="!isWorking && reason == RejectReason.None">
+  <h4>{{voting.title}}</h4>
+  <div *ngFor="let poll of voting.polls">
+    <h5>{{poll.question}}</h5>
+  </div>
+</div>
+

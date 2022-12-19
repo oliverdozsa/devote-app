@@ -2,7 +2,7 @@ import {OrchestrationStep} from "./orchestration-step";
 import {HttpErrorResponse} from "@angular/common/http";
 import {delay, Observable, throwError} from "rxjs";
 import {CastVoteOrchestration} from "../cast-vote-orchestration";
-import {Progress, ProgressState} from "../progress";
+import {Progress, ProgressState} from "../../../../data/progress";
 import {CastVoteInitResponse, CastVoteService} from "../../../../services/cast-vote.service";
 import {CastVoteOperations} from "../cast-vote-operations";
 import {Voting} from "../../../../services/voting";
@@ -60,7 +60,6 @@ export class InitStep extends OrchestrationStep {
       // TODO: When server is extended to return the public key in this case, handle it.
     } else if (errorText.includes("not initialized properly")) {
       this.toastr.warning("Please try again later!");
-      // TODO: Complete but do not continue to next step.
     }
 
     this.toastr.danger("Unknown error during init!");

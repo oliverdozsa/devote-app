@@ -1,6 +1,6 @@
 import {OrchestrationStep} from "./orchestration-step";
 import {CastVoteOrchestration} from "../cast-vote-orchestration";
-import {Progress, ProgressState} from "../progress";
+import {Progress, ProgressState} from "../../../../data/progress";
 import {CastVoteCreateTransactionResponse, CastVoteService} from "../../../../services/cast-vote.service";
 import {HttpErrorResponse} from "@angular/common/http";
 import {NbToastrService} from "@nebular/theme";
