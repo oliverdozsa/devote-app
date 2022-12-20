@@ -1,6 +1,6 @@
 import {OrchestrationStep} from "./orchestration-step";
 import {HttpErrorResponse} from "@angular/common/http";
-import {delay, Observable, throwError} from "rxjs";
+import {delay} from "rxjs";
 import {CastVoteOrchestration} from "../cast-vote-orchestration";
 import {Progress, ProgressState} from "../../../../data/progress";
 import {CastVoteInitResponse, CastVoteService} from "../../../../services/cast-vote.service";
@@ -56,7 +56,7 @@ export class InitStep extends OrchestrationStep {
 
   private handleInitError(errorText: string) {
     if (errorText.includes("has already started a session")) {
-      this.toastr.warning("Session already started for user.")
+      this.toastr.warning("Session already started.")
       // TODO: When server is extended to return the public key in this case, handle it.
     } else if (errorText.includes("not initialized properly")) {
       this.toastr.warning("Please try again later!");

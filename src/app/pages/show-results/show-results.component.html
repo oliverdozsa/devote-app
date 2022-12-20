@@ -10,10 +10,11 @@
   </h5>
 </div>
 
-<div *ngIf="!isWorking && reason == RejectReason.None">
+<div *ngIf="areResultsAvailable && isThemeAvailable">
   <h4>{{voting.title}}</h4>
   <div *ngFor="let poll of voting.polls">
     <h5>{{poll.question}}</h5>
+    <div echarts [options]="getChartOptionsForPoll(poll)"></div>
   </div>
 </div>
 

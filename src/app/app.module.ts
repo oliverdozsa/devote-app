@@ -79,6 +79,7 @@ import {
 import {CastVoteComponent} from './pages/cast-vote/cast-vote.component';
 import {CastVoteProgressComponent} from './pages/cast-vote/cast-vote-progress/cast-vote-progress.component';
 import { ShowResultsComponent } from './pages/show-results/show-results.component';
+import {NgxEchartsModule} from "ngx-echarts";
 
 @NgModule({
   declarations: [
@@ -167,7 +168,10 @@ import { ShowResultsComponent } from './pages/show-results/show-results.componen
     CountdownModule,
     NbAlertModule,
     NbRadioModule,
-    NbProgressBarModule
+    NbProgressBarModule,
+    NgxEchartsModule.forRoot({
+      echarts: () => import("echarts")
+    })
   ],
   providers: [
     {provide: HTTP_INTERCEPTORS, useClass: JwtBearerInterceptor, multi: true}
