@@ -8,13 +8,32 @@
   <h5 *ngIf="reason == RejectReason.VotingIsStillEncrypted" class="text-center">
     voting is still encrypted; you can't view its results yet. try again when encryption expires
   </h5>
+  <h5 *ngIf="reason == RejectReason.Unknown" class="text-center">
+    something went wrong...☹️
+  </h5>
 </div>
 
-<div *ngIf="areResultsAvailable && isThemeAvailable">
+<div *ngIf="isWorking">
+  <h5 class="text-center">
+    getting results from network; might take a while
+  </h5>
+</div>
+
+<div *ngIf="areResultsAvailable && chartHandling.hasTheme">
   <h4>{{voting.title}}</h4>
   <div *ngFor="let poll of voting.polls">
-    <h5>{{poll.question}}</h5>
-    <div echarts [options]="getChartOptionsForPoll(poll)"></div>
+    <div class="d-flex align-items-center">
+      <div class="me-auto">
+        <h5>{{poll.question}}</h5>
+      </div>
+      <div>
+        <button nbButton size="small" status="primary" (click)="chartHandling.toggleChartOf(poll)">
+          <nb-icon  [icon]="getIconChartForButton(poll)"></nb-icon>
+        </button>
+      </div>
+    </div>
+
+    <div echarts [options]="chartHandling.getEChartOptionsOf(poll)" ></div>
   </div>
 </div>
 

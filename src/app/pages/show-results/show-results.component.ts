@@ -3,19 +3,21 @@ import {NbAuthService} from "@nebular/auth";
 import {ActivatedRoute} from "@angular/router";
 import {VotingsService} from "../../services/votings.service";
 import {NgxSpinnerService} from "ngx-spinner";
-import {NbJSThemeOptions, NbThemeService, NbToastrService} from "@nebular/theme";
+import {NbThemeService, NbToastrService} from "@nebular/theme";
 import {finalize, Subject, takeUntil} from "rxjs";
 import {Poll, Voting} from "../../services/voting";
 import {HttpErrorResponse} from "@angular/common/http";
 import {AppRoutes} from "../../../app-routes";
 import {CollectedVoteResults, ShowResultsOperations} from "./show-results-operations";
-import {createBarChartConfig} from "./chart-options";
+import {Chart, ChartHandling} from "./chart-handling";
+
 
 enum RejectReason {
   None,
   VotingIsPrivateAndUserIsNotAllowed,
   VotingIsPrivateButUserIsUnauthenticated,
-  VotingIsStillEncrypted
+  VotingIsStillEncrypted,
+  Unknown
 }
 
 @Component({
@@ -34,16 +36,12 @@ export class ShowResultsComponent implements OnDestroy {
   isAuthenticated = false;
   areResultsAvailable = false;
 
-  themeOptions: NbJSThemeOptions | undefined;
-  isThemeAvailable = false;
+  chartHandling: ChartHandling = new ChartHandling();
 
   destroy$ = new Subject<void>();
 
-  private results: CollectedVoteResults | undefined;
-
-
-  constructor(private authService: NbAuthService, private route: ActivatedRoute, private votingsService: VotingsService,
-              private spinner: NgxSpinnerService, private toastr: NbToastrService, private theme: NbThemeService) {
+  constructor(private authService: NbAuthService, route: ActivatedRoute, private votingsService: VotingsService,
+              private spinner: NgxSpinnerService, private toastr: NbToastrService, themeService: NbThemeService) {
     this.votingId = route.snapshot.paramMap.get("id")!;
 
     localStorage.setItem("lastVisitedPage", `/${AppRoutes.SHOW_RESULTS}/${this.votingId}`);
@@ -53,13 +51,17 @@ export class ShowResultsComponent implements OnDestroy {
         takeUntil(this.destroy$)
       )
       .subscribe({
-        next: a => this.onIsAuthenticated(a)
+        next: a => this.onIsAuthenticated(a),
+        error: e => this.onGenericError(e)
       });
 
-    theme.getJsTheme()
-      .pipe(takeUntil(this.destroy$))
+    themeService.getJsTheme()
+      .pipe(
+        takeUntil(this.destroy$)
+      )
       .subscribe({
-        next: t => this.onThemeChange(t)
+        next: o => this.chartHandling.updateThemeOptions(o),
+        error: e => this.onGenericError(e)
       })
   }
 
@@ -68,8 +70,13 @@ export class ShowResultsComponent implements OnDestroy {
     this.destroy$.complete();
   }
 
-  getChartOptionsForPoll(poll: Poll) {
-    return createBarChartConfig(poll, this.results?.get(poll.index)!, this.themeOptions!);
+  getIconChartForButton(poll: Poll) {
+    const chart = this.chartHandling.getChartOf(poll);
+    if(chart == Chart.Bar) {
+      return "bar-chart-outline";
+    } else {
+      return "pie-chart-outline";
+    }
   }
 
   private onIsAuthenticated(isAuth: boolean) {
@@ -96,13 +103,15 @@ export class ShowResultsComponent implements OnDestroy {
     } else {
       ShowResultsOperations.getResultsOf(this.voting)
         .pipe(
+          takeUntil(this.destroy$),
           finalize(() => {
             this.isWorking = false;
             this.spinner.hide();
           })
         )
         .subscribe({
-          next: r => this.onResultsAvailable(r)
+          next: r => this.onResultsAvailable(r),
+          error: e => this.onGenericError(e)
         });
     }
   }
@@ -129,11 +138,14 @@ export class ShowResultsComponent implements OnDestroy {
 
   private onResultsAvailable(results: CollectedVoteResults) {
     this.areResultsAvailable = true;
-    this.results = results;
+    this.chartHandling.updateResults(results, this.voting.polls);
   }
 
-  private onThemeChange(themeOptions: NbJSThemeOptions) {
-    this.isThemeAvailable = true;
-    this.themeOptions = themeOptions;
+  private onGenericError(err: any) {
+    this.reason = RejectReason.Unknown;
+    this.isWorking = false;
+    this.spinner.hide();
+
+    console.log(`Something went wrong. err: ${JSON.stringify(err)}`);
   }
 }
