@@ -13,13 +13,8 @@
   </h5>
 </div>
 
-<div *ngIf="isWorking">
-  <h5 class="text-center">
-    getting results from network; might take a while
-  </h5>
-</div>
-
-<div *ngIf="areResultsAvailable && chartHandling.hasTheme">
+<div *ngIf="reason == RejectReason.None && chartHandling.hasTheme" [nbSpinner]="isVotingRecieved && isWorking"
+     nbSpinnerSize="giant" nbSpinnerMessage="getting results...">
   <h4>{{voting.title}}</h4>
   <div *ngFor="let poll of voting.polls">
     <div class="d-flex align-items-center">
@@ -28,12 +23,12 @@
       </div>
       <div>
         <button nbButton size="small" status="primary" (click)="chartHandling.toggleChartOf(poll)">
-          <nb-icon  [icon]="getIconChartForButton(poll)"></nb-icon>
+          <nb-icon [icon]="getIconChartForButton(poll)"></nb-icon>
         </button>
       </div>
     </div>
 
-    <div echarts [options]="chartHandling.getEChartOptionsOf(poll)" ></div>
+    <div echarts [loading]="true" [options]="chartHandling.getEChartOptionsOf(poll)"></div>
   </div>
 </div>
 

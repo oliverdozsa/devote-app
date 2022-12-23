@@ -1,14 +1,7 @@
 import {Voting} from "../../services/voting";
 import {Observable, of, Subject} from "rxjs";
 import {StellarServers} from "../../blockchains/StellarServers";
-import {
-  CollectedVoteResults,
-  DecryptChoices,
-  ParseChoices,
-  PollIndex,
-  PollOptionCode,
-  VoteResults
-} from "./show-results-operations";
+import {CollectedVoteResults, VoteResults} from "./show-results-operations";
 import {ServerApi} from "stellar-sdk";
 import PaymentOperationRecord = ServerApi.PaymentOperationRecord;
 import TransactionRecord = ServerApi.TransactionRecord;
@@ -71,7 +64,8 @@ class StellarCollectResults {
       return;
     }
 
-    this.results.addChoices(transactionRecord.memo)
+    this.results.addChoices(transactionRecord.memo);
+    this.collectedVoteResults$.next(this.results.collected);
 
     this.checkIfDone();
   }
@@ -82,7 +76,6 @@ class StellarCollectResults {
 
   private checkIfDone() {
     if (this.numOfRecordsProcessing == 0 && !this.isPagingOngoing) {
-      this.collectedVoteResults$.next(this.results.collected);
       this.collectedVoteResults$.complete();
     }
   }

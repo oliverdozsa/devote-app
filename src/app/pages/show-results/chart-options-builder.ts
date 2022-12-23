@@ -29,7 +29,6 @@ export class ChartOptionsBuilder {
 
   buildBarChartOptions(): EChartsOption {
     return {
-      color: [this.colors.primaryLight],
       backgroundColor: this.colors.bg,
       tooltip: {
         trigger: "axis",
@@ -86,8 +85,6 @@ export class ChartOptionsBuilder {
   buildPieChartOptions(): EChartsOption {
     return {
       backgroundColor: this.colors.bg,
-      color: [this.colors.warningLight, this.colors.infoLight,
-        this.colors.dangerLight, this.colors.successLight, this.colors.primaryLight],
       tooltip: {
         trigger: "item",
         formatter: "{a} <br/>{b} : {c} ({d}%)"
