@@ -35,7 +35,7 @@ export class ShowResultsComponent implements OnDestroy {
   isWorking = true;
   isAuthenticated = false;
   areResultsAvailable = false;
-  isVotingRecieved = false;
+  isVotingReceived = false;
 
   chartHandling: ChartHandling = new ChartHandling();
 
@@ -96,7 +96,7 @@ export class ShowResultsComponent implements OnDestroy {
 
   private onVotingReceived(voting: Voting) {
     this.voting = voting;
-    this.isVotingRecieved = true;
+    this.isVotingReceived = true;
     this.spinner.hide();
 
     if (this.checkIfEncryptedAndDecryptionKeyNotPresent()) {
