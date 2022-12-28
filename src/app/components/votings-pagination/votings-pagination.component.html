@@ -16,7 +16,10 @@
             </button>
           </div>
           <small *ngIf="!areResultsAvailable(voting)" class="text-disabled">
-            encrypted until {{getEncryptedUntilString(voting)}}
+            <ng-container *ngIf="!voting.isInitialized">not initialized yet</ng-container>
+            <ng-container *ngIf="voting.isInitialized">encrypted
+              until {{getEncryptedUntilString(voting)}}
+            </ng-container>
           </small>
         </div>
 

@@ -27,7 +27,7 @@ export class ChartHandling {
 
   toggleChartOf(poll: Poll) {
     const current = this.chosenCharts.get(poll.index);
-    if(current == Chart.Bar){
+    if (current == Chart.Bar) {
       this.chosenCharts.set(poll.index, Chart.Pie);
     } else {
       this.chosenCharts.set(poll.index, Chart.Bar);
@@ -41,16 +41,16 @@ export class ChartHandling {
   }
 
   getEChartOptionsOf(poll: Poll): EChartsOption {
-    if(this.pollsEchartOptions.has(poll.index)) {
-      return this.pollsEchartOptions.get(poll.index)!;
-    }
-
-    if(this.voteResults != undefined && this.voteResults.size == 0) {
+    if (this.voteResults != undefined && this.isVoteResultsEmpty()) {
       return {
         title: {
           text: "no results yet"
         }
       }
+    }
+
+    if (this.pollsEchartOptions.has(poll.index)) {
+      return this.pollsEchartOptions.get(poll.index)!;
     }
 
     return {};
@@ -68,6 +68,15 @@ export class ChartHandling {
 
     this.initChosenChartsIfNeeded(polls);
     this.rebuildPollsEchartOptionsIfNeeded();
+  }
+
+  isVoteResultsEmpty() {
+    if (this.voteResults!.size == 0) {
+      return true;
+    }
+
+    return Array.from(this.voteResults!.entries())
+      .every(v => v[1].size == 0);
   }
 
   private rebuildPollsEchartOptionsIfNeeded() {

@@ -24,11 +24,11 @@
             <code>{{voting.assetCode}}</code>
           </div>
           <app-truncated-account-id title="issuer account"
-                                    [accountId]="voting.issuerAccountId"></app-truncated-account-id>
+                                    [accountId]="voting.issuerAccountId" [isOnTestNet]="voting.isOnTestNetwork"></app-truncated-account-id>
           <app-truncated-account-id title="ballot account"
-                                    [accountId]="voting.ballotAccountId"></app-truncated-account-id>
+                                    [accountId]="voting.ballotAccountId" [isOnTestNet]="voting.isOnTestNetwork"></app-truncated-account-id>
           <app-truncated-account-id title="distribution account"
-                                    [accountId]="voting.distributionAccountId"></app-truncated-account-id>
+                                    [accountId]="voting.distributionAccountId" [isOnTestNet]="voting.isOnTestNetwork"></app-truncated-account-id>
         </nb-card-body>
       </nb-card>
     </div>

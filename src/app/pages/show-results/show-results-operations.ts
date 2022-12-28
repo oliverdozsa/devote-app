@@ -10,6 +10,11 @@ export class ShowResultsOperations {
   static cachedResults: Map<String, CollectedVoteResults> = new Map<String, CollectedVoteResults>();
   private static isCacheLoaded = false;
 
+  static clearResultsOf(voting: Voting) {
+    this.cachedResults.delete(voting.id);
+    this.saveCached();
+  }
+
   static getResultsOf(voting: Voting): Observable<CollectedVoteResults> {
     this.tryLoadCachedIfNeeded();
 
@@ -23,7 +28,7 @@ export class ShowResultsOperations {
     if (voting.network == "stellar") {
       return StellarShowResultsOperation.getResultsOf(voting)
         .pipe(
-          tap(r => this.addToCached(voting.id, r)),
+          tap(r => this.addToCachedIfNotEmpty(voting.id, r)),
           finalize(() => this.saveCached())
         );
     }
@@ -31,8 +36,10 @@ export class ShowResultsOperations {
     return of(new Map());
   }
 
-  private static addToCached(votingId: string, results: CollectedVoteResults) {
-    this.cachedResults.set(votingId, results);
+  private static addToCachedIfNotEmpty(votingId: string, results: CollectedVoteResults) {
+    if(results.size > 0) {
+      this.cachedResults.set(votingId, results);
+    }
   }
 
   private static saveCached() {

@@ -121,7 +121,7 @@ export class ChartOptionsBuilder {
   }
 
   private static getResultForOptionOrZero(option: PollOption, pollResults: Map<PollOptionCode, Number>) {
-    if (pollResults.has(option.code)) {
+    if (pollResults && pollResults.has(option.code)) {
       return pollResults.get(option.code)!.valueOf();
     } else {
       return 0;

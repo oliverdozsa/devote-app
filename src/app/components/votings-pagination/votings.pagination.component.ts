@@ -83,7 +83,7 @@ export class VotingsPaginationComponent implements OnInit {
   }
 
   areResultsAvailable(voting: VotingSummary): boolean {
-    return !this.isEncrypted(voting) || this.isEncryptionExpired(voting);
+    return (!this.isEncrypted(voting) || this.isEncryptionExpired(voting)) && voting.isInitialized;
   }
 
   isAlreadyVoted(voting: VotingSummary) {

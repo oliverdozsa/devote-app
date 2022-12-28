@@ -15,7 +15,18 @@
 
 <div *ngIf="reason == RejectReason.None && chartHandling.hasTheme" [nbSpinner]="isVotingReceived && isWorking"
      nbSpinnerSize="giant" nbSpinnerMessage="getting results...">
-  <h4>{{voting.title}}</h4>
+  <h4>{{voting.title}} <button nbButton (click)="onRefreshClicked()"><nb-icon icon="refresh-outline"></nb-icon></button></h4>
+  <nb-accordion *ngIf="hasVotingTransaction">
+    <nb-accordion-item>
+      <nb-accordion-item-header>my vote</nb-accordion-item-header>
+      <nb-accordion-item-body>
+        <div class="text-center">
+          transaction: <code>{{progress!.castedVoteTransactionId!.slice(0, 10)}}...</code>
+          <a [href]="transactionLink" target="_blank"><nb-icon icon="external-link-outline"></nb-icon></a>
+        </div>
+      </nb-accordion-item-body>
+    </nb-accordion-item>
+  </nb-accordion>
   <div *ngFor="let poll of voting.polls">
     <div class="d-flex align-items-center">
       <div class="me-auto">

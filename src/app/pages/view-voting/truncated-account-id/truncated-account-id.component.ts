@@ -12,6 +12,9 @@ export class TruncatedAccountIdComponent {
   @Input()
   title: string = "";
 
+  @Input()
+  isOnTestNet: boolean = true;
+
   constructor() { }
 
   get truncatedOrUnavailable(): string {
@@ -22,4 +25,7 @@ export class TruncatedAccountIdComponent {
     return "<NOT AVAILABLE YET>";
   }
 
+  get link(): string {
+    return `https://${this.isOnTestNet ?  "testnet." : ""}lumenscan.io/account/${this.accountId}`;
+  }
 }

@@ -1,6 +1,6 @@
 import {Component, OnDestroy} from '@angular/core';
 import {NbAuthService} from "@nebular/auth";
-import {ActivatedRoute} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 import {VotingsService} from "../../services/votings.service";
 import {NgxSpinnerService} from "ngx-spinner";
 import {NbThemeService, NbToastrService} from "@nebular/theme";
@@ -10,6 +10,7 @@ import {HttpErrorResponse} from "@angular/common/http";
 import {AppRoutes} from "../../../app-routes";
 import {CollectedVoteResults, ShowResultsOperations} from "./show-results-operations";
 import {Chart, ChartHandling} from "./chart-handling";
+import {loadOrDefaultProgresses, Progress} from "../../data/progress";
 
 
 enum RejectReason {
@@ -42,6 +43,8 @@ export class ShowResultsComponent implements OnDestroy {
 
   destroy$ = new Subject<void>();
 
+  progress: Progress | undefined;
+
   constructor(private authService: NbAuthService, route: ActivatedRoute, private votingsService: VotingsService,
               private spinner: NgxSpinnerService, private toastr: NbToastrService, themeService: NbThemeService) {
     this.votingId = route.snapshot.paramMap.get("id")!;
@@ -64,7 +67,12 @@ export class ShowResultsComponent implements OnDestroy {
       .subscribe({
         next: o => this.chartHandling.updateThemeOptions(o),
         error: e => this.onGenericError(e)
-      })
+      });
+
+     const progresses = loadOrDefaultProgresses();
+     if(progresses.has(this.votingId)) {
+       this.progress = progresses.get(this.votingId);
+     }
   }
 
   ngOnDestroy(): void {
@@ -79,6 +87,18 @@ export class ShowResultsComponent implements OnDestroy {
     } else {
       return "pie-chart-outline";
     }
+  }
+
+  onRefreshClicked() {
+    ShowResultsOperations.clearResultsOf(this.voting);
+    this.getResults();
+  }
+
+  get hasVotingTransaction(): boolean {
+    return this.progress != undefined && this.isVotingReceived;
+  }
+  get transactionLink(): string {
+    return `https://${this.voting.isOnTestNetwork ?  "testnet." : ""}lumenscan.io/txns/${this.progress!.castedVoteTransactionId}`;
   }
 
   private onIsAuthenticated(isAuth: boolean) {
@@ -105,18 +125,26 @@ export class ShowResultsComponent implements OnDestroy {
       this.spinner.hide();
       this.reason = RejectReason.VotingIsStillEncrypted;
     } else {
-      ShowResultsOperations.getResultsOf(this.voting)
-        .pipe(
-          takeUntil(this.destroy$),
-          finalize(() => {
-            this.isWorking = false;
-          })
-        )
-        .subscribe({
-          next: r => this.onResultsAvailable(r),
-          error: e => this.onGenericError(e)
-        });
+      this.getResults();
     }
+  }
+
+  private getResults() {
+    this.areResultsAvailable = false;
+    this.isWorking = true;
+    this.doesResultExist = false;
+
+    const sub = ShowResultsOperations.getResultsOf(this.voting)
+      .pipe(
+        finalize(() => {
+          this.isWorking = false;
+          sub.unsubscribe();
+        })
+      )
+      .subscribe({
+        next: r => this.onResultsAvailable(r),
+        error: e => this.onGenericError(e)
+      });
   }
 
   private onGetVotingError(err: HttpErrorResponse) {
@@ -141,7 +169,8 @@ export class ShowResultsComponent implements OnDestroy {
 
   private onResultsAvailable(results: CollectedVoteResults) {
     if(!this.doesResultExist) {
-      this.doesResultExist = results.size > 0;
+      this.doesResultExist = results.size > 0 && Array.from(results.entries())
+        .every(v => v[1].size != 0);
     }
 
     this.areResultsAvailable = true;

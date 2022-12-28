@@ -4,13 +4,15 @@ import {Voting} from "../../../services/voting";
 import {CastVoteService} from "../../../services/cast-vote.service";
 import {CastVoteOrchestration} from "./cast-vote-orchestration";
 import {describeState} from "../../../data/progress";
+import {Router} from "@angular/router";
+import {AppRoutes} from "../../../../app-routes";
 
 @Component({
   selector: 'app-cast-vote-progress',
   templateUrl: './cast-vote-progress.component.html',
   styleUrls: ['./cast-vote-progress.component.scss']
 })
-export class CastVoteProgressComponent implements OnInit{
+export class CastVoteProgressComponent implements OnInit {
   describeState = describeState;
 
   @Input()
@@ -30,11 +32,13 @@ export class CastVoteProgressComponent implements OnInit{
     return this.orchestration == undefined ? 0 : this.orchestration.progressPercent;
   }
 
-  constructor(private dialogRef: NbDialogRef<any>, private castVoteService: CastVoteService, private toastr: NbToastrService) {
+  constructor(private dialogRef: NbDialogRef<any>, private castVoteService: CastVoteService, private toastr: NbToastrService,
+              private router: Router) {
   }
 
   onCloseClick() {
     this.dialogRef.close();
+    this.router.navigateByUrl(`/${AppRoutes.VOTINGS_WHERE_I_PARTICIPATE}`);
   }
 
   ngOnInit(): void {

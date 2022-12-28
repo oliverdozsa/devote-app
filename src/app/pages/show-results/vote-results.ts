@@ -8,6 +8,8 @@ export class VoteResults {
   private decryptChoices: DecryptChoices | undefined;
 
   constructor(private voting: Voting) {
+    voting.polls.forEach(p => this.collected.set(p.index, new Map<PollOptionCode, Number>()));
+
     if (this.voting.decryptionKey) {
       this.decryptChoices = new DecryptChoices(this.voting.decryptionKey);
     }

@@ -4,8 +4,8 @@
     <code class="text-break">{{truncatedOrUnavailable}}</code>
   </div>
   <div *ngIf="accountId">
-    <button size="tiny" nbButton outline status="primary" title="copy to clipboard" ngxClipboard [cbContent]="accountId">
-      <nb-icon icon="clipboard-outline"></nb-icon>
-    </button>
+    <a [href]="link" target="_blank">
+      <nb-icon icon="external-link-outline"></nb-icon>
+    </a>
   </div>
 </div>

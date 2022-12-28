@@ -3,4 +3,5 @@ export class VotingSummary {
   id: string = "<NOT SET>";
   endDate: string = "";
   encryptedUntil: string = "";
+  isInitialized: boolean = false;
 }
