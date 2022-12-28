@@ -18,8 +18,11 @@ class StellarCollectResults {
 
   private isPagingOngoing = false;
   private numOfRecordsProcessing = 0;
+  private numOfRecordsProcessed = 0;
 
   private collectedVoteResults$: Subject<CollectedVoteResults> = new Subject<CollectedVoteResults>();
+
+  private static NUM_OF_RESULTS_IN_ONE_BATCH = 25;
 
   constructor(private voting: Voting) {
     this.results = new VoteResults(voting);
@@ -59,13 +62,16 @@ class StellarCollectResults {
 
   onTransactionOfPaymentRecordProcessed(paymentRecord: PaymentOperationRecord, transactionRecord: TransactionRecord) {
     this.numOfRecordsProcessing -= 1;
+    this.numOfRecordsProcessed += 1;
 
     if (paymentRecord.asset_code != this.voting.assetCode || paymentRecord.asset_issuer != this.voting.issuerAccountId) {
       return;
     }
 
     this.results.addChoices(transactionRecord.memo);
-    this.collectedVoteResults$.next(this.results.collected);
+    if(this.numOfRecordsProcessed % StellarCollectResults.NUM_OF_RESULTS_IN_ONE_BATCH == 0) {
+      this.collectedVoteResults$.next(this.results.collected);
+    }
 
     this.checkIfDone();
   }
@@ -76,6 +82,7 @@ class StellarCollectResults {
 
   private checkIfDone() {
     if (this.numOfRecordsProcessing == 0 && !this.isPagingOngoing) {
+      this.collectedVoteResults$.next(this.results.collected);
       this.collectedVoteResults$.complete();
     }
   }
