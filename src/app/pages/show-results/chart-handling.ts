@@ -45,7 +45,15 @@ export class ChartHandling {
       return this.pollsEchartOptions.get(poll.index)!;
     }
 
-    return {}
+    if(this.voteResults != undefined && this.voteResults.size == 0) {
+      return {
+        title: {
+          text: "no results yet"
+        }
+      }
+    }
+
+    return {};
   }
 
   updateThemeOptions(themeOptions: NbJSThemeOptions) {

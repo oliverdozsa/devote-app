@@ -22,7 +22,7 @@
         <h5>{{poll.question}}</h5>
       </div>
       <div>
-        <button nbButton size="small" status="primary" (click)="chartHandling.toggleChartOf(poll)">
+        <button *ngIf="doesResultExist" nbButton size="small" status="primary" (click)="chartHandling.toggleChartOf(poll)">
           <nb-icon [icon]="getIconChartForButton(poll)"></nb-icon>
         </button>
       </div>

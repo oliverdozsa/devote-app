@@ -36,6 +36,7 @@ export class ShowResultsComponent implements OnDestroy {
   isAuthenticated = false;
   areResultsAvailable = false;
   isVotingReceived = false;
+  doesResultExist = false;
 
   chartHandling: ChartHandling = new ChartHandling();
 
@@ -139,7 +140,12 @@ export class ShowResultsComponent implements OnDestroy {
   }
 
   private onResultsAvailable(results: CollectedVoteResults) {
+    if(!this.doesResultExist) {
+      this.doesResultExist = results.size > 0;
+    }
+
     this.areResultsAvailable = true;
+
     this.chartHandling.updateResults(results, this.voting.polls);
   }
 

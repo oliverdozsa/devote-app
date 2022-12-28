@@ -7,6 +7,7 @@ import {AppRoutes} from "../../../app-routes";
   styleUrls: ['./home.component.scss']
 })
 export class HomeComponent implements OnInit {
+  AppRoutes = AppRoutes;
 
   constructor() {
     localStorage.setItem("lastVisitedPage", `/${AppRoutes.HOME}`)
