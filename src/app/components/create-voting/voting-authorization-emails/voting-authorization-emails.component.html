@@ -3,10 +3,14 @@
   <div class="col">
     <nb-tag-list (tagRemove)="onEmailRemove($event)">
       <nb-tag *ngFor="let email of form.authorizationEmails" [text]="email" removable></nb-tag>
-      <input fullWidth [status]="(isUserInputValid && form.isAuthorizationInputValid) ? 'success' : 'danger'"
+      <input #emailInput fullWidth
+             [status]="(isUserInputValid && form.isAuthorizationInputValid) ? 'success' : 'danger'"
              type="text" nbTagInput (tagAdd)="onEmailAdd($event)"
              [(ngModel)]="userInput" placeholder="emails">
     </nb-tag-list>
+    <button nbButton class="mt-1" status="primary" size="tiny" [disabled]="!isUserInputValid || userInput.length == 0"
+            (click)="onEmailAddClick({value: userInput, input: emailInput})">add
+    </button>
   </div>
 </div>
 

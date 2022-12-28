@@ -24,8 +24,14 @@ export class VotingAuthorizationEmailsComponent {
   onEmailAdd({value, input}: NbTagInputAddEvent) {
     if(this.isUserInputValid) {
       this.form.authorizationEmails.add(value);
-      input.nativeElement.value = '';
+      input.nativeElement.value = "";
     }
+  }
+
+  onEmailAddClick($event: any) {
+      this.form.authorizationEmails.add($event.value);
+      $event.input.value = "";
+    this.userInput = "";
   }
 
   get isUserInputValid(): boolean {

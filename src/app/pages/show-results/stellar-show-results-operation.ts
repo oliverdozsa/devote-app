@@ -1,10 +1,11 @@
 import {Voting} from "../../services/voting";
 import {Observable, of, Subject} from "rxjs";
 import {StellarServers} from "../../blockchains/StellarServers";
-import {CollectedVoteResults, VoteResults} from "./show-results-operations";
+import {CollectedVoteResults} from "./show-results-operations";
 import {ServerApi} from "stellar-sdk";
 import PaymentOperationRecord = ServerApi.PaymentOperationRecord;
 import TransactionRecord = ServerApi.TransactionRecord;
+import {VoteResults} from "./vote-results";
 
 export class StellarShowResultsOperation {
   static getResultsOf(voting: Voting): Observable<CollectedVoteResults> {
