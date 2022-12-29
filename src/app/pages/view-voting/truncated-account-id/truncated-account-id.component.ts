@@ -15,6 +15,9 @@ export class TruncatedAccountIdComponent {
   @Input()
   isOnTestNet: boolean = true;
 
+  @Input()
+  network: string = "";
+
   constructor() { }
 
   get truncatedOrUnavailable(): string {

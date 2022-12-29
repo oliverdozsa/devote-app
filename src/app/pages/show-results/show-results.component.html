@@ -15,25 +15,41 @@
 
 <div *ngIf="reason == RejectReason.None && chartHandling.hasTheme" [nbSpinner]="isVotingReceived && isWorking"
      nbSpinnerSize="giant" nbSpinnerMessage="getting results...">
-  <h4>{{voting.title}} <button nbButton (click)="onRefreshClicked()"><nb-icon icon="refresh-outline"></nb-icon></button></h4>
+  <h4>{{voting.title}}
+    <button nbButton (click)="onRefreshClicked()">
+      <nb-icon icon="refresh-outline"></nb-icon>
+    </button>
+  </h4>
+
   <nb-accordion *ngIf="hasVotingTransaction">
     <nb-accordion-item>
       <nb-accordion-item-header>my vote</nb-accordion-item-header>
       <nb-accordion-item-body>
         <div class="text-center">
           transaction: <code>{{progress!.castedVoteTransactionId!.slice(0, 10)}}...</code>
-          <a [href]="transactionLink" target="_blank"><nb-icon icon="external-link-outline"></nb-icon></a>
+          <a [href]="transactionLink" target="_blank">
+            <nb-icon icon="external-link-outline"></nb-icon>
+          </a>
+          <div class="mt-2"><b>your choices:</b></div>
+          <div *ngFor="let poll of voting.polls" class="mb-2">
+            {{poll.question}} <br>{{getChoseOptionFor(poll)}}
+          </div>
+          <p>
+            <small>(This is only visible to you.)</small>
+          </p>
         </div>
       </nb-accordion-item-body>
     </nb-accordion-item>
   </nb-accordion>
+
   <div *ngFor="let poll of voting.polls">
     <div class="d-flex align-items-center">
       <div class="me-auto">
         <h5>{{poll.question}}</h5>
       </div>
       <div>
-        <button *ngIf="doesResultExist" nbButton size="small" status="primary" (click)="chartHandling.toggleChartOf(poll)">
+        <button *ngIf="doesResultExist" nbButton size="small" status="primary"
+                (click)="chartHandling.toggleChartOf(poll)">
           <nb-icon [icon]="getIconChartForButton(poll)"></nb-icon>
         </button>
       </div>

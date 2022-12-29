@@ -18,17 +18,21 @@
           <div>
             <nb-icon icon="{{voting.network}}" class="mb-1 me-2 align-middle"></nb-icon>
             ({{voting.network}})
+            <ng-container *ngIf="voting.isOnTestNetwork">(testnet)</ng-container>
           </div>
           <div class="mt-2">
             asset code:
             <code>{{voting.assetCode}}</code>
           </div>
           <app-truncated-account-id title="issuer account"
-                                    [accountId]="voting.issuerAccountId" [isOnTestNet]="voting.isOnTestNetwork"></app-truncated-account-id>
+                                    [accountId]="voting.issuerAccountId" [isOnTestNet]="voting.isOnTestNetwork"
+                                    [network]="voting.network"></app-truncated-account-id>
           <app-truncated-account-id title="ballot account"
-                                    [accountId]="voting.ballotAccountId" [isOnTestNet]="voting.isOnTestNetwork"></app-truncated-account-id>
+                                    [accountId]="voting.ballotAccountId" [isOnTestNet]="voting.isOnTestNetwork"
+                                    [network]="voting.network"></app-truncated-account-id>
           <app-truncated-account-id title="distribution account"
-                                    [accountId]="voting.distributionAccountId" [isOnTestNet]="voting.isOnTestNetwork"></app-truncated-account-id>
+                                    [accountId]="voting.distributionAccountId" [isOnTestNet]="voting.isOnTestNetwork"
+                                    [network]="voting.network"></app-truncated-account-id>
         </nb-card-body>
       </nb-card>
     </div>

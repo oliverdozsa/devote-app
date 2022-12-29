@@ -11,6 +11,7 @@ import {AppRoutes} from "../../../app-routes";
 import {CollectedVoteResults, ShowResultsOperations} from "./show-results-operations";
 import {Chart, ChartHandling} from "./chart-handling";
 import {loadOrDefaultProgresses, Progress} from "../../data/progress";
+import {getTransactionLink} from "./transaction-link";
 
 
 enum RejectReason {
@@ -98,7 +99,16 @@ export class ShowResultsComponent implements OnDestroy {
     return this.progress != undefined && this.isVotingReceived;
   }
   get transactionLink(): string {
-    return `https://${this.voting.isOnTestNetwork ?  "testnet." : ""}lumenscan.io/txns/${this.progress!.castedVoteTransactionId}`;
+    return getTransactionLink(this.voting, this.progress!.castedVoteTransactionId!);
+  }
+
+  getChoseOptionFor(poll: Poll): string {
+    if(this.progress) {
+      const chosenOptionCode = this.progress!.selectedOptions![poll.index - 1];
+      return poll.pollOptions.find(o => o.code == chosenOptionCode)!.name;
+    }
+
+    return "";
   }
 
   private onIsAuthenticated(isAuth: boolean) {
