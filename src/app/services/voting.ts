@@ -9,6 +9,7 @@ export class Voting {
   public decryptionKey: string | undefined = undefined;
   public startDate: string = "";
   public endDate: string = "";
+  public fundingAccountId: string | undefined = undefined;
   public distributionAccountId: string | undefined = undefined;
   public ballotAccountId: string | undefined = undefined;
   public issuerAccountId: string | undefined = undefined;
@@ -16,6 +17,7 @@ export class Voting {
   public authorization: string = "";
   public visibility: string = "";
   public isOnTestNetwork: boolean = false;
+  public isRefunded: boolean = false;
 
 }
 

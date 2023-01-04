@@ -7,7 +7,10 @@ $nb-enable-css-custom-properties: true;
 
 $nb-themes: nb-register-theme((
   sidebar-width-compact: 5.5rem,
-  ph-bg-alphad: rgba(255, 255, 255, 0.35)
+  ph-bg-alphad: rgba(255, 255, 255, 0.35),
+  footer-background-color: transparent,
+  footer-shadow: none,
+  footer-divider-width: 0px
 ), default, default);
 
 $nb-themes: nb-register-theme((

@@ -1,6 +1,22 @@
 <div *ngIf="voting != undefined" class="container">
   <h4 class="text-center">{{voting.title}}</h4>
 
+  <h5>Polls</h5>
+  <nb-accordion multi>
+    <nb-accordion-item *ngFor="let poll of voting.polls">
+      <nb-accordion-item-header>
+        {{poll.question}}
+      </nb-accordion-item-header>
+      <nb-accordion-item-body>
+        <nb-list>
+          <nb-list-item *ngFor="let option of poll.pollOptions">
+            {{option.code}}. {{option.name}}
+          </nb-list-item>
+        </nb-list>
+      </nb-accordion-item-body>
+    </nb-accordion-item>
+  </nb-accordion>
+
   <h5>Technical data</h5>
 
   <div>
@@ -33,6 +49,14 @@
           <app-truncated-account-id title="distribution account"
                                     [accountId]="voting.distributionAccountId" [isOnTestNet]="voting.isOnTestNetwork"
                                     [network]="voting.network"></app-truncated-account-id>
+          <app-truncated-account-id title="funding account"
+                                    [accountId]="voting.fundingAccountId" [isOnTestNet]="voting.isOnTestNetwork"
+                                    [network]="voting.network"></app-truncated-account-id>
+          <div *ngIf="isVotingExpired && !voting.isRefunded">
+            refunding in progress:
+            <i class="fa-solid fa-money-check-dollar fa-flip fa-lg" style="--fa-animation-duration: 2s;" ></i>
+          </div>
+          <nb-badge *ngIf="isVotingExpired && voting.isRefunded" status="success" text="refunded!"></nb-badge>
         </nb-card-body>
       </nb-card>
     </div>
@@ -88,7 +112,7 @@
           </div>
 
           <div class="mt-2 d-flex flex-row">
-            <div>votes cap:</div>
+            <div>number of participants:</div>
             <div class="px-1">
               {{voting.votesCap}}
             </div>
@@ -143,21 +167,4 @@
       </nb-card>
     </div>
   </div>
-
-  <h5>Polls</h5>
-  <nb-accordion multi>
-    <nb-accordion-item *ngFor="let poll of voting.polls">
-      <nb-accordion-item-header>
-        {{poll.question}}
-      </nb-accordion-item-header>
-      <nb-accordion-item-body>
-        <nb-list>
-          <nb-list-item *ngFor="let option of poll.pollOptions">
-            {{option.code}}. {{option.name}}
-          </nb-list-item>
-        </nb-list>
-      </nb-accordion-item-body>
-    </nb-accordion-item>
-  </nb-accordion>
-
 </div>

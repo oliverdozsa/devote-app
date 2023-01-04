@@ -1,8 +1,10 @@
 import {Component} from '@angular/core';
 import {NbIconLibraries, NbMenuBag, NbMenuItem, NbMenuService, NbSidebarService} from "@nebular/theme";
 import {NbAuthResult, NbAuthService} from "@nebular/auth";
-import {filter} from "rxjs";
+import {filter, map} from "rxjs";
 import {AppRoutes} from "../app-routes";
+import {ActivatedRoute, NavigationStart, Router} from "@angular/router";
+import {Location} from "@angular/common";
 
 export class MainMenuItemTitles {
   static HOME = 'home';
@@ -67,10 +69,25 @@ export class AppComponent {
   isSideBarCollapsed = true;
 
   constructor(private iconLibraries: NbIconLibraries, private sidebarService: NbSidebarService,
-              private authService: NbAuthService, private menuService: NbMenuService
+              private authService: NbAuthService, private menuService: NbMenuService, private router: Router
   ) {
     this.iconLibraries.registerFontPack('fas', {packClass: 'fas', iconClassPrefix: 'fa'});
     this.iconLibraries.registerFontPack('far', {packClass: 'far', iconClassPrefix: 'fa'});
+
+    router.events
+      .pipe(
+        filter(event => event instanceof NavigationStart),
+        map(event => event as NavigationStart)
+      )
+      .subscribe({
+        next: e => {
+          this.mainMenuItems.forEach(i => {
+            if (i.link != undefined) {
+              i.selected = e.url.includes(i.link)
+            }
+          });
+        }
+      });
 
     this.registerCustomIcons(iconLibraries);
 
@@ -121,6 +138,10 @@ export class AppComponent {
   }
 
   onMainMenuItemSelected(menuBag: NbMenuBag) {
+    this.mainMenuItems.forEach(i => {
+      i.selected = menuBag.item.title == i.title;
+    });
+
     if (menuBag.item.title == 'login') {
       this.login();
     } else if (menuBag.item.title == 'logout') {

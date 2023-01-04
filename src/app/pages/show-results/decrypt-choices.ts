@@ -8,7 +8,7 @@ export class DecryptChoices {
   }
 
   decrypt(choices: string | undefined): string {
-    if (choices == undefined || choices.length < 28) {
+    if (choices == undefined) {
       console.warn(`Invalid encrypted choices: ${choices}`);
       return "";
     }

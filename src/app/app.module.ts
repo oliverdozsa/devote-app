@@ -28,7 +28,8 @@ import {
   NbStepperModule,
   NbDatepickerModule,
   NbTimepickerModule,
-  NbAccordionModule, NbAlertModule, NbRadioModule, NbProgressBarModule
+  NbAccordionModule, NbAlertModule, NbRadioModule, NbProgressBarModule,
+  NbBadgeModule
 } from '@nebular/theme';
 import {NbEvaIconsModule} from '@nebular/eva-icons';
 import {HomeComponent} from './pages/home/home.component';
@@ -130,6 +131,7 @@ import {NgxEchartsModule} from "ngx-echarts";
     NbListModule,
     NbToggleModule,
     NbInputModule,
+    NbBadgeModule,
     HttpClientModule,
     FormsModule,
     NgxSpinnerModule,

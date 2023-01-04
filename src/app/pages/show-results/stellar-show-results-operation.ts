@@ -71,8 +71,6 @@ class StellarCollectResults {
 
     this.results.addChoices(transactionRecord.memo);
 
-    console.log(`memo: ${transactionRecord.memo}`);
-
     if(this.numOfRecordsProcessed % StellarCollectResults.NUM_OF_RESULTS_IN_ONE_BATCH == 0) {
       this.collectedVoteResults$.next(this.results.collected);
     }
