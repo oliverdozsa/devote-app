@@ -13,6 +13,7 @@ import {
 } from "./pages/votings-where-i-participate/votings-where-i-participate.component";
 import {CastVoteComponent} from "./pages/cast-vote/cast-vote.component";
 import {ShowResultsComponent} from "./pages/show-results/show-results.component";
+import {MyProfileComponent} from "./pages/my-profile/my-profile.component";
 
 const routes: Routes = [
   {path: AppRoutes.HOME, component: HomeComponent},
@@ -24,6 +25,7 @@ const routes: Routes = [
   {path: AppRoutes.VOTINGS_WHERE_I_PARTICIPATE, component: VotingsWhereIParticipateComponent},
   {path: AppRoutes.CAST_VOTE + "/:id", component: CastVoteComponent},
   {path: AppRoutes.SHOW_RESULTS + "/:id", component: ShowResultsComponent},
+  {path: AppRoutes.MY_PROFILE, component: MyProfileComponent},
   {path: '', redirectTo: '/' + AppRoutes.HOME, pathMatch: 'full'},
   {path: '**', component: PageNotFoundComponent}
 ];

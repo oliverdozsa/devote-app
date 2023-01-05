@@ -1,0 +1,18 @@
+<div *ngIf="!isUnlocked" class="text-center">
+  <h5 class="text-center">please login to view this page</h5>
+</div>
+
+
+<div *ngIf="isUnlocked">
+  <h4>My profile</h4>
+  <div class="text-center">
+    <i *ngIf="isLoading" class="mx-auto fa-solid fa-circle-notch fa-spin fa-2xl"></i>
+  </div>
+
+  <div class="mx-auto" style="width: 62px;">
+    <nb-user *ngIf="userInfo" class="m-auto" onlyPicture [picture]="userInfo.pictureUrl" size="giant"></nb-user>
+  </div>
+  <h6 *ngIf="userInfo" class="text-center">{{userInfo.name}}<br>{{userInfo.email}}</h6>
+</div>
+
+

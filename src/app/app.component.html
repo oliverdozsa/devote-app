@@ -6,14 +6,16 @@
   </nb-layout-header>
 
   <nb-sidebar tag="main" responsive="true">
-    <nb-menu [items]="mainMenuItems" tag="mainMenuItems"></nb-menu>
+    <i *ngIf="isUserInfoLoading" class="mx-auto fa-solid fa-circle-notch fa-spin fa-xl"></i>
+    <div *ngIf="userInfo">
+      <nb-user [picture]="userInfo.pictureUrl" onlyPicture></nb-user>
+    </div>
+    <nb-menu class="mt-2" [items]="mainMenuItems" tag="mainMenuItems"></nb-menu>
   </nb-sidebar>
 
   <nb-layout-column>
     <router-outlet></router-outlet>
   </nb-layout-column>
-
-
 
   <nb-layout-footer>
     <div class="text-center">

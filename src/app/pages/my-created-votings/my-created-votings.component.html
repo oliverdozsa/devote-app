@@ -1,9 +1,9 @@
-<div *ngIf="!isUnlocked" class="container text-center">
+<div *ngIf="!isUnlocked" class="text-center">
   <h5 class="text-center">please login to view this page</h5>
 </div>
 
-<div *ngIf="isUnlocked" class="container">
-  <h5>My created votings</h5>
+<div *ngIf="isUnlocked">
+  <h4>My created votings</h4>
   <div class="text-end">
     <button nbButton outline status="primary" (click)="onCreateVotingClicked()">
       create

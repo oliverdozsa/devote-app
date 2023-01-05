@@ -1,10 +1,11 @@
 import {Component} from '@angular/core';
 import {NbIconLibraries, NbMenuBag, NbMenuItem, NbMenuService, NbSidebarService} from "@nebular/theme";
 import {NbAuthResult, NbAuthService} from "@nebular/auth";
-import {filter, map} from "rxjs";
+import {delay, filter, finalize, map, Subscription, takeUntil} from "rxjs";
 import {AppRoutes} from "../app-routes";
 import {ActivatedRoute, NavigationStart, Router} from "@angular/router";
 import {Location} from "@angular/common";
+import {UserInfo, UserService} from "./services/user.service";
 
 export class MainMenuItemTitles {
   static HOME = 'home';
@@ -35,7 +36,8 @@ export class AppComponent {
     {
       title: MainMenuItemTitles.MY_PROFILE,
       icon: {icon: 'user', pack: 'fas'},
-      hidden: true
+      hidden: true,
+      link: AppRoutes.MY_PROFILE
     },
     {
       title: MainMenuItemTitles.PUBLIC_VOTINGS,
@@ -66,10 +68,16 @@ export class AppComponent {
     }
   ];
 
+  userInfo: UserInfo | undefined;
+  isUserInfoLoading = false;
+
   isSideBarCollapsed = true;
 
+  private userInfoSubscription: Subscription | undefined;
+
   constructor(private iconLibraries: NbIconLibraries, private sidebarService: NbSidebarService,
-              private authService: NbAuthService, private menuService: NbMenuService, private router: Router
+              private authService: NbAuthService, private menuService: NbMenuService, private router: Router,
+              private userService: UserService
   ) {
     this.iconLibraries.registerFontPack('fas', {packClass: 'fas', iconClassPrefix: 'fa'});
     this.iconLibraries.registerFontPack('far', {packClass: 'far', iconClassPrefix: 'fa'});
@@ -111,14 +119,28 @@ export class AppComponent {
   }
 
   onIsAuthenticated(isAuthenticated: boolean) {
+    console.log(`isAuthenticated: ${isAuthenticated}`);
+
     if (isAuthenticated) {
       this.showMenuItems(MainMenuItemTitles.PROTECTED_MENU_ITEMS);
       this.showMenuItems([MainMenuItemTitles.LOGOUT]);
-      this.hideMenuItems([MainMenuItemTitles.LOGIN])
+      this.hideMenuItems([MainMenuItemTitles.LOGIN]);
+
+      this.isUserInfoLoading = true;
+      this.userInfoSubscription = this.userService.getUserInfo()
+        .pipe(
+          finalize(() => {
+            this.isUserInfoLoading = false;
+            this.userInfoSubscription?.unsubscribe();
+          })
+        )
+        .subscribe({next: u => this.onUserInfoReceived(u)})
     } else {
       this.hideMenuItems(MainMenuItemTitles.PROTECTED_MENU_ITEMS);
-      this.hideMenuItems([MainMenuItemTitles.LOGOUT])
-      this.showMenuItems([MainMenuItemTitles.LOGIN])
+      this.hideMenuItems([MainMenuItemTitles.LOGOUT]);
+      this.showMenuItems([MainMenuItemTitles.LOGIN]);
+
+      this.userInfo = undefined;
     }
   }
 
@@ -167,5 +189,10 @@ export class AppComponent {
     iconLibraries.getPack("eva").icons.set(
       "stellar", "<img src='./assets/icons/stellar.svg' width='25px'/>"
     );
+  }
+
+  private onUserInfoReceived(userInfo: UserInfo) {
+    this.isUserInfoLoading = false;
+    this.userInfo = userInfo;
   }
 }

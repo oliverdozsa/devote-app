@@ -29,7 +29,7 @@ import {
   NbDatepickerModule,
   NbTimepickerModule,
   NbAccordionModule, NbAlertModule, NbRadioModule, NbProgressBarModule,
-  NbBadgeModule
+  NbBadgeModule, NbUserModule
 } from '@nebular/theme';
 import {NbEvaIconsModule} from '@nebular/eva-icons';
 import {HomeComponent} from './pages/home/home.component';
@@ -79,8 +79,9 @@ import {
 } from './pages/votings-where-i-participate/votings-where-i-participate.component';
 import {CastVoteComponent} from './pages/cast-vote/cast-vote.component';
 import {CastVoteProgressComponent} from './pages/cast-vote/cast-vote-progress/cast-vote-progress.component';
-import { ShowResultsComponent } from './pages/show-results/show-results.component';
+import {ShowResultsComponent} from './pages/show-results/show-results.component';
 import {NgxEchartsModule} from "ngx-echarts";
+import {MyProfileComponent} from './pages/my-profile/my-profile.component';
 
 @NgModule({
   declarations: [
@@ -110,7 +111,8 @@ import {NgxEchartsModule} from "ngx-echarts";
     VotingsWhereIParticipateComponent,
     CastVoteComponent,
     CastVoteProgressComponent,
-    ShowResultsComponent
+    ShowResultsComponent,
+    MyProfileComponent
   ],
   imports: [
     BrowserModule,
@@ -132,6 +134,7 @@ import {NgxEchartsModule} from "ngx-echarts";
     NbToggleModule,
     NbInputModule,
     NbBadgeModule,
+    NbUserModule,
     HttpClientModule,
     FormsModule,
     NgxSpinnerModule,

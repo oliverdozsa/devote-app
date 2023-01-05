@@ -8,4 +8,5 @@ export class AppRoutes {
   static VOTINGS_WHERE_I_PARTICIPATE = 'votings-where-i-participate';
   static CAST_VOTE = 'cast-vote';
   static SHOW_RESULTS = 'show-results';
+  static MY_PROFILE = 'my-profile';
 }
