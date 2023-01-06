@@ -4,5 +4,8 @@
                                                                    class="fa-spin"></nb-icon></span>
     <span
       *ngIf="!form.accountBalance!.isLoading"> {{form.accountBalance!.isNotFound ? "account not found" : form.accountBalance.value.toLocaleString()}} {{form.accountBalance!.currency}} </span>
+    <div *ngIf="!form.accountBalance!.isLoading && !form.accountBalance!.isNotFound">
+      this is enough for <b>{{form.accountVotesCap.calculateMaxPossibleVotesCap().toLocaleString()}}</b> participants
+    </div>
   </div>
 </div>

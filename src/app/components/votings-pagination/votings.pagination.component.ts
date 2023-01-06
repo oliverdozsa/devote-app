@@ -82,6 +82,13 @@ export class VotingsPaginationComponent implements OnInit {
     return endMillis <= nowMillis;
   }
 
+  isStarted(voting: VotingSummary) {
+    const nowMillis = Date.now();
+    const startMillis = Date.parse(voting.startDate)
+
+    return startMillis <= nowMillis;
+  }
+
   areResultsAvailable(voting: VotingSummary): boolean {
     return (!this.isEncrypted(voting) || this.isEncryptionExpired(voting)) && voting.isInitialized;
   }

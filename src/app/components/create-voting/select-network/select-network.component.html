@@ -1,5 +1,9 @@
 <div class="row" *ngIf="form">
   <div class="col">
+    <div class="text-center text-hint mb-1">
+      <nb-icon icon="info-outline"></nb-icon>
+      your voting will be created on a public blockchain; choose the one you like
+    </div>
     <nb-form-field>
       <nb-icon *ngIf="isValid" nbPrefix [icon]="selectedNetwork"></nb-icon>
       <nb-icon *ngIf="!isValid" nbPrefix icon="alert-circle-outline"></nb-icon>
