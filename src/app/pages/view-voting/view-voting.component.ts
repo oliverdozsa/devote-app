@@ -53,6 +53,10 @@ export class ViewVotingComponent {
     return this.remainingTotalSecondsLeftUntilEncryptionEnds() == 0;
   }
 
+  get isInvitationBased(): boolean {
+    return this.voting!.isInvitesBased;
+  }
+
   onReloadClicked() {
     this.getVoting(this.voting?.id!);
   }

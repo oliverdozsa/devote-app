@@ -15,6 +15,8 @@ export class CreateVotingRequest {
   public fundingAccountPublic: string = "";
   public fundingAccountSecret: string = "";
   public useTestnet: boolean = false;
+  public sendInvites: boolean = false;
+  public organizer: string = "";
 
   static fromCreateVotingForm(form: CreateVotingForm): CreateVotingRequest {
     const request = new CreateVotingRequest();
@@ -34,6 +36,8 @@ export class CreateVotingRequest {
     request.fundingAccountPublic = form.fundingAccountPublic;
     request.fundingAccountSecret = form.fundingAccountSecret;
     request.useTestnet = form.shouldUseTestNet;
+    request.sendInvites = form.isInvitesBased;
+    request.organizer = form.organizerIfInvitesBased;
 
     return request;
   }

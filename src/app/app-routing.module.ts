@@ -14,6 +14,7 @@ import {
 import {CastVoteComponent} from "./pages/cast-vote/cast-vote.component";
 import {ShowResultsComponent} from "./pages/show-results/show-results.component";
 import {MyProfileComponent} from "./pages/my-profile/my-profile.component";
+import {InviteComponent} from "./pages/invite/invite.component";
 
 const routes: Routes = [
   {path: AppRoutes.HOME, component: HomeComponent},
@@ -26,6 +27,7 @@ const routes: Routes = [
   {path: AppRoutes.CAST_VOTE + "/:id", component: CastVoteComponent},
   {path: AppRoutes.SHOW_RESULTS + "/:id", component: ShowResultsComponent},
   {path: AppRoutes.MY_PROFILE, component: MyProfileComponent},
+  {path: AppRoutes.INVITE + "/:token", component: InviteComponent},
   {path: '', redirectTo: '/' + AppRoutes.HOME, pathMatch: 'full'},
   {path: '**', component: PageNotFoundComponent}
 ];

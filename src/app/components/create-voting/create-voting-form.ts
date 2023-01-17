@@ -34,6 +34,9 @@ export class CreateVotingForm {
 
   questions: VotingQuestion[] = [];
 
+  isInvitesBased: boolean = false;
+  organizerIfInvitesBased: string = "";
+
   private accountValidator: AccountValidator = new AccountValidator();
   private accountPublicDerivation: AccountPublicKeyDerivation = new AccountPublicKeyDerivation();
 
@@ -156,6 +159,10 @@ export class CreateVotingForm {
 
   get areQuestionsValid(): boolean {
     return this.questions.length > 0 && this.questions.every(q => q.isValid);
+  }
+
+  get isOrganizerValid(): boolean {
+    return !this.isInvitesBased || this.organizerIfInvitesBased.length > 0;
   }
 
   private derivePublicFromSecretIfPossible() {

@@ -18,6 +18,7 @@ export class Voting {
   public visibility: string = "";
   public isOnTestNetwork: boolean = false;
   public isRefunded: boolean = false;
+  public isInvitesBased: boolean = false;
 
 }
 

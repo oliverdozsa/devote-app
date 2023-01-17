@@ -38,13 +38,21 @@ export class VotingAuthorizationEmailsComponent {
     return (this.userInput == "" || this.userInput.match(this.emailPattern) != null);
   }
 
-  get dangerText(): string {
+  get dangerTextEmailField(): string {
     if(!this.isUserInputValid) {
       return "Must enter a valid email address.";
     }
 
     if(!this.form.isAuthorizationInputValid) {
       return "Must have at least one email address added.";
+    }
+
+    return "";
+  }
+
+  get dangerTextOrganizerField(): string {
+    if(!this.form.isOrganizerValid) {
+      return "If casting voting is based on invites, the organizer must not be empty."
     }
 
     return "";

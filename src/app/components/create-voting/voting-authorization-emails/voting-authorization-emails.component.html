@@ -18,7 +18,54 @@
   <div class="col">
     <nb-card accent="danger">
       <nb-card-body>
-        {{dangerText}}
+        {{dangerTextEmailField}}
+      </nb-card-body>
+    </nb-card>
+  </div>
+</div>
+
+<div class="row mt-2">
+  <div class="col text-center">
+    <div *ngIf="form.isInvitesBased" class="text-center text-hint mb-1">
+      <nb-icon icon="info-outline"></nb-icon>
+      voters will get an invitation to participate in the voting via email. no login is required. the invitation will be
+      only valid for this
+      voting
+    </div>
+    <div *ngIf="!form.isInvitesBased" class="text-center text-hint mb-1">
+      <nb-icon icon="info-outline"></nb-icon>
+      voters can access this voting when they login.
+    </div>
+
+    <nb-toggle [(ngModel)]="form.isInvitesBased">
+      <span *ngIf="form.isInvitesBased">
+        cast vote via invitation
+      </span>
+      <span *ngIf="!form.isInvitesBased">
+        cast vote via login
+      </span>
+    </nb-toggle>
+  </div>
+</div>
+
+<div *ngIf="form.isInvitesBased" class="row mt-2">
+  <div class="col">
+    <div class="text-center text-hint mb-1">
+      <nb-icon icon="info-outline"></nb-icon>
+      the voting organizer will be added to the invite to inform recipients
+    </div>
+
+    <input nbInput type="text" fullWidth
+           [status]="form.isOrganizerValid ? 'success' : 'danger'"
+           [(ngModel)]="form.organizerIfInvitesBased" placeholder="organizer">
+  </div>
+</div>
+
+<div *ngIf="!form.isOrganizerValid" class="row mt-1">
+  <div class="col">
+    <nb-card accent="danger">
+      <nb-card-body>
+        {{dangerTextOrganizerField}}
       </nb-card-body>
     </nb-card>
   </div>

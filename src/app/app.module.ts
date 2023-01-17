@@ -34,7 +34,7 @@ import {
 import {NbEvaIconsModule} from '@nebular/eva-icons';
 import {HomeComponent} from './pages/home/home.component';
 import {HTTP_INTERCEPTORS, HttpClientModule} from "@angular/common/http";
-import {NbAuthModule, NbOAuth2AuthStrategy, NbOAuth2ResponseType} from "@nebular/auth";
+import {NbAuthJWTToken, NbAuthModule, NbOAuth2AuthStrategy, NbOAuth2ResponseType} from "@nebular/auth";
 import {LoginCallbackComponent} from './pages/auth/login-callback/login-callback.component';
 import {AppRoutes} from "../app-routes";
 import {PublicVotingsComponent} from './pages/public-votings/public-votings.component';
@@ -82,6 +82,9 @@ import {CastVoteProgressComponent} from './pages/cast-vote/cast-vote-progress/ca
 import {ShowResultsComponent} from './pages/show-results/show-results.component';
 import {NgxEchartsModule} from "ngx-echarts";
 import {MyProfileComponent} from './pages/my-profile/my-profile.component';
+import {TokenAuthStrategy} from "./services/token-auth-strategy";
+import { InviteComponent } from './pages/invite/invite.component';
+import {TokenAuthToken} from "./services/token-auth-token";
 
 @NgModule({
   declarations: [
@@ -112,7 +115,8 @@ import {MyProfileComponent} from './pages/my-profile/my-profile.component';
     CastVoteComponent,
     CastVoteProgressComponent,
     ShowResultsComponent,
-    MyProfileComponent
+    MyProfileComponent,
+    InviteComponent
   ],
   imports: [
     BrowserModule,
@@ -156,6 +160,12 @@ import {MyProfileComponent} from './pages/my-profile/my-profile.component';
           },
           redirect: {
             success: getLastVisitedPage()
+          }
+        }),
+        TokenAuthStrategy.setup({
+          name: "tokenauth",
+          token: {
+            class: TokenAuthToken
           }
         })
       ]

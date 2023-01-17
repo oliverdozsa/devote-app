@@ -1,11 +1,11 @@
 import {Component} from '@angular/core';
 import {NbIconLibraries, NbMenuBag, NbMenuItem, NbMenuService, NbSidebarService} from "@nebular/theme";
-import {NbAuthResult, NbAuthService} from "@nebular/auth";
-import {delay, filter, finalize, map, Subscription, takeUntil} from "rxjs";
+import {NbAuthResult, NbAuthService, NbAuthToken} from "@nebular/auth";
+import {filter, finalize, map, Subscription, takeUntil} from "rxjs";
 import {AppRoutes} from "../app-routes";
-import {ActivatedRoute, NavigationStart, Router} from "@angular/router";
-import {Location} from "@angular/common";
+import {NavigationStart, Router} from "@angular/router";
 import {UserInfo, UserService} from "./services/user.service";
+import {TokenAuthToken} from "./services/token-auth-token";
 
 export class MainMenuItemTitles {
   static HOME = 'home';
@@ -17,7 +17,8 @@ export class MainMenuItemTitles {
   static LOGOUT = 'logout';
 
   static PROTECTED_MENU_ITEMS = [MainMenuItemTitles.MY_PROFILE, MainMenuItemTitles.MY_CREATED_VOTINGS,
-    MainMenuItemTitles.VOTINGS_WHERE_I_PARTICIPATE]
+    MainMenuItemTitles.VOTINGS_WHERE_I_PARTICIPATE];
+  static MENU_ITEMS_NOT_VALID_IN_TOKEN_AUTH = [MainMenuItemTitles.MY_PROFILE, MainMenuItemTitles.MY_CREATED_VOTINGS];
 }
 
 @Component({
@@ -74,6 +75,7 @@ export class AppComponent {
   isSideBarCollapsed = true;
 
   private userInfoSubscription: Subscription | undefined;
+  private tokenSubscription: Subscription | undefined;
 
   constructor(private iconLibraries: NbIconLibraries, private sidebarService: NbSidebarService,
               private authService: NbAuthService, private menuService: NbMenuService, private router: Router,
@@ -119,22 +121,16 @@ export class AppComponent {
   }
 
   onIsAuthenticated(isAuthenticated: boolean) {
-    console.log(`isAuthenticated: ${isAuthenticated}`);
-
     if (isAuthenticated) {
       this.showMenuItems(MainMenuItemTitles.PROTECTED_MENU_ITEMS);
       this.showMenuItems([MainMenuItemTitles.LOGOUT]);
       this.hideMenuItems([MainMenuItemTitles.LOGIN]);
 
-      this.isUserInfoLoading = true;
-      this.userInfoSubscription = this.userService.getUserInfo()
+      this.tokenSubscription = this.authService.getToken()
         .pipe(
-          finalize(() => {
-            this.isUserInfoLoading = false;
-            this.userInfoSubscription?.unsubscribe();
-          })
+          finalize(() => this.tokenSubscription?.unsubscribe())
         )
-        .subscribe({next: u => this.onUserInfoReceived(u)})
+        .subscribe(t => this.onTokenReceived(t))
     } else {
       this.hideMenuItems(MainMenuItemTitles.PROTECTED_MENU_ITEMS);
       this.hideMenuItems([MainMenuItemTitles.LOGOUT]);
@@ -182,6 +178,13 @@ export class AppComponent {
     this.authService
       .logout("auth0")
       .subscribe((authResult: NbAuthResult) => {
+        this.router.navigate(["/"+AppRoutes.HOME]);
+      });
+
+    this.authService
+      .logout("tokenauth")
+      .subscribe((authResult: NbAuthResult) => {
+        this.router.navigate(["/"+AppRoutes.HOME]);
       });
   }
 
@@ -189,6 +192,27 @@ export class AppComponent {
     iconLibraries.getPack("eva").icons.set(
       "stellar", "<img src='./assets/icons/stellar.svg' width='25px'/>"
     );
+  }
+
+  private onTokenReceived(token: NbAuthToken) {
+    if(token instanceof TokenAuthToken) {
+      this.hideMenuItems(MainMenuItemTitles.MENU_ITEMS_NOT_VALID_IN_TOKEN_AUTH);
+    } else {
+      this.showMenuItems(MainMenuItemTitles.MENU_ITEMS_NOT_VALID_IN_TOKEN_AUTH);
+      this.getUserInfo();
+    }
+  }
+
+  private getUserInfo() {
+    this.isUserInfoLoading = true;
+    this.userInfoSubscription = this.userService.getUserInfo()
+      .pipe(
+        finalize(() => {
+          this.isUserInfoLoading = false;
+          this.userInfoSubscription?.unsubscribe();
+        })
+      )
+      .subscribe({next: u => this.onUserInfoReceived(u)})
   }
 
   private onUserInfoReceived(userInfo: UserInfo) {
