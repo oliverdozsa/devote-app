@@ -1,5 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {CreateVotingForm} from "../create-voting-form";
+import {CreateVotingForm, Visibility} from "../create-voting-form";
 
 @Component({
   selector: 'app-voting-visibility-and-authorization',
@@ -7,6 +7,8 @@ import {CreateVotingForm} from "../create-voting-form";
   styleUrls: ['./voting-visibility-and-authorization.component.scss']
 })
 export class VotingVisibilityAndAuthorizationComponent {
+  Visibility = Visibility;
+
   @Input()
   form: CreateVotingForm = new CreateVotingForm();
 

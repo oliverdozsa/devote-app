@@ -17,7 +17,7 @@ export enum Visibility {
 export class CreateVotingForm {
   title: string = "";
   tokenIdentifier: string | undefined = undefined;
-  visibility: Visibility = Visibility.PUBLIC;
+  visibility: Visibility = Visibility.PRIVATE;
 
   authorization: Authorization = Authorization.EMAILS;
   authorizationEmails: Set<string> = new Set<string>();
