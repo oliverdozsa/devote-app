@@ -69,8 +69,8 @@ export class InitStep extends OrchestrationStep {
       this.progress.state = ProgressState.Initialized;
       this.complete();
     } else {
-      this.toastr.warning("You've tried to vote before!", "Cannot cast vote!", {duration: 5000});
-      this.fail();
+      this.toastr.warning("It seems you've tried to vote before!", "Cannot cast vote!", {duration: 5000});
+      this.failCompletely();
     }
   }
 }

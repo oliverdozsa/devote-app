@@ -94,7 +94,8 @@ export class VotingsPaginationComponent implements OnInit {
   }
 
   isAlreadyVoted(voting: VotingSummary) {
-    return this.progresses.has(voting.id) && this.progresses.get(voting.id)!.state == ProgressState.Completed;
+    return this.progresses.has(voting.id) && (this.progresses.get(voting.id)!.state == ProgressState.Completed ||
+      this.progresses.get(voting.id)!.state == ProgressState.CompletelyFailed);
   }
 
   getEncryptedUntilString(voting: VotingSummary): string {

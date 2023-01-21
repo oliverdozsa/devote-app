@@ -8,7 +8,8 @@ export enum ProgressState {
   CreatingTransaction,
   CreatedTransaction,
   CastingVote,
-  Completed
+  Completed,
+  CompletelyFailed
 }
 
 export class Progress {
@@ -43,6 +44,8 @@ export function describeState(state: ProgressState): string {
       return "casting vote";
     case ProgressState.Completed:
       return "completed";
+    case ProgressState.CompletelyFailed:
+      return "failed";
     default:
       return "<unknown>";
   }

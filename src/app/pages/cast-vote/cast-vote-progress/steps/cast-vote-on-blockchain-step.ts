@@ -54,8 +54,6 @@ export class CastVoteOnBlockchainStep extends OrchestrationStep {
   }
 
   private handleCastVoteFailure(e: any) {
-    console.log(`error: ${JSON.stringify(e)}`);
-
     if(e.response != undefined && e.response.status != undefined && e.response.title != undefined && e.response.status == 404) {
       this.toastr.warning("You've probably already voted!");
       this.complete();

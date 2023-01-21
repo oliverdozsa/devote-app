@@ -62,6 +62,12 @@ export class CastVoteOrchestration {
     this.executeCurrentStepIfExists();
   }
 
+  completelyFail() {
+    this.current = undefined;
+    this.progress.state = ProgressState.CompletelyFailed;
+    this.saveProgress();
+  }
+
   private getAndCreateIfNeededProgress(): Progress {
     if (!this.progresses.has(this.voting.id)) {
       this.progresses.set(this.voting.id, new Progress());

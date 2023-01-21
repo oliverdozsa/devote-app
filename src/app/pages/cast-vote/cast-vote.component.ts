@@ -33,7 +33,8 @@ export class CastVoteComponent implements OnDestroy {
   }
 
   get isAlreadyVoted(): boolean {
-    return this.progresses.has(this.votingId) && this.progresses.get(this.votingId)!.state == ProgressState.Completed;
+    return this.progresses.has(this.votingId) && (this.progresses.get(this.votingId)!.state == ProgressState.Completed ||
+      this.progresses.get(this.votingId)!.state == ProgressState.CompletelyFailed);
   }
 
   constructor(private authService: NbAuthService, private route: ActivatedRoute, private votingsService: VotingsService,

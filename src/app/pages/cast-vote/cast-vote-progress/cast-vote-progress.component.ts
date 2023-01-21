@@ -3,7 +3,7 @@ import {NbDialogRef, NbToastrService} from "@nebular/theme";
 import {Voting} from "../../../services/voting";
 import {CastVoteService} from "../../../services/cast-vote.service";
 import {CastVoteOrchestration} from "./cast-vote-orchestration";
-import {describeState} from "../../../data/progress";
+import {describeState, ProgressState} from "../../../data/progress";
 import {Router} from "@angular/router";
 import {AppRoutes} from "../../../../app-routes";
 
@@ -29,7 +29,12 @@ export class CastVoteProgressComponent implements OnInit {
   }
 
   get isFailed(): boolean {
-    return this.orchestration != undefined && this.orchestration.isFailed;
+    return this.orchestration != undefined && this.orchestration.isFailed &&
+      this.orchestration.progress.state != ProgressState.CompletelyFailed;
+  }
+
+  get isCompletelyFailed(): boolean {
+    return this.orchestration != undefined && this.orchestration.progress.state == ProgressState.CompletelyFailed;
   }
 
   get progressPercent(): number {

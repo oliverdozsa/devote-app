@@ -4,7 +4,6 @@ export abstract class OrchestrationStep {
   constructor(protected orchestration: CastVoteOrchestration) {
   }
 
-
   abstract execute(): void;
 
   complete() {
@@ -13,5 +12,9 @@ export abstract class OrchestrationStep {
 
   fail() {
     this.orchestration.isFailed = true;
+  }
+
+  failCompletely() {
+    this.orchestration.completelyFail();
   }
 }
