@@ -23,7 +23,8 @@
           </small>
         </div>
 
-        <div *ngIf="allowCastVote && !this.isExpired(voting) && this.isStarted(voting) && !this.isAlreadyVoted(voting)" class="me-3">
+        <div *ngIf="allowCastVote && !this.isExpired(voting) && this.isStarted(voting) && !this.isAlreadyVoted(voting) &&
+                    voting.isInitialized" class="me-3">
           <a routerLink="/{{AppRoutes.CAST_VOTE}}/{{voting.id}}">
             <button nbButton status="primary">
               cast vote
@@ -39,6 +40,9 @@
         </div>
         <div *ngIf="this.isAlreadyVoted(voting)" class="me-3">
           <div class="text-disabled">ALREADY VOTED</div>
+        </div>
+        <div *ngIf="!voting.isInitialized" class="me-3">
+          <div class="text-disabled">NOT INITIALIZED YET</div>
         </div>
       </nb-list-item>
     </nb-list>

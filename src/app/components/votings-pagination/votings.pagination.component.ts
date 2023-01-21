@@ -102,6 +102,8 @@ export class VotingsPaginationComponent implements OnInit {
     return new Date(Date.parse(voting.encryptedUntil)).toLocaleString();
   }
 
+
+
   private isEncryptionExpired(voting: VotingSummary) {
     const nowMillis = Date.now();
     const encryptedUntilMillis = (Date.parse(voting.encryptedUntil));
