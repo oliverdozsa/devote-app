@@ -1,17 +1,26 @@
-<nb-card style="width: 220px;">
+<nb-card style="width: 240px;">
   <nb-card-body *ngIf="orchestration">
     <h5 class="text-center">
       {{describeState(orchestration.progress.state)}}
       <div class="text-center mt-2">
-        <i *ngIf="!isCompleted" class="fa-solid fa-gear fa-2x fa-spin"></i>
+        <i *ngIf="!isCompleted && !isFailed" class="fa-solid fa-gear fa-2x fa-spin"></i>
         <i *ngIf="isCompleted" class="fa-solid fa-check fa-2x"></i>
+        <i *ngIf="isFailed" class="fa-solid fa-triangle-exclamation fa-2x"></i>
+        <p *ngIf="isFailed" class="text-center">
+          casting vote failed; you might retry or close.
+        </p>
+        <p *ngIf="!isFailed && !isCompleted" class="text-center">
+          please do not close your browser!
+        </p>
       </div>
 
     </h5>
     <nb-progress-bar [value]="progressPercent" status="primary">
     </nb-progress-bar>
   </nb-card-body>
-  <nb-card-footer *ngIf="isCompleted">
-    <button nbButton (click)="onCloseClick()">close</button>
+  <nb-card-footer *ngIf="isCompleted || isFailed">
+    <button *ngIf="isCompleted" nbButton (click)="onCloseClick()">close</button>
+    <button *ngIf="isFailed" nbButton (click)="onRetryClick()" class="ms-1 mt-1">retry</button>
+    <button *ngIf="isFailed" nbButton (click)="onCloseClick()" class="ms-1 mt-1">close</button>
   </nb-card-footer>
 </nb-card>

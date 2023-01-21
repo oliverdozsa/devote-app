@@ -55,7 +55,7 @@ export class CastVoteService {
   }
 
   getTransactionString(revealedSignature: string): Observable<CastVoteCreateTransactionResponse> {
-    const url = CastVoteService.BASE_URL + `/txOfSignature/${revealedSignature}`;
+    const url = CastVoteService.BASE_URL + `/txOfSignature/${encodeURIComponent(revealedSignature)}`;
     return this.httpClient.get<CastVoteCreateTransactionResponse>(url);
   }
 

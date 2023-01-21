@@ -10,4 +10,8 @@ export abstract class OrchestrationStep {
   complete() {
     this.orchestration.stepCompleted();
   }
+
+  fail() {
+    this.orchestration.isFailed = true;
+  }
 }

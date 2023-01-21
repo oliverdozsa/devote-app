@@ -15,6 +15,8 @@ export class CastVoteOrchestration {
   progress: Progress;
   operations: CastVoteOperations;
 
+  isFailed = false;
+
   private progresses: Map<string, Progress>;
   private start: StepNode;
 
@@ -44,10 +46,16 @@ export class CastVoteOrchestration {
     this.executeCurrentStepIfExists();
   }
 
+  restartCastVote() {
+    this.progress.state = ProgressState.PreInit;
+    this.current = this.determineStepToStartFrom();
+    this.castVote();
+  }
+
   stepCompleted() {
     this.saveProgress();
 
-    if(this.current != undefined) {
+    if (this.current != undefined) {
       this.current = this.current.next;
     }
 
@@ -70,20 +78,22 @@ export class CastVoteOrchestration {
   private determineStepToStartFrom(): StepNode | undefined {
     const currentState = this.progress.state;
 
-    if(currentState == ProgressState.PreInit) {
+    if (currentState == ProgressState.PreInit) {
       return this.start;
     }
 
-    let startFrom = this.start;
-    while(startFrom.progressStateWhenFinished != currentState) {
-      startFrom = startFrom.next!;
+    let result = this.findStepToStartFromBasedOnFinished(currentState);
+    if (result != undefined) {
+      return result
     }
 
-    return startFrom.next;
+    result = this.findStepToStartFromBasedOnStartedFrom(currentState);
+
+    return result;
   }
 
   private executeCurrentStepIfExists() {
-    if(this.current != undefined) {
+    if (this.current != undefined) {
       this.current.step.execute();
     }
   }
@@ -92,7 +102,7 @@ export class CastVoteOrchestration {
     let s = step;
     let stepsLeft = 0;
 
-    while(s != undefined) {
+    while (s != undefined) {
       stepsLeft++;
       s = s.next;
     }
@@ -104,24 +114,28 @@ export class CastVoteOrchestration {
     const initStep: StepNode = {
       step: new InitStep(this),
       next: undefined,
+      progressStateWhenStarted: ProgressState.PreInit,
       progressStateWhenFinished: ProgressState.Initialized
     };
 
     const signEnvelopeStep: StepNode = {
       step: new SignEnvelopeStep(this),
       next: undefined,
+      progressStateWhenStarted: ProgressState.SigningEnvelope,
       progressStateWhenFinished: ProgressState.SignedEnvelope
     };
 
     const createTransactionStep: StepNode = {
       step: new CreateTransactionStep(this),
       next: undefined,
+      progressStateWhenStarted: ProgressState.CreatingTransaction,
       progressStateWhenFinished: ProgressState.CreatedTransaction
     }
 
     const castVoteOnBlockchainStep: StepNode = {
       step: new CastVoteOnBlockchainStep(this),
       next: undefined,
+      progressStateWhenStarted: ProgressState.CastingVote,
       progressStateWhenFinished: ProgressState.Completed
     };
 
@@ -131,10 +145,33 @@ export class CastVoteOrchestration {
 
     return initStep;
   }
+
+  private findStepToStartFromBasedOnFinished(untilCurrentProgress: ProgressState): StepNode | undefined {
+    let currentFinishedNode = this.start;
+    while (currentFinishedNode != undefined && currentFinishedNode.progressStateWhenFinished != untilCurrentProgress) {
+      currentFinishedNode = currentFinishedNode.next!;
+    }
+
+    if (currentFinishedNode == undefined) {
+      return undefined;
+    }
+
+    return currentFinishedNode.next;
+  }
+
+  private findStepToStartFromBasedOnStartedFrom(untilCurrentProgress: ProgressState): StepNode {
+    let currentStartedNode = this.start;
+    while (currentStartedNode != undefined && currentStartedNode.progressStateWhenStarted != untilCurrentProgress) {
+      currentStartedNode = currentStartedNode.next!;
+    }
+
+    return currentStartedNode;
+  }
 }
 
 interface StepNode {
   step: OrchestrationStep,
   next: StepNode | undefined,
-  progressStateWhenFinished: ProgressState
+  progressStateWhenFinished: ProgressState,
+  progressStateWhenStarted: ProgressState
 }

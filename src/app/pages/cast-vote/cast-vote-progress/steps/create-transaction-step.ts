@@ -47,6 +47,7 @@ export class CreateTransactionStep extends OrchestrationStep {
         });
     } else {
       this.toastr.danger("Failed to cast vote! Try again maybe. (error creating transaction)");
+      this.fail();
     }
   }
 }

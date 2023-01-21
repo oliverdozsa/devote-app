@@ -1,5 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {NbDialogRef, NbDialogService, NbToastrService} from "@nebular/theme";
+import {NbDialogRef, NbToastrService} from "@nebular/theme";
 import {Voting} from "../../../services/voting";
 import {CastVoteService} from "../../../services/cast-vote.service";
 import {CastVoteOrchestration} from "./cast-vote-orchestration";
@@ -28,6 +28,10 @@ export class CastVoteProgressComponent implements OnInit {
       this.orchestration.isCompleted;
   }
 
+  get isFailed(): boolean {
+    return this.orchestration != undefined && this.orchestration.isFailed;
+  }
+
   get progressPercent(): number {
     return this.orchestration == undefined ? 0 : this.orchestration.progressPercent;
   }
@@ -39,6 +43,11 @@ export class CastVoteProgressComponent implements OnInit {
   onCloseClick() {
     this.dialogRef.close();
     this.router.navigateByUrl(`/${AppRoutes.VOTINGS_WHERE_I_PARTICIPATE}`);
+  }
+
+  onRetryClick() {
+    this.orchestration!.isFailed = false;
+    this.orchestration!.restartCastVote();
   }
 
   ngOnInit(): void {

@@ -16,6 +16,7 @@ export class Progress {
   voterAccount: KeyPair | undefined;
   publicKeyForEnvelope: string | undefined;
   message: string | undefined;
+  concealed: string | undefined;
   concealingFactor: string | undefined;
   revealedSignature: string | undefined;
   createAccountBlockchainTransaction: string | undefined;

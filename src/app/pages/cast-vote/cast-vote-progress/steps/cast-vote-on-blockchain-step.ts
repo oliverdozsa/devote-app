@@ -44,12 +44,24 @@ export class CastVoteOnBlockchainStep extends OrchestrationStep {
     this.operations.castVote(this.progress.voterAccount!, this.progress.selectedOptions)
       .subscribe({
         next: txId => this.onCastVoteSuccess(txId),
-        error: () => this.toastr.danger("Failed to cast vote (error on casting vote). Try again maybe!")
+        error: e => this.handleCastVoteFailure(e)
       });
   }
 
   private onCastVoteSuccess(transactionId: string) {
     this.progress.castedVoteTransactionId = transactionId;
     this.complete();
+  }
+
+  private handleCastVoteFailure(e: any) {
+    console.log(`error: ${JSON.stringify(e)}`);
+
+    if(e.response != undefined && e.response.status != undefined && e.response.title != undefined && e.response.status == 404) {
+      this.toastr.warning("You've probably already voted!");
+      this.complete();
+    } else {
+      this.toastr.danger("Failed to cast vote (error on casting vote). Try again maybe!");
+      this.fail();
+    }
   }
 }

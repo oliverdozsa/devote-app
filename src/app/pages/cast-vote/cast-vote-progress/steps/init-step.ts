@@ -49,19 +49,28 @@ export class InitStep extends OrchestrationStep {
     if (error.status == 403) {
       const errorText = String(error.error);
       this.handleInitError(errorText)
+    } else {
+      this.toastr.danger("Unknown status error during init!");
     }
-
-    this.toastr.danger("Unknown status error during init!");
   }
 
   private handleInitError(errorText: string) {
     if (errorText.includes("has already started a session")) {
-      this.toastr.warning("Session already started.")
-      // TODO: When server is extended to return the public key in this case, handle it.
+      this.handleAlreadyInitializedError();
     } else if (errorText.includes("not initialized properly")) {
       this.toastr.warning("Please try again later!");
+    } else {
+      this.toastr.danger("Unknown error during init!");
     }
+  }
 
-    this.toastr.danger("Unknown error during init!");
+  private handleAlreadyInitializedError() {
+    if(this.progress.publicKeyForEnvelope != undefined) {
+      this.progress.state = ProgressState.Initialized;
+      this.complete();
+    } else {
+      this.toastr.warning("You've tried to vote before!", "Cannot cast vote!", {duration: 5000});
+      this.fail();
+    }
   }
 }

@@ -32,14 +32,17 @@ export class SignEnvelopeStep extends OrchestrationStep {
 
   execute(): void {
     this.progress.state = ProgressState.SigningEnvelope;
-    this.progress.voterAccount = this.operations.createAccount();
+    if(this.progress.voterAccount == undefined) {
+      this.progress.voterAccount = this.operations.createAccount();
 
-    const result = this.produceResult();
-    this.progress.concealingFactor = SignEnvelopeStep.bigIntToBase64Str(result.concealed.r);
-    this.progress.message = result.message;
+      const result = this.produceResult();
+      this.progress.concealingFactor = SignEnvelopeStep.bigIntToBase64Str(result.concealed.r);
+      this.progress.message = result.message;
 
-    const concealedMessageBase64Str = SignEnvelopeStep.bigIntToBase64Str(result.concealed.blinded);
-    this.service.signEnvelope(this.voting.id, concealedMessageBase64Str)
+      this.progress.concealed = SignEnvelopeStep.bigIntToBase64Str(result.concealed.blinded);
+    }
+
+    this.service.signEnvelope(this.voting.id, this.progress.concealed!)
       .pipe(delay(1500))
       .subscribe({
         next: r => this.onSignEnvelopeSuccess(r),
@@ -91,7 +94,7 @@ export class SignEnvelopeStep extends OrchestrationStep {
         .pipe(delay(1500))
         .subscribe({
           next: r => this.onSignEnvelopeSuccess(r),
-          error: e => this.toastr.danger("Failed to cast vote! Try again maybe. (error getting envelope signature)")
+          error: e => this.onFail()
         });
     } else {
       this.toastr.danger("Failed to cast vote! Try again maybe. (error signing envelope)");
@@ -113,5 +116,10 @@ export class SignEnvelopeStep extends OrchestrationStep {
     const buffer = Buffer.from(base64Str, "base64");
     const bufferHexStr = buffer.toString("hex");
     return new BigInteger(bufferHexStr, 16);
+  }
+
+  private onFail() {
+    this.toastr.danger("Failed to cast vote! Try again maybe (error getting envelope signature).");
+    this.fail();
   }
 }
