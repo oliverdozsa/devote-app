@@ -1,5 +1,12 @@
 import {Component} from '@angular/core';
-import {NbIconLibraries, NbMenuBag, NbMenuItem, NbMenuService, NbSidebarService} from "@nebular/theme";
+import {
+  NbIconLibraries,
+  NbMediaBreakpointsService,
+  NbMenuBag,
+  NbMenuItem,
+  NbMenuService,
+  NbSidebarService
+} from "@nebular/theme";
 import {NbAuthResult, NbAuthService, NbAuthToken} from "@nebular/auth";
 import {filter, finalize, map, Subscription, takeUntil} from "rxjs";
 import {AppRoutes} from "../app-routes";
@@ -72,14 +79,12 @@ export class AppComponent {
   userInfo: UserInfo | undefined;
   isUserInfoLoading = false;
 
-  isSideBarCollapsed = true;
-
   private userInfoSubscription: Subscription | undefined;
   private tokenSubscription: Subscription | undefined;
 
   constructor(private iconLibraries: NbIconLibraries, private sidebarService: NbSidebarService,
               private authService: NbAuthService, private menuService: NbMenuService, private router: Router,
-              private userService: UserService
+              private userService: UserService, private breakPointsService: NbMediaBreakpointsService
   ) {
     this.iconLibraries.registerFontPack('fas', {packClass: 'fas', iconClassPrefix: 'fa'});
     this.iconLibraries.registerFontPack('far', {packClass: 'far', iconClassPrefix: 'fa'});
@@ -116,8 +121,8 @@ export class AppComponent {
   }
 
   toggleMainMenu() {
-    this.sidebarService.toggle(true, 'main');
-    this.isSideBarCollapsed = !this.isSideBarCollapsed;
+    const shouldCompact = this.isOnMediumOrLargerScreen();
+    this.sidebarService.toggle(shouldCompact, 'main');
   }
 
   onIsAuthenticated(isAuthenticated: boolean) {
@@ -156,6 +161,19 @@ export class AppComponent {
   }
 
   onMainMenuItemSelected(menuBag: NbMenuBag) {
+    this.sidebarService.getSidebarState("main")
+      .subscribe({
+        next: s => {
+          if (this.isOnXLargeScreen()) {
+            return;
+          }
+
+          if (s != "compacted") {
+            this.toggleMainMenu();
+          }
+        }
+      });
+
     this.mainMenuItems.forEach(i => {
       i.selected = menuBag.item.title == i.title;
     });
@@ -178,13 +196,13 @@ export class AppComponent {
     this.authService
       .logout("auth0")
       .subscribe((authResult: NbAuthResult) => {
-        this.router.navigate(["/"+AppRoutes.HOME]);
+        this.router.navigate(["/" + AppRoutes.HOME]);
       });
 
     this.authService
       .logout("tokenauth")
       .subscribe((authResult: NbAuthResult) => {
-        this.router.navigate(["/"+AppRoutes.HOME]);
+        this.router.navigate(["/" + AppRoutes.HOME]);
       });
   }
 
@@ -195,7 +213,7 @@ export class AppComponent {
   }
 
   private onTokenReceived(token: NbAuthToken) {
-    if(token instanceof TokenAuthToken) {
+    if (token instanceof TokenAuthToken) {
       this.hideMenuItems(MainMenuItemTitles.MENU_ITEMS_NOT_VALID_IN_TOKEN_AUTH);
     } else {
       this.showMenuItems(MainMenuItemTitles.MENU_ITEMS_NOT_VALID_IN_TOKEN_AUTH);
@@ -218,5 +236,13 @@ export class AppComponent {
   private onUserInfoReceived(userInfo: UserInfo) {
     this.isUserInfoLoading = false;
     this.userInfo = userInfo;
+  }
+
+  private isOnMediumOrLargerScreen() {
+    return window.innerWidth > this.breakPointsService.getByName('sm').width;
+  }
+
+  private isOnXLargeScreen() {
+    return window.innerWidth >= this.breakPointsService.getByName('xl').width;
   }
 }
