@@ -14,6 +14,11 @@ export enum Visibility {
   PRIVATE = "PRIVATE"
 }
 
+export enum BallotType {
+  MULTI_POLL = "MULTI_POLL",
+  MULTI_CHOICE = "MULTI_CHOICE"
+}
+
 export class CreateVotingForm {
   title: string = "";
   tokenIdentifier: string | undefined = undefined;
@@ -36,6 +41,8 @@ export class CreateVotingForm {
 
   isInvitesBased: boolean = false;
   organizerIfInvitesBased: string = "";
+
+  ballotType: BallotType = BallotType.MULTI_POLL;
 
   private accountValidator: AccountValidator = new AccountValidator();
   private accountPublicDerivation: AccountPublicKeyDerivation = new AccountPublicKeyDerivation();

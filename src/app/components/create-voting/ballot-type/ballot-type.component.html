@@ -1,0 +1,21 @@
+<div class="row mt-4">
+  <div class="col mt-1">
+    <div class="text-center text-hint">
+      <nb-icon icon="info-outline"></nb-icon>
+      <span *ngIf="form.ballotType == BallotType.MULTI_POLL">
+        Multipe polls, one choice per poll.
+      </span>
+
+      <span *ngIf="form.ballotType == BallotType.MULTI_CHOICE">
+        One poll, with multiple choices.
+      </span>
+    </div>
+    <div>
+      <label>ballot type</label>
+    </div>
+    <nb-select fullWidth placeholder="ballot type" [(selected)]="form.ballotType" status="success">
+      <nb-option value="MULTI_POLL">multiple polls</nb-option>
+      <nb-option value="MULTI_CHOICE">multiple choices</nb-option>
+    </nb-select>
+  </div>
+</div>

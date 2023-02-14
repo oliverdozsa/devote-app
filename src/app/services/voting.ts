@@ -19,6 +19,7 @@ export class Voting {
   public isOnTestNetwork: boolean = false;
   public isRefunded: boolean = false;
   public isInvitesBased: boolean = false;
+  public ballotType: string = "";
 
 }
 

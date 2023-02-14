@@ -85,6 +85,7 @@ import {MyProfileComponent} from './pages/my-profile/my-profile.component';
 import {TokenAuthStrategy} from "./services/token-auth-strategy";
 import { InviteComponent } from './pages/invite/invite.component';
 import {TokenAuthToken} from "./services/token-auth-token";
+import { BallotTypeComponent } from './components/create-voting/ballot-type/ballot-type.component';
 
 @NgModule({
   declarations: [
@@ -116,7 +117,8 @@ import {TokenAuthToken} from "./services/token-auth-token";
     CastVoteProgressComponent,
     ShowResultsComponent,
     MyProfileComponent,
-    InviteComponent
+    InviteComponent,
+    BallotTypeComponent
   ],
   imports: [
     BrowserModule,
