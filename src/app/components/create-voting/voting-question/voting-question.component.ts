@@ -1,5 +1,5 @@
 import {Component, Input} from '@angular/core';
-import {CreateVotingForm, VotingQuestion} from "../create-voting-form";
+import {BallotType, CreateVotingForm, VotingQuestion} from "../create-voting-form";
 import {MaxVotingQuestions} from "../account/max-voting-questions";
 
 @Component({
@@ -14,6 +14,10 @@ export class VotingQuestionComponent {
   maxQuestions = new MaxVotingQuestions();
 
   get remainingNumberOfPossibleQuestions(): number {
+    if (this.form.ballotType == BallotType.MULTI_CHOICE) {
+      return 1;
+    }
+
     return this.maxQuestions.determine(this.form) - this.form.questions.length;
   }
 
