@@ -3,6 +3,7 @@ import {AccountPublicKeyDerivation} from "./account/account-public-key-derivatio
 import {AccountBalanceQuery} from "./account/account-balance";
 import {environment} from "../../../environments/environment";
 import {AccountVotesCap} from "./account/account-votes-cap";
+import {MaxVotingQuestionsOrChoices} from "./account/max-voting-questions-or-choices";
 
 export enum Authorization {
   EMAILS = "EMAILS"
@@ -43,11 +44,14 @@ export class CreateVotingForm {
   organizerIfInvitesBased: string = "";
 
   ballotType: BallotType = BallotType.MULTI_POLL;
+  maxChoices: number = 1;
 
   private accountValidator: AccountValidator = new AccountValidator();
   private accountPublicDerivation: AccountPublicKeyDerivation = new AccountPublicKeyDerivation();
 
   private tokenIdentifierRegExp = new RegExp("^[0-9a-z]+$");
+
+  private maxPossibleChoices: MaxVotingQuestionsOrChoices = new MaxVotingQuestionsOrChoices();
 
   get shouldAccountPublicToBeDeterminedAutomatically() {
     return this.selectedNetwork == "stellar";
@@ -170,6 +174,12 @@ export class CreateVotingForm {
 
   get isOrganizerValid(): boolean {
     return !this.isInvitesBased || this.organizerIfInvitesBased.length > 0;
+  }
+
+  get isMaxChoicesValid(): boolean {
+    const maxPossible = this.maxPossibleChoices.determine(this);
+    return this.ballotType == BallotType.MULTI_POLL ||
+      (this.ballotType == BallotType.MULTI_CHOICE && this.maxChoices > 0 && this.maxChoices <= maxPossible);
   }
 
   private derivePublicFromSecretIfPossible() {

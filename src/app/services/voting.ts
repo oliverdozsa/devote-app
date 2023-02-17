@@ -20,6 +20,7 @@ export class Voting {
   public isRefunded: boolean = false;
   public isInvitesBased: boolean = false;
   public ballotType: string = "";
+  public maxChoices: number | undefined;
 
 }
 
