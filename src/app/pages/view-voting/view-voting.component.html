@@ -118,7 +118,7 @@
             </div>
           </div>
 
-          <div *ngIf="voting.ballotType == 'MULTI_CHOICE'" class="mt-2 d-flex flex-row">
+          <div *ngIf="voting.ballotType == BallotType.MULTI_CHOICE" class="mt-2 d-flex flex-row">
             <div>max choices:</div>
             <div class="px-1">
               {{voting.maxChoices}}

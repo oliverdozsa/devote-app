@@ -6,6 +6,7 @@ import {NbToastrService} from "@nebular/theme";
 import {Voting} from "../../services/voting";
 import {finalize} from "rxjs";
 import {CountdownConfig} from "ngx-countdown";
+import {BallotType} from "../../components/create-voting/create-voting-form";
 
 @Component({
   selector: 'app-view-voting',
@@ -13,6 +14,8 @@ import {CountdownConfig} from "ngx-countdown";
   styleUrls: ['./view-voting.component.scss']
 })
 export class ViewVotingComponent {
+  BallotType = BallotType;
+
   voting: Voting | undefined = undefined;
 
   public countDownConfigForVotingExpire: CountdownConfig = {

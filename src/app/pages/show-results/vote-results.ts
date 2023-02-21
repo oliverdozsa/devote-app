@@ -22,7 +22,7 @@ export class VoteResults {
       choices = this.decryptChoices?.decrypt(choices);
     }
 
-    const parsedChoices: [PollIndex, PollOptionCode][] = ParseChoices.parse(choices);
+    const parsedChoices: [PollIndex, PollOptionCode][] = ParseChoices.parse(choices, this.voting);
 
     if (ParseChoices.areChoicesValidFor(this.voting, parsedChoices)) {
       this.addParsedChoices(parsedChoices);

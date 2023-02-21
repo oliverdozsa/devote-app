@@ -1,10 +1,11 @@
 import {Voting} from "../../services/voting";
 import {PollIndex, PollOptionCode} from "./show-results-operations";
+import {BallotType} from "../../components/create-voting/create-voting-form";
 
 export class ParseChoices {
   private static pattern = new RegExp("^([0-9]{4})+$");
 
-  static parse(choices: string | undefined): [PollIndex, PollOptionCode][] {
+  static parse(choices: string | undefined, voting: Voting): [PollIndex, PollOptionCode][] {
     const result: [PollIndex, PollOptionCode][] = [];
 
     if (choices == undefined || choices.length == 0 || choices.match(this.pattern) == null) {
@@ -24,7 +25,7 @@ export class ParseChoices {
       choicesToProcess = choicesToProcess.slice(4);
     }
 
-    if (this.doesContainDuplicateVoteForSamePoll(result)) {
+    if (voting.ballotType == BallotType.MULTI_POLL && this.doesContainDuplicateVoteForSamePoll(result)) {
       console.warn(`There are duplicate poll indices in choices: ${choices}; ignored`);
       return [];
     }
@@ -49,11 +50,9 @@ export class ParseChoices {
     const validOptionCodesForPoll = voting.polls.find(p => p.index == choice[0].valueOf())!
       .pollOptions
       .map(o => o.code);
-    if (!validOptionCodesForPoll.includes(choice[1].valueOf())) {
-      return false;
-    }
+    return validOptionCodesForPoll.includes(choice[1].valueOf());
 
-    return true;
+
   }
 
   private static doesContainDuplicateVoteForSamePoll(choices: [PollIndex, PollOptionCode][]) {

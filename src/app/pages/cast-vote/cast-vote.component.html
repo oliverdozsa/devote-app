@@ -10,7 +10,16 @@
   <h5>{{voting.title}}</h5>
   <div *ngFor="let poll of voting.polls; let i=index">
     <h6>{{poll.question}}</h6>
-    <nb-radio-group [(ngModel)]="selectedOptions[i]" [name]="poll.question">
+
+    <div *ngIf="voting.ballotType == BallotType.MULTI_CHOICE">
+      <div *ngFor="let option of poll.pollOptions" class="mt-2">
+        <nb-checkbox (checkedChange)="onChoiceChanged(option.code)">
+          {{option.name}}
+        </nb-checkbox>
+      </div>
+    </div>
+
+    <nb-radio-group *ngIf="voting.ballotType == BallotType.MULTI_POLL" [(ngModel)]="selectedOptions[i]" [name]="poll.question">
       <nb-radio *ngFor="let option of poll.pollOptions" [value]="option.code">
         {{option.name}}
       </nb-radio>
@@ -20,7 +29,9 @@
   <div class="row">
     <div class="col-3"></div>
     <div class="col-6">
-      <button [disabled]="isNotAllowedToCastVote" fullWidth status="primary" nbButton (click)="onCastVoteClicked()">cast vote</button>
+      <button [disabled]="isNotAllowedToCastVote" fullWidth status="primary" nbButton (click)="onCastVoteClicked()">cast
+        vote
+      </button>
     </div>
     <div class="col-3"></div>
   </div>
@@ -28,7 +39,8 @@
   <div *ngIf="isNotAllowedToCastVote" class="row mt-2">
     <div class="col-3"></div>
     <div class="col-6">
-      <nb-alert accent="danger">you must choose one for every option!</nb-alert>
+      <nb-alert *ngIf="voting.ballotType == BallotType.MULTI_POLL" accent="danger">you must choose one for every option!</nb-alert>
+      <nb-alert *ngIf="voting.ballotType == BallotType.MULTI_CHOICE" accent="danger">you must choose one!</nb-alert>
     </div>
     <div class="col-3"></div>
   </div>
