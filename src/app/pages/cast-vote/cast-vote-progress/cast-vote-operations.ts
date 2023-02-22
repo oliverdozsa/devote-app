@@ -36,7 +36,7 @@ export class CastVoteOperations {
     } else if (this.voting.ballotType == BallotType.MULTI_CHOICE) {
       encodedChoices = choices.map((c, i) => {
         if (c == true) {
-          return this.encodePollChoice(1, i + 1)
+          return this.encodePollChoice(1, i)
         }
 
         return "";

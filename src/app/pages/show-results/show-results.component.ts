@@ -12,6 +12,7 @@ import {CollectedVoteResults, ShowResultsOperations} from "./show-results-operat
 import {Chart, ChartHandling} from "./chart-handling";
 import {loadOrDefaultProgresses, Progress} from "../../data/progress";
 import {getTransactionLink} from "./transaction-link";
+import {BallotType} from "../../components/create-voting/create-voting-form";
 
 
 enum RejectReason {
@@ -102,10 +103,19 @@ export class ShowResultsComponent implements OnDestroy {
     return getTransactionLink(this.voting, this.progress!.castedVoteTransactionId!);
   }
 
-  getChoseOptionFor(poll: Poll): string {
-    if(this.progress) {
+  getChosenOptionsFor(poll: Poll): string {
+    if(this.progress == undefined) {
+      return "";
+    }
+
+    if(this.voting.ballotType == BallotType.MULTI_POLL) {
       const chosenOptionCode = this.progress!.selectedOptions![poll.index - 1];
       return poll.pollOptions.find(o => o.code == chosenOptionCode)!.name;
+    } else if(this.voting.ballotType == BallotType.MULTI_CHOICE) {
+      return poll.pollOptions
+        .filter(o => this.progress!.selectedOptions[o.code] == true)
+        .map(o => o.name)
+        .join(", ");
     }
 
     return "";

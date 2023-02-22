@@ -33,7 +33,7 @@
           <h5 class="mt-0 mb-1"><b>your choices:</b></h5>
           <div *ngFor="let poll of voting.polls" class="mb-2">
             <h6 class="my-0">{{poll.question}}</h6>
-            {{getChoseOptionFor(poll)}}
+            {{getChosenOptionsFor(poll)}}
           </div>
           <p>
             <small>(This is only visible to you.)</small>
