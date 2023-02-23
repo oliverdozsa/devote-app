@@ -40,7 +40,8 @@
     <div class="col-3"></div>
     <div class="col-6">
       <nb-alert *ngIf="voting.ballotType == BallotType.MULTI_POLL" accent="danger">you must choose one for every option!</nb-alert>
-      <nb-alert *ngIf="voting.ballotType == BallotType.MULTI_CHOICE" accent="danger">you must choose one!</nb-alert>
+      <nb-alert *ngIf="voting.ballotType == BallotType.MULTI_CHOICE && !isTooManyChoices" accent="danger">you must choose one!</nb-alert>
+      <nb-alert *ngIf="voting.ballotType == BallotType.MULTI_CHOICE && isTooManyChoices" accent="danger">you can choose at most {{voting.maxChoices}}</nb-alert>
     </div>
     <div class="col-3"></div>
   </div>

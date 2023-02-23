@@ -35,7 +35,7 @@ export class CastVoteComponent implements OnDestroy {
     if (this.voting.ballotType == BallotType.MULTI_POLL) {
       return this.selectedOptions.length == 0 || !this.selectedOptions.every(i => i != null);
     } else if (this.voting.ballotType == BallotType.MULTI_CHOICE) {
-      return this.selectedOptions.every(i => i == false);
+      return this.selectedOptions.every(i => i == false) || this.isTooManyChoices;
     }
 
     return true;
@@ -44,6 +44,15 @@ export class CastVoteComponent implements OnDestroy {
   get isAlreadyVoted(): boolean {
     return this.progresses.has(this.votingId) && (this.progresses.get(this.votingId)!.state == ProgressState.Completed ||
       this.progresses.get(this.votingId)!.state == ProgressState.CompletelyFailed);
+  }
+
+  get isTooManyChoices() {
+    if(this.voting.ballotType == BallotType.MULTI_CHOICE) {
+      const numAlreadyChosen = this.selectedOptions.filter(o => o == true).length;
+      return numAlreadyChosen > this.voting.maxChoices!;
+    }
+
+    return false;
   }
 
   constructor(private authService: NbAuthService, private route: ActivatedRoute, private votingsService: VotingsService,
