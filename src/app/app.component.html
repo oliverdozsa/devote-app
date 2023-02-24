@@ -10,7 +10,7 @@
     <div *ngIf="userInfo">
       <nb-user [picture]="userInfo.pictureUrl" onlyPicture></nb-user>
     </div>
-    <nb-menu class="mt-2" [items]="mainMenuItems" tag="mainMenuItems"></nb-menu>
+    <nb-menu class="mt-2" [items]="MainMenu.items" tag="mainMenuItems"></nb-menu>
   </nb-sidebar>
 
   <nb-layout-column>
