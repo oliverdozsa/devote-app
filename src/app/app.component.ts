@@ -3,30 +3,16 @@ import {
   NbIconLibraries,
   NbMediaBreakpointsService,
   NbMenuBag,
-  NbMenuItem,
   NbMenuService,
   NbSidebarService
 } from "@nebular/theme";
-import {NbAuthResult, NbAuthService, NbAuthToken} from "@nebular/auth";
+import {NbAuthService, NbAuthToken} from "@nebular/auth";
 import {filter, finalize, map, Subscription, takeUntil} from "rxjs";
-import {AppRoutes} from "../app-routes";
 import {NavigationStart, Router} from "@angular/router";
 import {UserInfo, UserService} from "./services/user.service";
 import {TokenAuthToken} from "./services/token-auth-token";
-
-export class MainMenuItemTitles {
-  static HOME = 'home';
-  static PUBLIC_VOTINGS = 'public votings';
-  static MY_PROFILE = 'my profile';
-  static MY_CREATED_VOTINGS = 'my created votings';
-  static VOTINGS_WHERE_I_PARTICIPATE = 'votings where I participate';
-  static LOGIN = 'login';
-  static LOGOUT = 'logout';
-
-  static PROTECTED_MENU_ITEMS = [MainMenuItemTitles.MY_PROFILE, MainMenuItemTitles.MY_CREATED_VOTINGS,
-    MainMenuItemTitles.VOTINGS_WHERE_I_PARTICIPATE];
-  static MENU_ITEMS_NOT_VALID_IN_TOKEN_AUTH = [MainMenuItemTitles.MY_PROFILE, MainMenuItemTitles.MY_CREATED_VOTINGS];
-}
+import {Authentication} from "./authentication";
+import {MainMenu} from "./main-menu";
 
 @Component({
   selector: 'app-root',
@@ -34,58 +20,23 @@ export class MainMenuItemTitles {
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
+  MainMenu = MainMenu;
+
   title = 'devote-app';
-  mainMenuItems: NbMenuItem[] = [
-    {
-      title: MainMenuItemTitles.HOME,
-      icon: {icon: 'house', pack: 'fas'},
-      link: AppRoutes.HOME
-    },
-    {
-      title: MainMenuItemTitles.MY_PROFILE,
-      icon: {icon: 'user', pack: 'fas'},
-      hidden: true,
-      link: AppRoutes.MY_PROFILE
-    },
-    {
-      title: MainMenuItemTitles.PUBLIC_VOTINGS,
-      icon: {icon: 'bullhorn', pack: 'fas'},
-      link: AppRoutes.PUBLIC_VOTINGS
-    },
-    {
-      title: MainMenuItemTitles.MY_CREATED_VOTINGS,
-      icon: {icon: 'list', pack: 'fas'},
-      hidden: true,
-      link: AppRoutes.MY_CREATED_VOTING
-    },
-    {
-      title: MainMenuItemTitles.VOTINGS_WHERE_I_PARTICIPATE,
-      icon: {icon: 'person-booth', pack: 'fas'},
-      hidden: true,
-      link: AppRoutes.VOTINGS_WHERE_I_PARTICIPATE
-    },
-    {
-      title: MainMenuItemTitles.LOGIN,
-      icon: {icon: 'arrow-right-to-bracket', pack: 'fas'},
-      hidden: true
-    },
-    {
-      title: MainMenuItemTitles.LOGOUT,
-      icon: {icon: 'arrow-right-from-bracket', pack: 'fas'},
-      hidden: true
-    }
-  ];
 
   userInfo: UserInfo | undefined;
   isUserInfoLoading = false;
 
   private userInfoSubscription: Subscription | undefined;
   private tokenSubscription: Subscription | undefined;
+  private authenticationHelper: Authentication;
 
   constructor(private iconLibraries: NbIconLibraries, private sidebarService: NbSidebarService,
               private authService: NbAuthService, private menuService: NbMenuService, private router: Router,
               private userService: UserService, private breakPointsService: NbMediaBreakpointsService
   ) {
+    this.authenticationHelper = new Authentication(authService, router);
+
     this.iconLibraries.registerFontPack('fas', {packClass: 'fas', iconClassPrefix: 'fa'});
     this.iconLibraries.registerFontPack('far', {packClass: 'far', iconClassPrefix: 'fa'});
 
@@ -96,7 +47,7 @@ export class AppComponent {
       )
       .subscribe({
         next: e => {
-          this.mainMenuItems.forEach(i => {
+          MainMenu.items.forEach(i => {
             if (i.link != undefined) {
               i.selected = e.url.includes(i.link)
             }
@@ -127,9 +78,9 @@ export class AppComponent {
 
   onIsAuthenticated(isAuthenticated: boolean) {
     if (isAuthenticated) {
-      this.showMenuItems(MainMenuItemTitles.PROTECTED_MENU_ITEMS);
-      this.showMenuItems([MainMenuItemTitles.LOGOUT]);
-      this.hideMenuItems([MainMenuItemTitles.LOGIN]);
+      this.showMenuItems(MainMenu.Titles.PROTECTED_MENU_ITEMS);
+      this.showMenuItems([MainMenu.Titles.LOGOUT]);
+      this.hideMenuItems([MainMenu.Titles.LOGIN]);
 
       this.tokenSubscription = this.authService.getToken()
         .pipe(
@@ -137,9 +88,9 @@ export class AppComponent {
         )
         .subscribe(t => this.onTokenReceived(t))
     } else {
-      this.hideMenuItems(MainMenuItemTitles.PROTECTED_MENU_ITEMS);
-      this.hideMenuItems([MainMenuItemTitles.LOGOUT]);
-      this.showMenuItems([MainMenuItemTitles.LOGIN]);
+      this.hideMenuItems(MainMenu.Titles.PROTECTED_MENU_ITEMS);
+      this.hideMenuItems([MainMenu.Titles.LOGOUT]);
+      this.showMenuItems([MainMenu.Titles.LOGIN]);
 
       this.userInfo = undefined;
     }
@@ -155,7 +106,7 @@ export class AppComponent {
 
   setIsHiddenForMenuItems(names: string[], shouldHide: boolean) {
     for (const name of names) {
-      const menuItem = this.mainMenuItems.find(m => m.title == name)!;
+      const menuItem = MainMenu.items.find(m => m.title == name)!;
       menuItem.hidden = shouldHide;
     }
   }
@@ -174,36 +125,15 @@ export class AppComponent {
         }
       });
 
-    this.mainMenuItems.forEach(i => {
+    MainMenu.items.forEach(i => {
       i.selected = menuBag.item.title == i.title;
     });
 
     if (menuBag.item.title == 'login') {
-      this.login();
+      this.authenticationHelper.login();
     } else if (menuBag.item.title == 'logout') {
-      this.logout();
+      this.authenticationHelper.logout();
     }
-  }
-
-  login() {
-    this.authService
-      .authenticate("auth0")
-      .subscribe((authResult: NbAuthResult) => {
-      });
-  }
-
-  logout() {
-    this.authService
-      .logout("auth0")
-      .subscribe((authResult: NbAuthResult) => {
-        this.router.navigate(["/" + AppRoutes.HOME]);
-      });
-
-    this.authService
-      .logout("tokenauth")
-      .subscribe((authResult: NbAuthResult) => {
-        this.router.navigate(["/" + AppRoutes.HOME]);
-      });
   }
 
   registerCustomIcons(iconLibraries: NbIconLibraries) {
@@ -214,9 +144,9 @@ export class AppComponent {
 
   private onTokenReceived(token: NbAuthToken) {
     if (token instanceof TokenAuthToken) {
-      this.hideMenuItems(MainMenuItemTitles.MENU_ITEMS_NOT_VALID_IN_TOKEN_AUTH);
+      this.hideMenuItems(MainMenu.Titles.MENU_ITEMS_NOT_VALID_IN_TOKEN_AUTH);
     } else {
-      this.showMenuItems(MainMenuItemTitles.MENU_ITEMS_NOT_VALID_IN_TOKEN_AUTH);
+      this.showMenuItems(MainMenu.Titles.MENU_ITEMS_NOT_VALID_IN_TOKEN_AUTH);
       this.getUserInfo();
     }
   }

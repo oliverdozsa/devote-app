@@ -36,6 +36,7 @@ class StellarCollectResults {
 
     server.payments()
       .forAccount(this.voting.ballotAccountId!)
+      .limit(200)
       .call()
       .then(page => this.processPage(page))
       .catch(error => this.onError(error));

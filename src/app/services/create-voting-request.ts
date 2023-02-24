@@ -1,10 +1,10 @@
-import {CreateVotingForm, Visibility, VotingQuestion} from "../components/create-voting/create-voting-form";
+import {BallotType, CreateVotingForm, Visibility, VotingQuestion} from "../components/create-voting/create-voting-form";
 
 export class CreateVotingRequest {
   public network: string = "";
   public votesCap: number = 0;
   public title: string = "";
-  public tokenIdentifier: string |undefined = undefined;
+  public tokenIdentifier: string | undefined = undefined;
   public encryptedUntil: string | undefined = undefined;
   public startDate: string = "";
   public endDate: string = "";
@@ -17,6 +17,8 @@ export class CreateVotingRequest {
   public useTestnet: boolean = false;
   public sendInvites: boolean = false;
   public organizer: string = "";
+  public ballotType: string = "";
+  public maxChoices: number | undefined;
 
   static fromCreateVotingForm(form: CreateVotingForm): CreateVotingRequest {
     const request = new CreateVotingRequest();
@@ -38,6 +40,11 @@ export class CreateVotingRequest {
     request.useTestnet = form.shouldUseTestNet;
     request.sendInvites = form.isInvitesBased;
     request.organizer = form.organizerIfInvitesBased;
+    request.ballotType = BallotType[form.ballotType];
+
+    if (form.ballotType == BallotType.MULTI_CHOICE) {
+      request.maxChoices = form.maxChoices;
+    }
 
     return request;
   }

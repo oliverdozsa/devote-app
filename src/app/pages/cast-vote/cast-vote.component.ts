@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Component, OnDestroy} from '@angular/core';
 import {finalize, Subject, takeUntil} from "rxjs";
 import {NbAuthService} from "@nebular/auth";
 import {ActivatedRoute} from "@angular/router";
@@ -9,6 +9,7 @@ import {Voting} from "../../services/voting";
 import {CastVoteProgressComponent} from "./cast-vote-progress/cast-vote-progress.component";
 import {loadOrDefaultProgresses, Progress, ProgressState} from "../../data/progress";
 import {AppRoutes} from "../../../app-routes";
+import {BallotType} from "../../components/create-voting/create-voting-form";
 
 @Component({
   selector: 'app-cast-vote',
@@ -16,6 +17,8 @@ import {AppRoutes} from "../../../app-routes";
   styleUrls: ['./cast-vote.component.scss']
 })
 export class CastVoteComponent implements OnDestroy {
+  BallotType = BallotType;
+
   voting = new Voting();
 
   isUnlocked = false;
@@ -29,12 +32,27 @@ export class CastVoteComponent implements OnDestroy {
   private progresses: Map<string, Progress>;
 
   get isNotAllowedToCastVote() {
-    return this.selectedOptions.length == 0 || !this.selectedOptions.every(i => i != null);
+    if (this.voting.ballotType == BallotType.MULTI_POLL) {
+      return this.selectedOptions.length == 0 || !this.selectedOptions.every(i => i != null);
+    } else if (this.voting.ballotType == BallotType.MULTI_CHOICE) {
+      return this.selectedOptions.every(i => i == false) || this.isTooManyChoices;
+    }
+
+    return true;
   }
 
   get isAlreadyVoted(): boolean {
     return this.progresses.has(this.votingId) && (this.progresses.get(this.votingId)!.state == ProgressState.Completed ||
       this.progresses.get(this.votingId)!.state == ProgressState.CompletelyFailed);
+  }
+
+  get isTooManyChoices() {
+    if(this.voting.ballotType == BallotType.MULTI_CHOICE) {
+      const numAlreadyChosen = this.selectedOptions.filter(o => o == true).length;
+      return numAlreadyChosen > this.voting.maxChoices!;
+    }
+
+    return false;
   }
 
   constructor(private authService: NbAuthService, private route: ActivatedRoute, private votingsService: VotingsService,
@@ -70,6 +88,10 @@ export class CastVoteComponent implements OnDestroy {
     });
   }
 
+  onChoiceChanged(i: number) {
+    this.selectedOptions[i] = !this.selectedOptions[i];
+  }
+
   private onIsAuthenticated(isAuthenticated: boolean) {
     this.isUnlocked = isAuthenticated;
     this.getVoting();
@@ -90,6 +112,14 @@ export class CastVoteComponent implements OnDestroy {
   private onVotingReceived(voting: Voting) {
     this.isVotingLoaded = true;
     this.voting = voting;
-    this.selectedOptions = new Array(voting.polls.length).fill(null);
+
+    if (this.voting.ballotType == BallotType.MULTI_POLL) {
+      this.selectedOptions = new Array(voting.polls[0].pollOptions.length).fill(null);
+    } else if (this.voting.ballotType == BallotType.MULTI_CHOICE) {
+      const maxOptionCode = voting.polls[0].pollOptions
+        .map(o => o.code)
+        .reduce((p, c) => Math.max(p, c));
+      this.selectedOptions = new Array(maxOptionCode + 1).fill(false);
+    }
   }
 }

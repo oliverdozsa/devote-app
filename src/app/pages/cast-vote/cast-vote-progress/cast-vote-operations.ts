@@ -3,6 +3,7 @@ import {KeyPair} from "../../../components/create-voting/account/key-pair";
 import {CastVoteService, EncryptedChoiceResponse} from "../../../services/cast-vote.service";
 import {forkJoin, map, Observable, switchMap, throwError} from "rxjs";
 import {CastVoteStellarOperations} from "./cast-vote-stellar-operations";
+import {BallotType} from "../../../components/create-voting/create-voting-form";
 
 export class CastVoteOperations {
   constructor(private voting: Voting, private castVoteService: CastVoteService) {
@@ -27,18 +28,30 @@ export class CastVoteOperations {
     return throwError(() => "");
   }
 
-  castVote(voterAccount: KeyPair, choices: number[]): Observable<string> {
-    const encodedChoices: string[] = choices.map((c, i) => this.encodePollChoice(i + 1, c));
+  castVote(voterAccount: KeyPair, choices: any[]): Observable<string> {
+    let encodedChoices: string[] = [];
+
+    if (this.voting.ballotType == BallotType.MULTI_POLL) {
+      encodedChoices = choices.map((c, i) => this.encodePollChoice(i + 1, c));
+    } else if (this.voting.ballotType == BallotType.MULTI_CHOICE) {
+      encodedChoices = choices.map((c, i) => {
+        if (c == true) {
+          return this.encodePollChoice(1, i)
+        }
+
+        return "";
+      });
+    }
 
     if (this.voting.encryptedUntil != undefined) {
-       const encryptedChoices$: Observable<EncryptedChoiceResponse>[] = encodedChoices
-         .map(c => this.castVoteService.getEncryptedChoice(this.voting.id, c));
+      const encryptedChoices$: Observable<EncryptedChoiceResponse>[] = encodedChoices
+        .map(c => this.castVoteService.getEncryptedChoice(this.voting.id, c));
 
-       return forkJoin(encryptedChoices$)
-         .pipe(
-           map(encryptedChoiceResponses => encryptedChoiceResponses.map(r => r.result)),
-           switchMap(encryptedChoices => this.executeCastVoteTransaction(voterAccount, encryptedChoices))
-         );
+      return forkJoin(encryptedChoices$)
+        .pipe(
+          map(encryptedChoiceResponses => encryptedChoiceResponses.map(r => r.result)),
+          switchMap(encryptedChoices => this.executeCastVoteTransaction(voterAccount, encryptedChoices))
+        );
     } else {
       return this.executeCastVoteTransaction(voterAccount, encodedChoices);
     }
