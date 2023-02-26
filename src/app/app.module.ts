@@ -5,31 +5,31 @@ import {AppRoutingModule} from './app-routing.module';
 import {AppComponent} from './app.component';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {
-    NbThemeModule,
-    NbLayoutModule,
-    NbSidebarModule,
-    NbButtonModule,
-    NbIconModule,
-    NbMenuModule,
-    NbCardModule,
-    NbDialogModule,
-    NbGlobalPhysicalPosition,
-    NbToastrModule,
-    NbToggleModule,
-    NbButtonGroupModule,
-    NbListModule,
-    NbSelectModule,
-    NbFormFieldModule,
-    NbInputModule,
-    NbSpinnerModule,
-    NbTooltipModule,
-    NbPopoverModule,
-    NbTagModule,
-    NbStepperModule,
-    NbDatepickerModule,
-    NbTimepickerModule,
-    NbAccordionModule, NbAlertModule, NbRadioModule, NbProgressBarModule,
-    NbBadgeModule, NbUserModule, NbCheckboxModule
+  NbThemeModule,
+  NbLayoutModule,
+  NbSidebarModule,
+  NbButtonModule,
+  NbIconModule,
+  NbMenuModule,
+  NbCardModule,
+  NbDialogModule,
+  NbGlobalPhysicalPosition,
+  NbToastrModule,
+  NbToggleModule,
+  NbButtonGroupModule,
+  NbListModule,
+  NbSelectModule,
+  NbFormFieldModule,
+  NbInputModule,
+  NbSpinnerModule,
+  NbTooltipModule,
+  NbPopoverModule,
+  NbTagModule,
+  NbStepperModule,
+  NbDatepickerModule,
+  NbTimepickerModule,
+  NbAccordionModule, NbAlertModule, NbRadioModule, NbProgressBarModule,
+  NbBadgeModule, NbUserModule, NbCheckboxModule
 } from '@nebular/theme';
 import {NbEvaIconsModule} from '@nebular/eva-icons';
 import {HomeComponent} from './pages/home/home.component';
@@ -83,9 +83,11 @@ import {ShowResultsComponent} from './pages/show-results/show-results.component'
 import {NgxEchartsModule} from "ngx-echarts";
 import {MyProfileComponent} from './pages/my-profile/my-profile.component';
 import {TokenAuthStrategy} from "./services/token-auth-strategy";
-import { InviteComponent } from './pages/invite/invite.component';
+import {InviteComponent} from './pages/invite/invite.component';
 import {TokenAuthToken} from "./services/token-auth-token";
-import { BallotTypeComponent } from './components/create-voting/ballot-type/ballot-type.component';
+import {BallotTypeComponent} from './components/create-voting/ballot-type/ballot-type.component';
+import {EditorModule} from "@tinymce/tinymce-angular";
+import { DescriptionComponent } from './components/create-voting/description/description.component';
 
 @NgModule({
   declarations: [
@@ -118,79 +120,81 @@ import { BallotTypeComponent } from './components/create-voting/ballot-type/ball
     ShowResultsComponent,
     MyProfileComponent,
     InviteComponent,
-    BallotTypeComponent
+    BallotTypeComponent,
+    DescriptionComponent
   ],
-    imports: [
-        BrowserModule,
-        AppRoutingModule,
-        BrowserAnimationsModule,
-        NbThemeModule.forRoot({name: 'default'}),
-        NbLayoutModule,
-        NbSidebarModule.forRoot(),
-        NbButtonModule,
-        NbIconModule,
-        NbMenuModule.forRoot(),
-        NbCardModule,
-        NbDialogModule.forRoot(),
-        NbToastrModule.forRoot({position: NbGlobalPhysicalPosition.TOP_RIGHT, duration: 4000}),
-        NbEvaIconsModule,
-        NbButtonGroupModule,
-        NbSelectModule,
-        NbListModule,
-        NbToggleModule,
-        NbInputModule,
-        NbBadgeModule,
-        NbUserModule,
-        HttpClientModule,
-        FormsModule,
-        NgxSpinnerModule,
-        NbAuthModule.forRoot({
-            strategies: [
-                NbOAuth2AuthStrategy.setup({
-                    name: "auth0",
-                    clientId: "DgtatvQrzX90oaZNlhRevIVM3dwWPg2F",
-                    clientSecret: "",
-                    authorize: {
-                        endpoint: 'https://dev-devote.eu.auth0.com/authorize',
-                        responseType: NbOAuth2ResponseType.TOKEN,
-                        scope: 'openid profile email',
-                        redirectUri: location.origin +
-                            '/' + AppRoutes.LOGIN + "/auth0",
-                        params: {
-                            "audience": "https://dev-devote.eu.auth0.com/api/v2/"
-                        }
-                    },
-                    redirect: {
-                        success: getLastVisitedPage()
-                    }
-                }),
-                TokenAuthStrategy.setup({
-                    name: "tokenauth",
-                    token: {
-                        class: TokenAuthToken
-                    }
-                })
-            ]
+  imports: [
+    BrowserModule,
+    AppRoutingModule,
+    BrowserAnimationsModule,
+    NbThemeModule.forRoot({name: 'default'}),
+    NbLayoutModule,
+    NbSidebarModule.forRoot(),
+    NbButtonModule,
+    NbIconModule,
+    NbMenuModule.forRoot(),
+    NbCardModule,
+    NbDialogModule.forRoot(),
+    NbToastrModule.forRoot({position: NbGlobalPhysicalPosition.TOP_RIGHT, duration: 4000}),
+    NbEvaIconsModule,
+    NbButtonGroupModule,
+    NbSelectModule,
+    NbListModule,
+    NbToggleModule,
+    NbInputModule,
+    NbBadgeModule,
+    NbUserModule,
+    HttpClientModule,
+    EditorModule,
+    FormsModule,
+    NgxSpinnerModule,
+    NbAuthModule.forRoot({
+      strategies: [
+        NbOAuth2AuthStrategy.setup({
+          name: "auth0",
+          clientId: "DgtatvQrzX90oaZNlhRevIVM3dwWPg2F",
+          clientSecret: "",
+          authorize: {
+            endpoint: 'https://dev-devote.eu.auth0.com/authorize',
+            responseType: NbOAuth2ResponseType.TOKEN,
+            scope: 'openid profile email',
+            redirectUri: location.origin +
+              '/' + AppRoutes.LOGIN + "/auth0",
+            params: {
+              "audience": "https://dev-devote.eu.auth0.com/api/v2/"
+            }
+          },
+          redirect: {
+            success: getLastVisitedPage()
+          }
         }),
-        NbFormFieldModule,
-        NbSpinnerModule,
-        NbTooltipModule,
-        NbPopoverModule,
-        NbTagModule,
-        NbStepperModule,
-        NbDatepickerModule.forRoot(),
-        NbTimepickerModule.forRoot(),
-        NbAccordionModule,
-        ClipboardModule,
-        CountdownModule,
-        NbAlertModule,
-        NbRadioModule,
-        NbProgressBarModule,
-        NgxEchartsModule.forRoot({
-            echarts: () => import("echarts")
-        }),
-        NbCheckboxModule
-    ],
+        TokenAuthStrategy.setup({
+          name: "tokenauth",
+          token: {
+            class: TokenAuthToken
+          }
+        })
+      ]
+    }),
+    NbFormFieldModule,
+    NbSpinnerModule,
+    NbTooltipModule,
+    NbPopoverModule,
+    NbTagModule,
+    NbStepperModule,
+    NbDatepickerModule.forRoot(),
+    NbTimepickerModule.forRoot(),
+    NbAccordionModule,
+    ClipboardModule,
+    CountdownModule,
+    NbAlertModule,
+    NbRadioModule,
+    NbProgressBarModule,
+    NgxEchartsModule.forRoot({
+      echarts: () => import("echarts")
+    }),
+    NbCheckboxModule
+  ],
   providers: [
     {provide: HTTP_INTERCEPTORS, useClass: JwtBearerInterceptor, multi: true}
   ],
