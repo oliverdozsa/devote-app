@@ -87,7 +87,7 @@ import {InviteComponent} from './pages/invite/invite.component';
 import {TokenAuthToken} from "./services/token-auth-token";
 import {BallotTypeComponent} from './components/create-voting/ballot-type/ballot-type.component';
 import {EditorModule} from "@tinymce/tinymce-angular";
-import { DescriptionComponent } from './components/create-voting/description/description.component';
+import {VotingDescriptionComponent} from './components/create-voting/voting-description/voting-description.component';
 
 @NgModule({
   declarations: [
@@ -121,7 +121,7 @@ import { DescriptionComponent } from './components/create-voting/description/des
     MyProfileComponent,
     InviteComponent,
     BallotTypeComponent,
-    DescriptionComponent
+    VotingDescriptionComponent
   ],
   imports: [
     BrowserModule,

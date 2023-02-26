@@ -46,6 +46,8 @@ export class CreateVotingForm {
   ballotType: BallotType = BallotType.MULTI_POLL;
   maxChoices: number = 1;
 
+  description: string = "";
+
   private accountValidator: AccountValidator = new AccountValidator();
   private accountPublicDerivation: AccountPublicKeyDerivation = new AccountPublicKeyDerivation();
 
@@ -180,6 +182,10 @@ export class CreateVotingForm {
     const maxPossible = this.maxPossibleChoices.determine(this);
     return this.ballotType == BallotType.MULTI_POLL ||
       (this.ballotType == BallotType.MULTI_CHOICE && this.maxChoices > 0 && this.maxChoices <= maxPossible);
+  }
+
+  get isDescriptionValid() {
+    return this.description.length <= 1000;
   }
 
   private derivePublicFromSecretIfPossible() {

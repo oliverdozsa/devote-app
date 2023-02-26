@@ -38,7 +38,7 @@ export class CreateVotingComponent implements OnDestroy {
     } else if (this.currentStep == Step.VOTING_BASIC_DATA) {
       return !this.form.isVotesCapValid || !this.form.isAuthorizationInputValid || !this.form.isTitleValid ||
         !this.form.isEncryptedUntilValid || !this.form.isStartDateValid || !this.form.isEndDateValid || !this.form.isTokenIdentifierValid ||
-        !this.form.isOrganizerValid || !this.form.isMaxChoicesValid;
+        !this.form.isOrganizerValid || !this.form.isMaxChoicesValid || !this.form.isDescriptionValid;
     }
 
     return true;
