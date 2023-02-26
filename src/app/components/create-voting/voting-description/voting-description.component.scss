@@ -1,0 +1,12 @@
+@use '../../../../themes' as *;
+
+.editor-border {
+  border-color: nb-theme(card-border-color);
+  border-width: nb-theme(card-border-width);
+  border-style: nb-theme(card-border-style);
+  border-radius: nb-theme(card-border-radius);
+}
+
+.editor-border-status-danger {
+  border-color: nb-theme(color-danger-default);
+}

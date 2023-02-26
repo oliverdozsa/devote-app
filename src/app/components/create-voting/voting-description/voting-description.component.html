@@ -1,6 +1,6 @@
 <div class="mt-2">
   <label>short description</label>
-  <editor [init]="{
+  <editor class="editor-border" [class.editor-border-status-danger]="!form.isDescriptionValid" [init]="{
   menubar: false,
   branding: false,
   plugins: 'link autolink',
