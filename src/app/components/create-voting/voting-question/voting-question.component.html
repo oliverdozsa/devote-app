@@ -3,6 +3,7 @@
     <nb-accordion-item-header>
 
       <div class="flex-fill">
+        <div>
         <div><label>question</label></div>
         <input style="width: 90%;" class="me-2 mt-1" type="text" fullWidth nbInput [(ngModel)]="question.question"
                placeholder="e.g.: What is your favorite color?"
@@ -12,6 +13,20 @@
         <button class="mt-1" nbButton (click)="deleteQuestionClicked(i)">
           <nb-icon icon="trash-outline"></nb-icon>
         </button>
+        </div>
+
+        <div class="mt-2 flex-fill">
+          <label>short description</label>
+          <editor class="editor-border" [class.editor-border-status-danger]="!question.isDescriptionValid" [init]="{
+  menubar: false,
+  branding: false,
+  plugins: 'link autolink',
+  default_link_target: '_blank',
+  toolbar: 'undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | outdent indent | link'
+  }"
+                  [(ngModel)]="question.description"
+          ></editor>
+        </div>
       </div>
 
     </nb-accordion-item-header>

@@ -220,6 +220,7 @@ export class CreateVotingForm {
 export class VotingQuestion {
   options: string[] = [];
   question: string = "";
+  description: string = "";
 
   get isQuestionValid(): boolean {
     return this.question.length > 1 && this.question.length < 1000
@@ -229,10 +230,13 @@ export class VotingQuestion {
     return this.options.length > 1;
   }
 
-  get isValid(): boolean {
-    return this.areAllOptionsValid() && this.isQuestionValid && this.isOptionsLengthValid;
+  get isDescriptionValid() {
+    return this.description.length <= 1000;
   }
 
+  get isValid(): boolean {
+    return this.areAllOptionsValid() && this.isQuestionValid && this.isOptionsLengthValid && this.isDescriptionValid;
+  }
 
   isOptionValidAt(i: number) {
     return this.isOptionValid(this.options[i]);

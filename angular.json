@@ -41,7 +41,9 @@
               "node_modules/@fortawesome/fontawesome-free/css/all.min.css",
               "node_modules/ngx-spinner/animations/ball-spin-clockwise.css"
             ],
-            "scripts": []
+            "scripts": [
+              "node_modules/tinymce/tinymce.min.js"
+            ]
           },
           "configurations": {
             "production": {
