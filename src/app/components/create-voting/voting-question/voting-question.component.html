@@ -4,33 +4,35 @@
 
       <div class="flex-fill">
         <div>
-        <div><label>question</label></div>
-        <input style="width: 90%;" class="me-2 mt-1" type="text" fullWidth nbInput [(ngModel)]="question.question"
-               placeholder="e.g.: What is your favorite color?"
-               [status]="question.isValid ? 'success' : 'danger'" (click)="preventPropagationOf($event)"
-               (keyup)="preventPropagationOf($event)" (keydown)="preventPropagationOf($event)">
+          <div><label>question</label></div>
+          <input style="width: 90%;" class="me-2 mt-1" type="text" fullWidth nbInput [(ngModel)]="question.question"
+                 placeholder="e.g.: What is your favorite color?"
+                 [status]="question.isValid ? 'success' : 'danger'" (click)="preventPropagationOf($event)"
+                 (keyup)="preventPropagationOf($event)" (keydown)="preventPropagationOf($event)">
 
-        <button class="mt-1" nbButton (click)="deleteQuestionClicked(i)">
-          <nb-icon icon="trash-outline"></nb-icon>
-        </button>
-        </div>
-
-        <div class="mt-2 flex-fill">
-          <label>short description</label>
-          <editor class="editor-border" [class.editor-border-status-danger]="!question.isDescriptionValid" [init]="{
-  menubar: false,
-  branding: false,
-  plugins: 'link autolink',
-  default_link_target: '_blank',
-  toolbar: 'undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | outdent indent | link'
-  }"
-                  [(ngModel)]="question.description"
-          ></editor>
+          <button class="mt-1" nbButton (click)="deleteQuestionClicked(i)">
+            <nb-icon icon="trash-outline"></nb-icon>
+          </button>
         </div>
       </div>
 
     </nb-accordion-item-header>
     <nb-accordion-item-body>
+      <div class="mb-3">
+        <label>short description</label>
+        <editor class="editor-border" [class.editor-border-status-danger]="!question.isDescriptionValid" [init]="{
+          height: 200,
+          menubar: false,
+          branding: false,
+          plugins: 'link autolink',
+          default_link_target: '_blank',
+          toolbar: 'undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | outdent indent | link'
+        }"
+                [(ngModel)]="question.description"
+        ></editor>
+      </div>
+
+      <div *ngIf="question.options.length > 0"><label>options</label></div>
       <div *ngFor="let option of question.options; let j = index; trackBy: trackByIndex" class="row mb-1">
         <div class="col">
           <div class="d-flex justify-content-start align-items-center">
@@ -48,7 +50,7 @@
         </div>
       </div>
 
-      <div *ngIf="!question.isValid" class="row mt-1">
+      <div *ngIf="!question.isValid" class="row mt-5">
         <div class="col">
           <nb-card accent="danger">
             <nb-card-body>
@@ -69,6 +71,7 @@
       </div>
     </nb-accordion-item-body>
   </nb-accordion-item>
+
   <nb-accordion-item disabled="true">
     <nb-accordion-item-header>
       <div class="flex-column">

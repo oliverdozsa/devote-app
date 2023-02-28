@@ -23,15 +23,19 @@ export class VotingQuestionComponent {
 
   getWarnMessageFor(i: number): string {
     if (!this.form.questions[i].isQuestionValid) {
-      return "Question's length should be > 1 and < 1000.";
+      return "Question's length should be > 1 and < 1000!";
     }
 
     if (!this.form.questions[i].isOptionsLengthValid) {
-      return "There must be at least 2 options."
+      return "There must be at least 2 options!"
     }
 
     if (!this.form.questions[i].areAllOptionsValid()) {
-      return "Each option must have length > 1 and < 1000";
+      return "Each option must have length > 1 and < 1000!";
+    }
+
+    if (!this.form.questions[i].isDescriptionValid) {
+      return "Description must have length <= 1000!";
     }
 
     return "";
