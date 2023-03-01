@@ -19,6 +19,7 @@ export class CreateVotingRequest {
   public organizer: string = "";
   public ballotType: string = "";
   public maxChoices: number | undefined;
+  public description: string | undefined = undefined;
 
   static fromCreateVotingForm(form: CreateVotingForm): CreateVotingRequest {
     const request = new CreateVotingRequest();
@@ -41,6 +42,7 @@ export class CreateVotingRequest {
     request.sendInvites = form.isInvitesBased;
     request.organizer = form.organizerIfInvitesBased;
     request.ballotType = BallotType[form.ballotType];
+    request.description = form.description;
 
     if (form.ballotType == BallotType.MULTI_CHOICE) {
       request.maxChoices = form.maxChoices;
@@ -53,12 +55,14 @@ export class CreateVotingRequest {
 
 export class CreatePollRequest {
   public question: string = "";
+  public description: string | undefined = undefined;
   public options: CreatePollOptionRequest[] = [];
 
   static fromVotingQuestion(question: VotingQuestion): CreatePollRequest {
     const request = new CreatePollRequest();
 
     request.question = question.question;
+    request.description = question.description;
     request.options = question.options.map((o, i) => new CreatePollOptionRequest(o, i + 1));
 
     return request;

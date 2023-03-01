@@ -7,9 +7,22 @@
 </div>
 
 <div *ngIf="isUnlocked && isVotingLoaded && !isAlreadyVoted">
-  <h5>{{voting.title}}</h5>
+  <h5 class="mb-1">{{voting.title}}</h5>
+
+  <div *ngIf="voting.description">
+      <div [innerHTML]="voting.description"></div>
+  </div>
+
   <div *ngFor="let poll of voting.polls; let i=index">
-    <h6>{{poll.question}}</h6>
+    <h6 class="mb-1 mt-4">{{poll.question}}</h6>
+
+    <div *ngIf="poll.description">
+      <div [innerHTML]="poll.description"></div>
+    </div>
+
+    <div *ngIf="poll.description" class="mt-4 mb-2">
+      <b>Options</b>
+    </div>
 
     <div *ngIf="voting.ballotType == BallotType.MULTI_CHOICE">
       <div *ngFor="let option of poll.pollOptions" class="mt-2">

@@ -1,6 +1,12 @@
 <div *ngIf="voting != undefined">
   <h4 class="text-center">{{voting.title}}</h4>
 
+  <div *ngIf="voting.description">
+    <h5 class="mb-1">Description</h5>
+    <!--  https://angular.io/guide/security#sanitization-and-security-contexts  -->
+    <div [innerHTML]="voting.description"></div>
+  </div>
+
   <h5>Polls</h5>
   <nb-accordion multi>
     <nb-accordion-item *ngFor="let poll of voting.polls">
@@ -8,7 +14,14 @@
         {{poll.question}}
       </nb-accordion-item-header>
       <nb-accordion-item-body>
-        <nb-list>
+        <div *ngIf="poll.description" class="mb-4">
+          <b class="mt-1">Description</b>
+          <!--  https://angular.io/guide/security#sanitization-and-security-contexts  -->
+          <div [innerHTML]="poll.description"></div>
+        </div>
+
+        <b class="mt-3">Options</b>
+        <nb-list class="mt-2">
           <nb-list-item *ngFor="let option of poll.pollOptions">
             {{option.code}}. {{option.name}}
           </nb-list-item>
