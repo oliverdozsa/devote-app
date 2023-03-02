@@ -114,7 +114,7 @@ export class CastVoteComponent implements OnDestroy {
     this.voting = voting;
 
     if (this.voting.ballotType == BallotType.MULTI_POLL) {
-      this.selectedOptions = new Array(voting.polls[0].pollOptions.length).fill(null);
+      this.selectedOptions = new Array(voting.polls.length).fill(null);
     } else if (this.voting.ballotType == BallotType.MULTI_CHOICE) {
       const maxOptionCode = voting.polls[0].pollOptions
         .map(o => o.code)

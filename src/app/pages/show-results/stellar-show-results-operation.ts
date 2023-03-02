@@ -66,13 +66,18 @@ class StellarCollectResults {
     this.numOfRecordsProcessing -= 1;
     this.numOfRecordsProcessed += 1;
 
-    if (paymentRecord.asset_code != this.voting.assetCode || paymentRecord.asset_issuer != this.voting.issuerAccountId) {
+    if (this.isNotVoteRecord(paymentRecord)) {
       return;
     }
 
+    if(this.isAfterVotingEnded(paymentRecord)) {
+      return;
+    }
+
+
     this.results.addChoices(transactionRecord.memo);
 
-    if(this.numOfRecordsProcessed % StellarCollectResults.NUM_OF_RESULTS_IN_ONE_BATCH == 0) {
+    if (this.numOfRecordsProcessed % StellarCollectResults.NUM_OF_RESULTS_IN_ONE_BATCH == 0) {
       this.collectedVoteResults$.next(this.results.collected);
     }
 
@@ -88,5 +93,16 @@ class StellarCollectResults {
       this.collectedVoteResults$.next(this.results.collected);
       this.collectedVoteResults$.complete();
     }
+  }
+
+  private isNotVoteRecord(paymentRecord: PaymentOperationRecord) {
+    return paymentRecord.asset_code != this.voting.assetCode || paymentRecord.asset_issuer != this.voting.issuerAccountId;
+  }
+
+  private isAfterVotingEnded(paymentRecord: PaymentOperationRecord) {
+    const transactionMillis = Date.parse(paymentRecord.created_at);
+    const votingEndMillis = Date.parse(this.voting.endDate);
+
+    return transactionMillis > votingEndMillis;
   }
 }

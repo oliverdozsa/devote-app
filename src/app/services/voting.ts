@@ -21,12 +21,13 @@ export class Voting {
   public isInvitesBased: boolean = false;
   public ballotType: string = "";
   public maxChoices: number | undefined;
-
+  public description: string | undefined = undefined;
 }
 
 export class Poll {
   public index: number = -1;
   public question: string = "";
+  public description: string | undefined = undefined;
   public pollOptions: PollOption[] = [];
 }
 

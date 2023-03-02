@@ -1,0 +1,24 @@
+<div class="mt-2">
+  <label>short description</label>
+  <editor class="editor-border" [class.editor-border-status-danger]="!form.isDescriptionValid" [init]="{
+  base_url: '/tinymce',
+  suffix: '.min',
+  menubar: false,
+  branding: false,
+  plugins: 'link autolink',
+  default_link_target: '_blank',
+  toolbar: 'undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | outdent indent | link'
+  }"
+          [(ngModel)]="form.description"
+  ></editor>
+</div>
+
+<div *ngIf="!form.isDescriptionValid" class="row mt-1">
+  <div class="col">
+    <nb-card accent="danger">
+      <nb-card-body>
+        Description is too long!
+      </nb-card-body>
+    </nb-card>
+  </div>
+</div>
