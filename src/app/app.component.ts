@@ -7,7 +7,7 @@ import {
   NbSidebarService
 } from "@nebular/theme";
 import {NbAuthService, NbAuthToken} from "@nebular/auth";
-import {filter, finalize, map, Subscription, takeUntil} from "rxjs";
+import {filter, finalize, first, map, Subscription, takeUntil} from "rxjs";
 import {NavigationStart, Router} from "@angular/router";
 import {UserInfo, UserService} from "./services/user.service";
 import {TokenAuthToken} from "./services/token-auth-token";
@@ -77,6 +77,8 @@ export class AppComponent {
   }
 
   onIsAuthenticated(isAuthenticated: boolean) {
+    console.log(`onIsAuthenticated(): isAuthenticated = ${isAuthenticated}`)
+
     if (isAuthenticated) {
       this.showMenuItems(MainMenu.Titles.PROTECTED_MENU_ITEMS);
       this.showMenuItems([MainMenu.Titles.LOGOUT]);
@@ -134,6 +136,8 @@ export class AppComponent {
     } else if (menuBag.item.title == 'logout') {
       this.authenticationHelper.logout();
     }
+
+    this.checkLoginStatus();
   }
 
   registerCustomIcons(iconLibraries: NbIconLibraries) {
@@ -174,5 +178,13 @@ export class AppComponent {
 
   private isOnXLargeScreen() {
     return window.innerWidth >= this.breakPointsService.getByName('xl').width;
+  }
+
+  private checkLoginStatus() {
+    this.authService.isAuthenticated()
+      .pipe(first())
+      .subscribe({
+        next: isAuth => this.onIsAuthenticated(isAuth)
+      });
   }
 }
