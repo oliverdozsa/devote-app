@@ -21,6 +21,8 @@ enum Step {
   styleUrls: ['./create-voting.component.scss']
 })
 export class CreateVotingComponent implements OnDestroy {
+  Step = Step;
+
   isUnlocked = false;
 
   form: CreateVotingForm = new CreateVotingForm();

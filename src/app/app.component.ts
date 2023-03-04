@@ -77,8 +77,6 @@ export class AppComponent {
   }
 
   onIsAuthenticated(isAuthenticated: boolean) {
-    console.log(`onIsAuthenticated(): isAuthenticated = ${isAuthenticated}`)
-
     if (isAuthenticated) {
       this.showMenuItems(MainMenu.Titles.PROTECTED_MENU_ITEMS);
       this.showMenuItems([MainMenu.Titles.LOGOUT]);

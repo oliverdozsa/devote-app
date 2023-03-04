@@ -17,7 +17,7 @@
 
         <nb-step label="voting basic data">
           <app-voting-title [form]="form"></app-voting-title>
-          <app-voting-description [form]="form"></app-voting-description>
+          <app-voting-description *ngIf="currentStep == Step.VOTING_BASIC_DATA" [form]="form"></app-voting-description>
           <app-voting-token-identifier [form]="form"></app-voting-token-identifier>
           <app-voting-start-end-date [form]="form"></app-voting-start-end-date>
           <app-voting-encryption [form]="form"></app-voting-encryption>
@@ -28,7 +28,7 @@
         </nb-step>
 
         <nb-step label="questions">
-          <app-voting-question [form]="form"></app-voting-question>
+          <app-voting-question *ngIf="currentStep == Step.QUESTIONS" [form]="form"></app-voting-question>
         </nb-step>
 
       </nb-stepper>
