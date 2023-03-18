@@ -25,8 +25,11 @@ export class ParseChoices {
       choicesToProcess = choicesToProcess.slice(4);
     }
 
-    if (voting.ballotType == BallotType.MULTI_POLL && this.doesContainDuplicateVoteForSamePoll(result)) {
+    if (voting.ballotType == BallotType.MULTI_POLL && this.doesContainDuplicatePollIndices(result)) {
       console.warn(`There are duplicate poll indices in choices: ${choices}; ignored`);
+      return [];
+    } else if(voting.ballotType == BallotType.MULTI_CHOICE && this.doesContainDuplicateOptionCode(result)) {
+      console.warn(`There are duplicate option codes in choices: ${choices}; ignored`);
       return [];
     }
 
@@ -51,12 +54,46 @@ export class ParseChoices {
       .pollOptions
       .map(o => o.code);
     return validOptionCodesForPoll.includes(choice[1].valueOf());
-
-
   }
 
-  private static doesContainDuplicateVoteForSamePoll(choices: [PollIndex, PollOptionCode][]) {
+  private static doesContainDuplicatePollIndices(choices: [PollIndex, PollOptionCode][]) {
     const uniquePollIndices = new Set<PollIndex>(choices.map(c => c[0]));
     return uniquePollIndices.size != choices.length;
+  }
+
+  private static doesContainDuplicateOptionCode(choices: [PollIndex, PollOptionCode][]) {
+    const optionsByPollIndex = this.determineOptionsByPollIndex(choices);
+    const uniqueOptionCountsByPollIndex = this.countUniqueOptionsByPollIndex(optionsByPollIndex);
+
+    for(let [p, o] of optionsByPollIndex) {
+      if(o.length != uniqueOptionCountsByPollIndex.get(p)) {
+        return true;
+      }
+    }
+
+    return false;
+  }
+
+  private static determineOptionsByPollIndex(choices: [PollIndex, PollOptionCode][]) {
+    const optionsByPollIndex = new Map<PollIndex, PollOptionCode[]>();
+
+    choices.forEach(choice => {
+      if(!optionsByPollIndex.has(choice[0])) {
+        optionsByPollIndex.set(choice[0], []);
+      }
+
+      optionsByPollIndex.get(choice[0])!.push(choice[1]);
+    });
+
+    return optionsByPollIndex;
+  }
+
+  private static countUniqueOptionsByPollIndex(optionsByPollIndex: Map<PollIndex, PollOptionCode[]>) {
+    const uniqueOptionCountsByPollIndex = new Map<PollIndex, Number>();
+    optionsByPollIndex.forEach((o, p) => {
+      uniqueOptionCountsByPollIndex.set(p, o.length);
+    })
+
+    return uniqueOptionCountsByPollIndex;
   }
 }
