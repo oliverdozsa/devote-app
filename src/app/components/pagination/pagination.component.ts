@@ -64,6 +64,8 @@ export class PaginationComponent implements OnInit {
       pagesToShow = this.totalPages % this.maxPagesShown;
     }
 
+    console.log(`current: ${this.current}, pagesToShow: ${pagesToShow}, totalPages: ${this.totalPages}`);
+
     const startPage = this.current - ((this.current - 1) % this.maxPagesShown);
     this.pages = Array.from({length: pagesToShow}, (v, i) => startPage + i);
   }

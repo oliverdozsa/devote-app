@@ -23,6 +23,14 @@ export class VotingsPaginationComponent implements OnInit {
   @Input()
   allowCastVote: boolean = false;
 
+  @Input()
+  set showOnlyWhereNotTriedToCastVote(value: boolean) {
+    this._showOnlyWhereNotTriedToCastVote = value;
+    this.currentPage = 1;
+    this.isLoading = true;
+    this.getVotings();
+  }
+
   itemsPerPage = 10;
 
   votings: Page<VotingSummary> = {
@@ -34,6 +42,7 @@ export class VotingsPaginationComponent implements OnInit {
   currentPage: number = 1;
 
   private progresses: Map<string, Progress>;
+  private _showOnlyWhereNotTriedToCastVote: boolean = false;
 
   constructor(private votingsService: VotingsService, private spinner: NgxSpinnerService, private toastr: NbToastrService) {
     this.progresses = loadOrDefaultProgresses();
@@ -50,7 +59,7 @@ export class VotingsPaginationComponent implements OnInit {
   getVotings() {
     this.spinner.show();
 
-    this.votingsService.getVotingsOf(this.source, this.currentPage, this.itemsPerPage)
+    this.votingsService.getVotingsOf(this.source, this.currentPage, this.itemsPerPage, this._showOnlyWhereNotTriedToCastVote)
       .pipe(
         delay(700),
         finalize(() => this.onGetVotingsFinished())

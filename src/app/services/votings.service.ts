@@ -29,7 +29,8 @@ export class VotingsService {
     return this.httpClient.post(url, request);
   }
 
-  getVotingsOf(source: PagingSource = PagingSource.PUBLIC, page: number = 1, itemsPerPage: number = 10): Observable<Page<VotingSummary>> {
+  getVotingsOf(source: PagingSource = PagingSource.PUBLIC, page: number = 1, itemsPerPage: number = 10,
+               filterByNotTriedToCastVote: boolean = false): Observable<Page<VotingSummary>> {
     let url = environment.apiUrl;
 
     if (source == PagingSource.PUBLIC) {
@@ -40,9 +41,13 @@ export class VotingsService {
       url += "/votings/voter";
     }
 
-    const queryParams = new HttpParams()
+    let queryParams = new HttpParams()
       .set('offset', this.toOffset(page, itemsPerPage))
       .set('limit', itemsPerPage);
+
+    if(source == PagingSource.VOTER) {
+      queryParams = queryParams.set("filterByNotTriedToCastVote", filterByNotTriedToCastVote)
+    }
 
     return this.httpClient.get<Page<VotingSummary>>(url, {params: queryParams});
 

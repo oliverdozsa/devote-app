@@ -14,6 +14,8 @@ export class VotingsWhereIParticipateComponent implements OnDestroy{
 
   isUnlocked = false;
 
+  showOnlyWhereICanVote: boolean = false;
+
   destroy$ = new Subject<void>();
 
   constructor(private authService: NbAuthService) {
