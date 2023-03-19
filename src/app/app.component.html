@@ -6,7 +6,7 @@
   </nb-layout-header>
 
   <nb-sidebar tag="main" responsive="true" [containerFixed]="false">
-    <i *ngIf="isUserInfoLoading" class="mx-auto fa-solid fa-circle-notch fa-spin fa-xl"></i>
+    <i *ngIf="isUserInfoLoading && userInfo == undefined" class="mx-auto fa-solid fa-circle-notch fa-spin fa-xl"></i>
     <div *ngIf="userInfo">
       <nb-user [picture]="userInfo.pictureUrl" onlyPicture></nb-user>
     </div>
